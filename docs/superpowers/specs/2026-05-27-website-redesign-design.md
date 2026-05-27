@@ -50,7 +50,7 @@ Manrope was chosen as a free, GE-Inspira-adjacent humanist sans (geometric warmt
 - Image processing: long edge resized to 1600px max, JPEG quality ~80, target file size ≤ 200KB.
 - Size: render at full content width (max 680px container width). Aspect ratio approximately 16:9.
 - Captions: optional. When present, render in `Manrope 400, 0.85rem, --color-text-light, italic` directly below the image.
-- All 17 existing posts get a hero image as part of this redesign.
+- All 16 existing posts get a hero image as part of this redesign.
 - Homepage thumbnails reuse the same image, scaled to 80×60 with `object-fit: cover`.
 - Selection process: during implementation, the implementer proposes 2-3 candidate Unsplash images per post (based on post title and theme); user picks one before the post gets committed. Vijay's existing `assets/images/vijay.jpg` portrait is preserved unchanged for the About page.
 
@@ -60,7 +60,7 @@ Manrope was chosen as a free, GE-Inspira-adjacent humanist sans (geometric warmt
   - Text block: kicker (category) · title (Manrope 700, ~1.5rem) · excerpt (existing copy) · date.
   - Rows separated by a 1px `--color-border` divider.
 - Newsletter card retained, repositioned after the list.
-- Latest posts first, no pagination (17 posts fit comfortably).
+- Latest posts first, no pagination (16 posts fit comfortably).
 
 ### Layout — Post page (each file in `posts/`)
 - Same header and nav as homepage.
@@ -111,11 +111,11 @@ Categories do NOT render on the Archive page (kept bare per layout decision abov
 | File | Change |
 |---|---|
 | `assets/css/style.css` | Replace with new stylesheet implementing the design (CSS custom properties, Manrope, editorial hierarchy, thumbnail list, hero post layout, archive grouping). |
-| `assets/images/posts/` | New directory; one `.jpg` per post (17 files), named to match the post slug. |
+| `assets/images/posts/` | New directory; one `.jpg` per post (16 files), named to match the post slug. |
 | `index.html` | Rewrite the `<ul class="post-list">` markup to the thumbnail + text-block flex layout. Add `<link>` to Google Fonts in `<head>`. Add category kicker per row. |
 | `about.html` | Add `<link>` to Google Fonts. Minor markup adjustments to align with new styles (e.g., dropped underlines on `<strong>` if any). Content unchanged. |
 | `archive.html` | Rewrite markup to year-grouped compact list. Add `<link>` to Google Fonts. |
-| `posts/*.html` (×17) | Add `<link>` to Google Fonts in each `<head>`. Insert kicker (category) and hero image markup at the top of the post body. Body prose unchanged. |
+| `posts/*.html` (×16) | Add `<link>` to Google Fonts in each `<head>`. Insert kicker (category) and hero image markup at the top of the post body. Body prose unchanged. |
 | `.gitignore` | Add `.superpowers/` (the brainstorming session directory) if not already ignored. |
 
 ## Responsive Behavior
@@ -150,7 +150,7 @@ None at spec time — all decisions confirmed in brainstorming.
 
 ## Success Criteria
 
-- All 17 existing posts render with a category kicker and a hero image without manual touch-up.
+- All 16 existing posts render with a category kicker and a hero image without manual touch-up.
 - Homepage `index.html` shows the new thumbnail list, latest-first.
 - About page renders with Manrope and the round portrait, no layout regressions.
 - Archive page renders year-grouped, scannable, no thumbnails.
