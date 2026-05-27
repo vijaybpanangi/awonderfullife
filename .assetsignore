@@ -1,0 +1,25 @@
+# Paths excluded from the Cloudflare Worker asset upload.
+# Anything matched here will NOT be publicly served at awonderfullife.ca.
+
+# Git internals — never expose, prevents `git clone` from the live URL.
+.git
+.git/**
+
+# Wrangler local cache and dev artifacts.
+.wrangler
+.wrangler/**
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+
+# Brainstorming session files (also in .gitignore).
+.superpowers
+.superpowers/**
+
+# Repo metadata and docs that shouldn't be public assets.
+.gitignore
+.assetsignore
+wrangler.jsonc
+docs
+docs/**
