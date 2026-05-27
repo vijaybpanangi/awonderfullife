@@ -193,6 +193,31 @@ nav a:hover { color: var(--color-text); text-decoration: none; }
   margin: 1.5rem 0;
 }
 .post-content pre code { background: none; padding: 0; }
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.95rem;
+}
+.post-content table th,
+.post-content table td {
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+.post-content table th {
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  border-bottom: 2px solid var(--color-text);
+}
+.post-content table td:not(:first-child) {
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  width: 22%;
+}
 
 /* About */
 .about-header { text-align: center; margin-bottom: 3rem; }
