@@ -51,12 +51,12 @@ Manrope was chosen as a free, GE-Inspira-adjacent humanist sans (geometric warmt
 - Size: render at full content width (max 680px container width). Aspect ratio approximately 16:9.
 - Captions: optional. When present, render in `Manrope 400, 0.85rem, --color-text-light, italic` directly below the image.
 - All 16 existing posts get a hero image as part of this redesign.
-- Homepage thumbnails reuse the same image, scaled to 80×60 with `object-fit: cover`.
+- Homepage thumbnails reuse the same image, scaled to 120×90 (90×68 on mobile) with `object-fit: cover`.
 - Selection process: during implementation, the implementer proposes 2-3 candidate Unsplash images per post (based on post title and theme); user picks one before the post gets committed. Vijay's existing `assets/images/vijay.jpg` portrait is preserved unchanged for the About page.
 
 ### Layout — Homepage (`index.html`)
 - Header: site title (Manrope 700, tracked tight), tagline (Manrope 400, smaller, `--color-text-light`), nav (Home / About / Archive).
-- Post list: each entry is a flex row — 80×60 thumbnail on the left, text block on the right.
+- Post list: each entry is a flex row — 120×90 thumbnail on the left, text block on the right.
   - Text block: kicker (category) · title (Manrope 700, ~1.5rem) · excerpt (existing copy) · date.
   - Rows separated by a 1px `--color-border` divider.
 - Newsletter card retained, repositioned after the list.
@@ -72,7 +72,7 @@ Manrope was chosen as a free, GE-Inspira-adjacent humanist sans (geometric warmt
 ### Layout — About page (`about.html`)
 - "Refined classic" treatment — same shape as today, sharper execution.
 - Centered round 150px portrait at top.
-- Headline below: "Welcome — I'm Vijay" (Manrope 700).
+- Headline below: "Welcome! I'm Vijay" (Manrope 700) — preserved verbatim from the original about page copy.
 - Prose below, left-aligned, max 680px column, line-height 1.7.
 - Newsletter card at the bottom, then footer.
 - No "Currently…" block, no role tags.
