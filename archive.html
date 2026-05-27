@@ -24,7 +24,27 @@
     </header>
 
     <main class="container">
-        <h1 class="archive-year">2026</h1>
+        <h2 class="browse-title">Browse the archive</h2>
+        <p class="browse-subtitle">Filter by category and period.</p>
+        <div class="facets">
+            <nav class="facet" aria-label="Filter by category">
+                <span class="facet-label">Category</span>
+                <span class="facet-chip is-current">All<span class="facet-chip-count">16</span></span>
+                <a class="facet-chip" href="categories/reflection.html">Reflection<span class="facet-chip-count">3</span></a>
+                <a class="facet-chip" href="categories/society.html">Society<span class="facet-chip-count">3</span></a>
+                <a class="facet-chip" href="categories/politics.html">Politics<span class="facet-chip-count">5</span></a>
+                <a class="facet-chip" href="categories/technology.html">Technology<span class="facet-chip-count">2</span></a>
+                <a class="facet-chip" href="categories/travel.html">Travel<span class="facet-chip-count">3</span></a>
+            </nav>
+            <nav class="facet" aria-label="Jump to period">
+                <span class="facet-label">Period</span>
+                <a class="facet-chip" href="#year2026">2026</a>
+                <a class="facet-chip" href="#year2025">2025</a>
+                <a class="facet-chip" href="#year2024">2024</a>
+            </nav>
+        </div>
+
+        <h1 class="archive-year" id="year2026">2026</h1>
         <ul class="archive-list">
             <li class="archive-item">
                 <span class="archive-title"><a href="posts/finding-stability-in-unfinished-work-a-guide-to-endurance.html">Finding Stability in Unfinished Work: A Guide to Endurance</a></span>
@@ -32,7 +52,7 @@
             </li>
         </ul>
 
-        <h1 class="archive-year">2025</h1>
+        <h1 class="archive-year" id="year2025">2025</h1>
         <ul class="archive-list">
             <li class="archive-item">
                 <span class="archive-title"><a href="posts/data-dilemma-starving-for-truth-in-a-sea-of-misinformation.html">Data Dilemma: Starving for Truth in a Sea of Misinformation</a></span>
@@ -44,7 +64,7 @@
             </li>
         </ul>
 
-        <h1 class="archive-year">2024</h1>
+        <h1 class="archive-year" id="year2024">2024</h1>
         <ul class="archive-list">
             <li class="archive-item">
                 <span class="archive-title"><a href="posts/the-united-states-and-canada-uneasy-neighbors-shared-failures.html">Confronting Inequality: The American and Canadian Experience</a></span>
