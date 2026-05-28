@@ -2,7 +2,13 @@
 
 Notable changes to the website, deployment configuration, and project documentation. The detailed history lives in git; this file curates the highlights so a casual reader can scan what's happened over time without scrolling commit logs.
 
+Releases on this project use semver-style tags (`v1.0.0`, `v1.1.0`, etc.) cut as deliberate milestones, not per-commit. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) for the formal release notes.
+
 ## 2026-05-28
+
+### 🏷 Release: `v1.0.0` — Editorial direction launch
+
+First formal release. Marks the current state of the project as a stable milestone after the May 2026 redesign, the post-body cleanup, the infrastructure work (www custom domain, `.assetsignore`), and the full documentation surface (README, CLAUDE.md, CHANGELOG, ROADMAP, 12-page Wiki). Full release notes at <https://github.com/vijaybpanangi/awonderfullife/releases/tag/v1.0.0>.
 
 ### GitHub Wiki
 
