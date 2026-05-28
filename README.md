@@ -65,5 +65,13 @@ Drop a hero image at `assets/images/posts/<slug>.jpg`. Recommended dimensions: ~
 - **`CLAUDE.md`** — operating notes for Claude Code sessions working in this repo (architecture, conventions, gotchas, deferred follow-ups).
 - **`docs/superpowers/specs/`** — design specs for non-trivial changes.
 - **`docs/superpowers/plans/`** — implementation plans matched to specs.
+- **`CHANGELOG.md`** — curated trail of notable changes (design, infrastructure, documentation).
 
 Anything more substantial than a copy edit goes through a brainstorm → spec → plan → execute workflow; see `docs/superpowers/README.md` for that convention.
+
+## Recent updates
+
+- **2026-05-28** — `www.awonderfullife.ca` added as a Custom Domain on the Cloudflare Worker (was returning 522); stale `www` CNAME removed from DNS; project documentation added (this README, `CLAUDE.md`, `docs/superpowers/README.md`).
+- **2026-05-27** — Full editorial redesign shipped. Manrope typography, hero photography, faceted category browsing, post-body cleanup, 800px container. 17 commits to `main`.
+
+Full chronological log: [`CHANGELOG.md`](CHANGELOG.md).
