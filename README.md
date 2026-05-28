@@ -72,7 +72,11 @@ Anything more substantial than a copy edit goes through a brainstorm → spec �
 
 ## Recent updates
 
-- **2026-05-28** — `www.awonderfullife.ca` added as a Custom Domain on the Cloudflare Worker (was returning 522); stale `www` CNAME removed from DNS; project documentation added (this README, `CLAUDE.md`, `docs/superpowers/README.md`).
-- **2026-05-27** — Full editorial redesign shipped. Manrope typography, hero photography, faceted category browsing, post-body cleanup, 800px container. 17 commits to `main`.
+| Date | Area | What changed |
+|---|---|---|
+| 2026-05-28 | Documentation | `ROADMAP.md` added; README/CLAUDE updated to cross-link it |
+| 2026-05-28 | Infrastructure | `www.awonderfullife.ca` added as a second Custom Domain on the Worker (was returning 522); stale `www` CNAME removed from DNS |
+| 2026-05-28 | Documentation | `README.md`, `CLAUDE.md`, `CHANGELOG.md`, `docs/superpowers/README.md` added so the repo home reads well on GitHub |
+| 2026-05-27 | Redesign | Full editorial direction shipped — Manrope typography, hero photography, faceted category browsing, post-body cleanup, 800px container (17 commits) |
 
-Full chronological log: [`CHANGELOG.md`](CHANGELOG.md).
+Full chronological log lives in [`CHANGELOG.md`](CHANGELOG.md); planned work lives in [`ROADMAP.md`](ROADMAP.md).
