@@ -21,5 +21,7 @@
 .gitignore
 .assetsignore
 wrangler.jsonc
+README.md
+CLAUDE.md
 docs
 docs/**
