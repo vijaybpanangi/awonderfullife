@@ -4,6 +4,11 @@ Notable changes to the website, deployment configuration, and project documentat
 
 ## 2026-05-28
 
+### GitHub Wiki
+
+- **Initial signpost page added.** A minimal `Home` page was created on the repo's GitHub Wiki tab as a way-finder pointing visitors back to the canonical in-repo docs.
+- **Full multi-page Wiki built out.** Expanded into a navigable twelve-page wiki with a sidebar. Pages: [Home](https://github.com/vijaybpanangi/awonderfullife/wiki), [About the Blog](https://github.com/vijaybpanangi/awonderfullife/wiki/About-the-Blog), [The Five Categories](https://github.com/vijaybpanangi/awonderfullife/wiki/The-Five-Categories), [Post Catalog](https://github.com/vijaybpanangi/awonderfullife/wiki/Post-Catalog), [Site Architecture](https://github.com/vijaybpanangi/awonderfullife/wiki/Site-Architecture), [Design System](https://github.com/vijaybpanangi/awonderfullife/wiki/Design-System), [Adding a Post](https://github.com/vijaybpanangi/awonderfullife/wiki/Adding-a-Post), [Hero Photography](https://github.com/vijaybpanangi/awonderfullife/wiki/Hero-Photography), [Deployment](https://github.com/vijaybpanangi/awonderfullife/wiki/Deployment), [The May 2026 Redesign](https://github.com/vijaybpanangi/awonderfullife/wiki/The-May-2026-Redesign), [Roadmap](https://github.com/vijaybpanangi/awonderfullife/wiki/Roadmap), [AI-Assisted Development](https://github.com/vijaybpanangi/awonderfullife/wiki/AI-Assisted-Development). Repo files remain canonical; the Wiki is long-form narrative and reference material that wouldn't fit in the repo without bloating it.
+
 ### Infrastructure
 
 - **`www.awonderfullife.ca` now resolves.** Added as a second Custom Domain on the Cloudflare Worker. Previously the `www` subdomain returned HTTP 522 (Cloudflare reached an origin that wasn't responding); now both apex and `www` serve identical content from the same Worker.

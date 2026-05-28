@@ -74,6 +74,7 @@ Anything more substantial than a copy edit goes through a brainstorm → spec �
 
 | Date | Area | What changed |
 |---|---|---|
+| 2026-05-28 | Documentation | GitHub [Wiki](https://github.com/vijaybpanangi/awonderfullife/wiki) populated with twelve pages plus sidebar — long-form companion to the in-repo docs |
 | 2026-05-28 | Documentation | `ROADMAP.md` added; README/CLAUDE updated to cross-link it |
 | 2026-05-28 | Infrastructure | `www.awonderfullife.ca` added as a second Custom Domain on the Worker (was returning 522); stale `www` CNAME removed from DNS |
 | 2026-05-28 | Documentation | `README.md`, `CLAUDE.md`, `CHANGELOG.md`, `docs/superpowers/README.md` added so the repo home reads well on GitHub |
