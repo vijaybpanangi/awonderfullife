@@ -74,6 +74,7 @@ Post bodies inside `<div class="post-content">` were cleaned in commit `6df6352`
 
 - `docs/superpowers/specs/` — design specs (the *what* and *why*): `YYYY-MM-DD-<topic>-design.md`.
 - `docs/superpowers/plans/` — implementation plans (the *how*): `YYYY-MM-DD-<topic>.md`.
+- `ROADMAP.md` at the root tracks **future** work and deferred items; `CHANGELOG.md` tracks **past** changes. Always check both before proposing work — the answer to "is this on the radar?" is in one or the other.
 - See `docs/superpowers/README.md` for the brainstorm → spec → plan → execute workflow.
 
 ## Known follow-ups deferred during the May 2026 redesign

@@ -66,6 +66,7 @@ Drop a hero image at `assets/images/posts/<slug>.jpg`. Recommended dimensions: ~
 - **`docs/superpowers/specs/`** — design specs for non-trivial changes.
 - **`docs/superpowers/plans/`** — implementation plans matched to specs.
 - **`CHANGELOG.md`** — curated trail of notable changes (design, infrastructure, documentation).
+- **`ROADMAP.md`** — future updates and deferred items (curated photography, email migration, canonical-URL redirect, alt-text simplification, drop `.html` from internal links).
 
 Anything more substantial than a copy edit goes through a brainstorm → spec → plan → execute workflow; see `docs/superpowers/README.md` for that convention.
 
