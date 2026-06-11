@@ -18,28 +18,33 @@ There is no build system. No `package.json`, no bundler, no test framework. Edit
 ## The big picture: where content lives
 
 ```
-/index.html                     Homepage — thumbnail list of all 16 posts (newest first)
-/about.html                     About page (round portrait + prose)
+/index.html                     Homepage — featured opener + illustrated 2-col card grid
+/about.html                     About page (180×180 editorial-square portrait + prose)
 /archive.html                   Year-grouped compact list of every post + faceted nav
-/categories/<cat>.html          One page per category, year-grouped — same faceted nav
+/categories/<cat>.html          One page per category, illustrated card grid — same faceted nav
 /posts/<slug>.html              Individual post (one file per post)
-/assets/css/style.css           Single global stylesheet (~370 lines)
+/assets/css/style.css           Single global stylesheet (~480 lines)
 /assets/images/                 Author portrait + hero images for each post
-/assets/images/posts/<slug>.jpg Hero image per post (currently Picsum stand-ins seeded by slug)
+/assets/images/posts/<slug>.jpg Hero image per post (AI-generated editorial illustration series)
 ```
 
 Five categories in active use: **Reflection** (3 posts), **Society** (3), **Politics** (5), **Technology** (2), **Travel** (3).
 
-## Adding or modifying a post: the three-places rule
+## Adding or modifying a post: the four-plus-places rule
 
-Because there is no build system, a new post means edits in **three** files (sometimes four):
+Because there is no build system, a new post means edits in **four** files plus several additional steps:
 
-1. `posts/<slug>.html` — the post itself. Open an existing post in the same category as a template; the structure is `<header class="post-header">` with `<a class="kicker">`, `<h1>`, `<p class="post-byline">`, then `<img class="post-hero">`, then `<div class="post-content">`.
-2. `index.html` — add the post as the topmost `<li class="post-item">` (newest first). Each row is thumbnail + kicker + title + excerpt + date.
+1. `posts/<slug>.html` — the post itself. Open an existing post in the same category as a template; the structure is `<header class="post-header">` with `<a class="kicker">`, `<h1>`, `<p class="post-byline">` (include `· N MIN READ`, words ÷ 200), then `<img class="post-hero">`, then `<div class="post-content">`, ending with a `<nav class="post-nav">` footer block.
+2. `index.html` — add the post as a new card in the illustrated card grid (newest first). Update the featured opener if the new post is the most recent.
 3. `archive.html` — add to the correct `<h1 class="archive-year">` section.
-4. `categories/<category>.html` — add to that category's archive.
+4. `categories/<category>.html` — add a card to that category's grid.
 
-When a new post lands, also drop a hero image at `assets/images/posts/<slug>.jpg`. Picsum stand-ins are generated with a deterministic URL seeded by the slug; curated Unsplash replacements can be downloaded later by pointing curl at the Unsplash CDN with `?w=1600&q=80&fm=jpg&fit=crop`.
+**Additional steps for every new post:**
+
+- **Update neighboring posts' prev/next nav.** The post that was previously the newest gets a "next" link added; the post immediately before the new one gets a "previous" update. Check both `<nav class="post-nav">` blocks.
+- **Generate a hero illustration.** Run `docs/superpowers/tools/gen-hero.sh <slug> "<subject prompt>" <seed>` — saves to `assets/images/posts/<slug>.jpg`. Credentials: `$HOME/.cloudflare_ai_token` (API token) and `$HOME/.cloudflare_ai_account` (account ID). **Never commit these files.** View the result and regenerate if needed for style/quality/series cohesion (flat editorial style, terracotta/slate-blue/cream palette).
+- **Add a manifest row.** In `docs/superpowers/specs/2026-06-11-image-manifest.md`, record the slug, seed, prompt, alt text, and file size.
+- **Write a descriptive `alt` attribute.** Describe what the illustration *shows*, not what the post is about (e.g., `alt="A globe resting on a stack of newspapers, terracotta and slate-blue tones"`). Do not restate the post title.
 
 ## Stylesheet (`assets/css/style.css`)
 
@@ -51,7 +56,15 @@ Single source of styling. Defines a small token palette in `:root`:
 - `--max-width: 800px` — page container width (widened from 680px during the redesign)
 - `--font: 'Manrope'` — loaded via Google Fonts `<link>` in each HTML file
 
-Section banner comments delimit related rules (`/* Header */`, `/* Homepage post list */`, `/* Single post page */`, `/* Archive */`, `/* Faceted browsing strip */`, `/* Newsletter */`, etc.). Search for the banner of the area you're editing rather than scrolling.
+Section banner comments delimit related rules (`/* Header */`, `/* Featured opener */`, `/* Card grid */`, `/* Single post page */`, `/* Post navigation */`, `/* Archive */`, `/* Faceted browsing strip */`, `/* Newsletter */`, etc.). Search for the banner of the area you're editing rather than scrolling.
+
+New components added in the June 2026 Quiet Magazine redesign:
+
+- `.featured` / `.featured__image` / `.featured__body` — homepage featured opener.
+- `.card-grid` / `.card` / `.card__image` / `.card__body` — 2-column illustrated card grid (homepage + categories).
+- `.post-nav` / `.post-nav__prev` / `.post-nav__next` — prev/next footer navigation on single posts.
+- `.container--wide` + breakout hero rules — allows `<img class="post-hero">` to bust out of the 800px container to fill wider viewports.
+- `.post-byline` reading-time segment — `· N MIN READ` appended inline to the date/category byline.
 
 ## Patterns worth preserving
 
@@ -77,8 +90,7 @@ Post bodies inside `<div class="post-content">` were cleaned in commit `6df6352`
 - `ROADMAP.md` at the root tracks **future** work and deferred items; `CHANGELOG.md` tracks **past** changes. Always check both before proposing work — the answer to "is this on the radar?" is in one or the other.
 - See `docs/superpowers/README.md` for the brainstorm → spec → plan → execute workflow.
 
-## Known follow-ups deferred during the May 2026 redesign
+## Known follow-ups
 
-- **Curate the hero images.** The 16 in `assets/images/posts/` are Picsum stand-ins. Replace with topical Unsplash photos when time permits.
-- **Alt text simplification.** Thumbnail and hero `alt` attributes currently restate the post title. For better screen-reader UX, switch to `alt=""` (decorative) or describe the image content once curated photography lands.
+- **India-and-Pakistan hero regeneration.** The current `india-and-pakistan.jpg` passed QC but was rated the weakest image for series cohesion in the gallery review. Regenerate via `gen-hero.sh` once the Workers AI daily free quota resets, then update the manifest row. Tracked in ROADMAP.md.
 - **Drop `.html` from internal links.** Cloudflare canonicalizes URLs without `.html` (e.g. `/archive` not `/archive.html`). Internal hrefs still use `.html`, so every click goes through one 301 hop. Cosmetic; low priority.
