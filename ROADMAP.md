@@ -4,26 +4,19 @@ Future updates and deferred items for awonderfullife.ca. Items here have no fixe
 
 ---
 
-## Curate the hero photography
+## India-and-Pakistan hero regeneration
 
-All 16 hero images in `assets/images/posts/<slug>.jpg` are **Picsum stand-ins** — deterministic, seeded by post slug. They render and the layout works, but they aren't topical to the posts. The user explicitly accepted them as placeholders during the May 2026 redesign while curated photography was deferred.
+The `india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` illustration shipped in the June 2026 Quiet Magazine redesign and passed QC, but the gallery review rated it the weakest image for series cohesion (see `CHANGELOG.md` for the full redesign entry). All other 15 heroes are solid.
 
 ### Plan
 
-For each of the 16 posts:
+1. Wait for the Cloudflare Workers AI free-tier daily quota to reset.
+2. Run `docs/superpowers/tools/gen-hero.sh india-and-pakistan-twin-dreams-divided-bound-by-hope "<refined subject prompt>" <new-seed>`. Try a prompt variation that emphasises the flat editorial illustration style, terracotta/slate-blue/cream palette, and a symbolic geographic or unity motif (no faces).
+3. View the result; regenerate if needed.
+4. Overwrite `assets/images/posts/india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` and update the manifest row in `docs/superpowers/specs/2026-06-11-image-manifest.md`.
+5. Open a small touch-up PR against `main`.
 
-1. Search **Unsplash** (or similar editorial photo source) for 2–3 candidates relevant to the post's title and theme. Suggested keywords per post live in the original implementation plan at `docs/superpowers/plans/2026-05-27-website-redesign.md` (Task 7–11 section).
-2. Pick one image per post.
-3. Download via the Unsplash CDN with sizing params: `https://images.unsplash.com/<PHOTO_ID>?w=1600&q=80&fm=jpg&fit=crop&auto=format`. This serves pre-optimized images — no local resizing or tooling needed.
-4. Save to `assets/images/posts/<slug>.jpg`, overwriting the Picsum stand-in.
-5. Commit per category batch (Reflection / Society / Politics / Technology / Travel) so commits stay scoped.
-6. While you're there: **simplify the `alt` text** to describe what the image *shows* (decorative-style or content-descriptive) rather than restating the post title. See the *Alt-text* item below.
-
-### Risks / things to know
-
-- Unsplash CDN URLs are stable — once you find a photo you like, the URL won't rot. But the *page* URL (`https://unsplash.com/photos/...`) does require a real visit to extract the CDN photo ID. There's no API key needed if you copy URLs by hand.
-- Target file size ≤ 200KB. The `q=80` quality param gets you there most of the time; a few topical photos may run larger (~400KB) — still acceptable.
-- Don't accidentally swap in copyright-restricted images. Unsplash, Pexels, and Pixabay are safe (CC-equivalent); avoid Getty/AP/Reuters.
+Small, scoped, one-image change.
 
 ---
 
@@ -80,20 +73,6 @@ Polish, not a fix.
 
 ---
 
-## Simplify thumbnail and hero `alt` attributes
-
-Every `<img class="post-thumb">` on the homepage and every `<img class="post-hero">` inside a post page currently uses the post's **title** as its `alt` attribute. Screen readers announce the title (from the linked `<h1>` or `<h2>`) and then the alt text — duplicating the same string.
-
-### Plan
-
-When the curated Unsplash photography lands (item #1 above), update each `alt` to do one of:
-
-- **Decorative pattern:** `alt=""` if the image is purely supportive of the title. Screen readers skip it.
-- **Descriptive pattern:** describe what the image *shows*, not what the post is about (e.g., `alt="A wooden desk by a window, papers and a half-finished cup of coffee"` for a Reflection-category hero). Better for SEO and for readers who can't see the image.
-
-Pick a pattern per post; either is acceptable. Don't keep "title as alt" once curated photos exist.
-
----
 
 ## Drop `.html` from internal links
 
@@ -115,6 +94,19 @@ Cosmetic, not urgent.
 
 ---
 
+## Accepted deviations from the 2026-06-11 spec
+
+Three items from the Quiet Magazine redesign spec were consciously dropped during implementation. They are not bugs — they are deliberate trade-offs, recorded here so any future session can revisit them with full context.
+
+- **Manrope weight 800 never loaded.** The spec called for weight 800 for display headings; weight 700 rendered identically at the sizes used and the extra font-weight request was dropped. Revisitable if a heavier weight is ever visually needed.
+- **Page background stayed pure `#ffffff`.** The spec suggested a warm off-white background; pure white was preferred in practice once the full page was visible. Revisitable if the palette shifts.
+- **Post body measure stays the 800px container (~75ch).** The spec targeted 68ch for optimal readability; the 800px container (set during the May 2026 redesign) was kept for consistency. Revisitable as a CSS-only tweak.
+
+---
+
 ## Done
 
 See [`CHANGELOG.md`](CHANGELOG.md) for items that have shipped (the editorial redesign, the post-body cleanup, the project documentation, the www custom domain, the WordPress-era CSS cleanup).
+
+- **Hero curation** — all 16 Picsum stand-ins replaced with a cohesive AI-generated editorial-illustration series. Shipped in the June 2026 Quiet Magazine redesign; see CHANGELOG 2026-06-11 for details and `docs/superpowers/specs/2026-06-11-image-manifest.md` for the full manifest.
+- **Alt text simplification** — every hero `alt` attribute rewritten to describe the illustration content. Shipped in the same PR.

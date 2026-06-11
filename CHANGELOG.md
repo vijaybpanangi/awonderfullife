@@ -4,6 +4,36 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Releases on this project use semver-style tags (`v1.0.0`, `v1.1.0`, etc.) cut as deliberate milestones, not per-commit. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) for the formal release notes.
 
+## 2026-06-11 — Quiet Magazine redesign + generated illustration series
+
+A full visual redesign of the site, shipped on branch `redesign/quiet-magazine` (PR: Quiet Magazine redesign + generated illustration series). The centerpiece is replacing all 16 Picsum stand-in heroes with a cohesive AI-generated editorial-illustration series, while simultaneously overhauling the homepage, category pages, and single-post layout. Spec at `docs/superpowers/specs/2026-06-11-quiet-magazine-redesign-design.md`; implementation plan at `docs/superpowers/plans/`; image manifest (all 16 images with seeds, prompts, and alt texts) at `docs/superpowers/specs/2026-06-11-image-manifest.md`.
+
+### Design
+
+- **Homepage rebuilt** as a featured opener (first post at full width with illustration) + a 2-column illustrated card grid for the remaining 15 posts.
+- **Category pages** converted from plain archive lists to illustrated card grids — faceted browsing strip preserved.
+- **Single posts:** display-scale titles (`clamp(2.2rem, 5vw, 3.2rem)`), breakout heroes (a `--breakout` clamp() on `.post-hero` lets the image bleed beyond the 800px text column), `· N MIN READ` bylines (reading time statically computed as words ÷ 200), and prev/next footer navigation.
+- **About page:** author photo switched from round portrait to editorial 180×180px square frame.
+- **Body text** scaled from 17px to 18px equivalent (1.125rem).
+- **Dead thumbnail-list CSS pruned** — `.post-item`, `.post-thumb`, and related rules removed.
+- Stylesheet grew from 421 lines to **480 lines** with new components: `.featured`, `.card-grid`, `.post-nav`, `.container--wide`, breakout hero rules.
+
+### Illustration series
+
+- **All 16 Picsum stand-ins replaced** with a cohesive AI-generated editorial-illustration series produced via Cloudflare Workers AI `flux-1-schnell` (free tier) using the script at `docs/superpowers/tools/gen-hero.sh`.
+- Flat editorial style, terracotta/slate-blue/cream palette, consistent across all 16 images.
+- Every image individually viewed and QC'd; several regenerated for style, quality, or series cohesion.
+- People-posts (Ratan Tata, Trump vs Harris, India & Pakistan) use **symbolic no-likeness scenes** — no faces.
+- Full manifest with seeds, prompts, alt texts, and file sizes: `docs/superpowers/specs/2026-06-11-image-manifest.md`.
+- Total hero image payload: **1.5MB for 16 images**.
+- **Alt text rewritten per image** — describes the illustration content rather than restating the post title. Closes the *Alt text simplification* ROADMAP item.
+
+### Known follow-up
+
+- **India-and-Pakistan hero regeneration.** The image passed QC and the gallery review rated it weakest for series cohesion. It will be regenerated for stronger cohesion in a follow-up PR once the Workers AI daily free quota resets.
+
+---
+
 ## 2026-05-28
 
 ### 🏷 Release: `v1.0.0` — Editorial direction launch
