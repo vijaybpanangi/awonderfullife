@@ -12,6 +12,7 @@
   --color-bg-soft: #f9f9f9;
   --font: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --max-width: 800px;
+  --max-width-wide: 1080px;
 }
 
 html { font-size: 16px; line-height: 1.7; }
@@ -49,6 +50,7 @@ strong { font-weight: 600; }
   margin: 0 auto;
   padding: 0 1.5rem;
 }
+.container--wide { max-width: var(--max-width-wide); }
 
 /* Header */
 header {
@@ -137,6 +139,58 @@ a.kicker:hover {
   letter-spacing: 0.08em;
   color: var(--color-text-light);
   text-transform: uppercase;
+}
+
+/* Featured post (homepage opener) */
+.featured { margin-bottom: 3.5rem; }
+.featured-link { display: block; color: inherit; }
+.featured-link:hover { text-decoration: none; }
+.featured img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 1.25rem;
+}
+.featured .post-title {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  letter-spacing: -0.03em;
+  margin-bottom: 0.6rem;
+}
+.featured-link:hover .post-title { color: var(--color-accent); }
+.featured .post-excerpt { font-size: 1.05rem; max-width: 62ch; }
+
+/* Illustrated card grid (home + category pages) */
+.card-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.75rem 2rem;
+}
+.card-link { display: block; color: inherit; }
+.card-link:hover { text-decoration: none; }
+.card img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 0.9rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-link:hover img {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(17, 17, 17, 0.12);
+}
+.card .post-title { font-size: 1.25rem; margin-bottom: 0.35rem; }
+.card-link:hover .post-title { color: var(--color-accent); }
+.card .post-excerpt { font-size: 0.92rem; margin-bottom: 0.5rem; }
+
+@media (max-width: 700px) {
+  .card-grid { grid-template-columns: 1fr; gap: 2.25rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card img { transition: none; }
+  .card-link:hover img { transform: none; box-shadow: none; }
 }
 
 /* Single post page */
