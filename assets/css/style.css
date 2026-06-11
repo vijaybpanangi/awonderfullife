@@ -99,25 +99,6 @@ a.kicker:hover {
   text-decoration: none;
 }
 
-/* Homepage post list (thumbnail + text) */
-.post-list { list-style: none; }
-.post-item {
-  display: flex;
-  gap: 1.25rem;
-  align-items: flex-start;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid var(--color-border);
-}
-.post-item:last-child { border-bottom: none; }
-.post-thumb {
-  flex-shrink: 0;
-  width: 120px;
-  height: 90px;
-  object-fit: cover;
-  border-radius: 2px;
-  display: block;
-}
-.post-item .post-body { flex: 1; min-width: 0; }
 .post-title {
   font-size: 1.35rem;
   font-weight: 700;
@@ -224,7 +205,7 @@ a.kicker:hover {
   font-size: 0.85rem;
   color: var(--color-text-light);
   font-style: italic;
-  margin: 0 0 2rem;
+  margin: -1.25rem 0 2rem;
 }
 .post-content {
   font-size: 1.125rem;
@@ -314,9 +295,9 @@ a.kicker:hover {
 /* About */
 .about-header { text-align: center; margin-bottom: 3rem; }
 .about-photo {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
+  width: 180px;
+  height: 180px;
+  border-radius: 4px;
   object-fit: cover;
   margin-bottom: 1.5rem;
 }
@@ -487,13 +468,7 @@ input:focus-visible {
   header { padding: 2rem 0 1.5rem; }
   .site-title { font-size: 1.25rem; }
   nav a { margin-right: 1rem; }
-  .post-item {
-    gap: 1rem;
-    padding: 1.25rem 0;
-  }
-  .post-thumb { width: 90px; height: 68px; }
   .post-title { font-size: 1.15rem; }
-  .post-header h1 { font-size: 1.75rem; }
   .newsletter { padding: 1.5rem; }
   .newsletter-form { flex-direction: column; }
   .newsletter-form button { width: 100%; }
