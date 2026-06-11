@@ -12,11 +12,11 @@ A full visual redesign of the site, shipped on branch `redesign/quiet-magazine` 
 
 - **Homepage rebuilt** as a featured opener (first post at full width with illustration) + a 2-column illustrated card grid for the remaining 15 posts.
 - **Category pages** converted from plain archive lists to illustrated card grids — faceted browsing strip preserved.
-- **Single posts:** display-scale titles (`clamp(2.2rem, 5vw, 3.2rem)`), breakout heroes (full-bleed on wide screens via `.container--wide`), `· N MIN READ` bylines (reading time statically computed as words ÷ 200), and prev/next footer navigation.
+- **Single posts:** display-scale titles (`clamp(2.2rem, 5vw, 3.2rem)`), breakout heroes (a `--breakout` clamp() on `.post-hero` lets the image bleed beyond the 800px text column), `· N MIN READ` bylines (reading time statically computed as words ÷ 200), and prev/next footer navigation.
 - **About page:** author photo switched from round portrait to editorial 180×180px square frame.
 - **Body text** scaled from 17px to 18px equivalent (1.125rem).
 - **Dead thumbnail-list CSS pruned** — `.post-item`, `.post-thumb`, and related rules removed.
-- Stylesheet grew from ~370 lines to **480 lines** with new components: `.featured`, `.card-grid`, `.post-nav`, `.container--wide`, breakout hero rules.
+- Stylesheet grew from 421 lines to **480 lines** with new components: `.featured`, `.card-grid`, `.post-nav`, `.container--wide`, breakout hero rules.
 
 ### Illustration series
 

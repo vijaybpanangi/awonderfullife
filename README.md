@@ -51,12 +51,14 @@ Push to `main`. Cloudflare Workers builds and deploys automatically. The Cloudfl
 
 ### Adding a new post
 
-There is no build system, so a new post means updating it in three places (sometimes four):
+There is no build system, so a new post means updating it in four files plus several additional steps:
 
-1. Create `posts/<slug>.html` (copy an existing post in the same category as the template).
-2. Add a row to the top of `index.html`'s post list (newest first).
+1. Create `posts/<slug>.html` (copy an existing post in the same category as the template). Include `· N MIN READ` in the byline (words ÷ 200) and a `<nav class="post-nav">` footer block.
+2. Add the post as the new featured opener in `index.html` (the previous featured post moves down into the card grid as the first card).
 3. Add a row to the correct year in `archive.html`.
 4. Add a row to `categories/<category>.html`.
+5. **Update neighboring posts' `post-nav` blocks.** The post that was previously newest gets a "next" link added; the post immediately before the new one gets a "previous" update.
+6. **Compute the `· N MIN READ` byline** — count the post's words and divide by 200.
 
 Generate a hero illustration via `docs/superpowers/tools/gen-hero.sh <slug> "<subject prompt>" <seed>` (credentials at `$HOME/.cloudflare_ai_token` and `$HOME/.cloudflare_ai_account`, never committed). Add a manifest row in `docs/superpowers/specs/2026-06-11-image-manifest.md` with the seed, prompt, and alt text. Target file size ≤200KB; the generated illustrations average ~95KB.
 

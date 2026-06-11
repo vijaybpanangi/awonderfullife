@@ -6,14 +6,14 @@ Future updates and deferred items for awonderfullife.ca. Items here have no fixe
 
 ## India-and-Pakistan hero regeneration
 
-The `india-and-pakistan.jpg` illustration shipped in the June 2026 Quiet Magazine redesign and passed QC, but the gallery review rated it the weakest image for series cohesion (see `CHANGELOG.md` for the full redesign entry). All other 15 heroes are solid.
+The `india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` illustration shipped in the June 2026 Quiet Magazine redesign and passed QC, but the gallery review rated it the weakest image for series cohesion (see `CHANGELOG.md` for the full redesign entry). All other 15 heroes are solid.
 
 ### Plan
 
 1. Wait for the Cloudflare Workers AI free-tier daily quota to reset.
-2. Run `docs/superpowers/tools/gen-hero.sh india-and-pakistan "<refined subject prompt>" <new-seed>`. Try a prompt variation that emphasises the flat editorial illustration style, terracotta/slate-blue/cream palette, and a symbolic geographic or unity motif (no faces).
+2. Run `docs/superpowers/tools/gen-hero.sh india-and-pakistan-twin-dreams-divided-bound-by-hope "<refined subject prompt>" <new-seed>`. Try a prompt variation that emphasises the flat editorial illustration style, terracotta/slate-blue/cream palette, and a symbolic geographic or unity motif (no faces).
 3. View the result; regenerate if needed.
-4. Overwrite `assets/images/posts/india-and-pakistan.jpg` and update the manifest row in `docs/superpowers/specs/2026-06-11-image-manifest.md`.
+4. Overwrite `assets/images/posts/india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` and update the manifest row in `docs/superpowers/specs/2026-06-11-image-manifest.md`.
 5. Open a small touch-up PR against `main`.
 
 Small, scoped, one-image change.
@@ -91,6 +91,16 @@ Find-and-replace across all HTML files:
 Verify by clicking around the local preview (`python3 -m http.server 8000`) before committing — relative vs absolute paths can interact oddly with the Cloudflare canonicalization rules.
 
 Cosmetic, not urgent.
+
+---
+
+## Accepted deviations from the 2026-06-11 spec
+
+Three items from the Quiet Magazine redesign spec were consciously dropped during implementation. They are not bugs — they are deliberate trade-offs, recorded here so any future session can revisit them with full context.
+
+- **Manrope weight 800 never loaded.** The spec called for weight 800 for display headings; weight 700 rendered identically at the sizes used and the extra font-weight request was dropped. Revisitable if a heavier weight is ever visually needed.
+- **Page background stayed pure `#ffffff`.** The spec suggested a warm off-white background; pure white was preferred in practice once the full page was visible. Revisitable if the palette shifts.
+- **Post body measure stays the 800px container (~75ch).** The spec targeted 68ch for optimal readability; the 800px container (set during the May 2026 redesign) was kept for consistency. Revisitable as a CSS-only tweak.
 
 ---
 

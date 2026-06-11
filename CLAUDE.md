@@ -56,15 +56,16 @@ Single source of styling. Defines a small token palette in `:root`:
 - `--max-width: 800px` — page container width (widened from 680px during the redesign)
 - `--font: 'Manrope'` — loaded via Google Fonts `<link>` in each HTML file
 
-Section banner comments delimit related rules (`/* Header */`, `/* Featured opener */`, `/* Card grid */`, `/* Single post page */`, `/* Post navigation */`, `/* Archive */`, `/* Faceted browsing strip */`, `/* Newsletter */`, etc.). Search for the banner of the area you're editing rather than scrolling.
+Section banner comments delimit related rules (`/* Header */`, `/* Featured post (homepage opener) */`, `/* Illustrated card grid (home + category pages) */`, `/* Single post page */`, `/* Post footer prev/next navigation */`, `/* Archive */`, `/* Faceted browsing strip */`, `/* Newsletter */`, etc.). Search for the banner of the area you're editing rather than scrolling.
 
 New components added in the June 2026 Quiet Magazine redesign:
 
-- `.featured` / `.featured__image` / `.featured__body` — homepage featured opener.
-- `.card-grid` / `.card` / `.card__image` / `.card__body` — 2-column illustrated card grid (homepage + categories).
-- `.post-nav` / `.post-nav__prev` / `.post-nav__next` — prev/next footer navigation on single posts.
-- `.container--wide` + breakout hero rules — allows `<img class="post-hero">` to bust out of the 800px container to fill wider viewports.
-- `.post-byline` reading-time segment — `· N MIN READ` appended inline to the date/category byline.
+- `.featured` / `.featured-link` — homepage featured opener (img + h2.post-title live directly inside the link).
+- `.card-grid` / `.card` / `.card-link` — 2-column illustrated card grid (homepage + categories).
+- `.post-nav` / `.post-nav-link` / `.post-nav-prev` / `.post-nav-next` / `.post-nav-label` / `.post-nav-title` — prev/next footer navigation on single posts.
+- `.container--wide` — 1080px container used by the homepage and category pages.
+- `.post-hero` breakout — the `--breakout` clamp() inside `.post-hero` lets the hero bleed beyond the 800px post column (posts do NOT use `.container--wide`).
+- `.post-byline` reading-time segment — `· N MIN READ` appended to the byline.
 
 ## Patterns worth preserving
 
@@ -92,5 +93,5 @@ Post bodies inside `<div class="post-content">` were cleaned in commit `6df6352`
 
 ## Known follow-ups
 
-- **India-and-Pakistan hero regeneration.** The current `india-and-pakistan.jpg` passed QC but was rated the weakest image for series cohesion in the gallery review. Regenerate via `gen-hero.sh` once the Workers AI daily free quota resets, then update the manifest row. Tracked in ROADMAP.md.
+- **India-and-Pakistan hero regeneration.** The current `india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` passed QC but was rated the weakest image for series cohesion in the gallery review. Regenerate via `gen-hero.sh india-and-pakistan-twin-dreams-divided-bound-by-hope ...` once the Workers AI daily free quota resets, then update the manifest row. Tracked in ROADMAP.md.
 - **Drop `.html` from internal links.** Cloudflare canonicalizes URLs without `.html` (e.g. `/archive` not `/archive.html`). Internal hrefs still use `.html`, so every click goes through one 301 hop. Cosmetic; low priority.
