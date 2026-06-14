@@ -7,8 +7,13 @@ export interface Env {
 export function createWorker() {
   return {
     async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
-      void request
       void env
+      const { pathname } = new URL(request.url)
+
+      if (request.method === 'GET' && pathname === '/health') {
+        return json({ status: 'ok', time: new Date().toISOString() })
+      }
+
       return json({ error: 'not_found' }, 404)
     },
   }
