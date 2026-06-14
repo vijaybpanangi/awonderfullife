@@ -4,6 +4,17 @@ Future updates and deferred items for awonderfullife.ca. Items here have no fixe
 
 ---
 
+## Platform API (`api.awonderfullife.ca`) — fast-follows
+
+The Phase-1 API spine shipped 2026-06-13 (see `CHANGELOG.md` and `docs/superpowers/specs/2026-06-13-api-spine-foundation-design.md`): a second Worker with a public `/health` route and a Cloudflare-Access-gated `/admin/whoami` route over D1. Next:
+
+- **Wire `/api` into its own Cloudflare Workers Build** so it auto-deploys on push to `main` (today it deploys manually via `cd api && npm run deploy`).
+- **Phase 2 — newsletter, owned:** migrate the live **Buttondown** list (the homepage form currently posts to Buttondown) to a self-owned **D1** list with **Resend** for sends, behind **Turnstile** + rate limiting. Capture only email + consent timestamp; unsubscribe deletes.
+- **Phase 2 — email reconciliation:** the platform brief assumed Resend for sending; this ROADMAP separately plans **iCloud+ Custom Email Domain** for the inbound mailbox (see *Email setup for the domain* below). Design SPF/DKIM/DMARC to authorize both senders (iCloud for mailbox, Resend for newsletter) while cleaning up the stale WordPress-era records.
+- **Client-side lifestyle tools** (store nothing, POST nothing) — e.g. tip calculator, bill splitter, chai-premix calculator — proving the spine end-to-end alongside the newsletter.
+
+---
+
 ## India-and-Pakistan hero regeneration
 
 The `india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` illustration shipped in the June 2026 Quiet Magazine redesign and passed QC, but the gallery review rated it the weakest image for series cohesion (see `CHANGELOG.md` for the full redesign entry). All other 15 heroes are solid.
