@@ -4,6 +4,25 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Releases on this project use semver-style tags (`v1.0.0`, `v1.1.0`, etc.) cut as deliberate milestones, not per-commit. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) for the formal release notes.
 
+## 2026-06-13 — API spine (Phase 1): `api.awonderfullife.ca`
+
+The first piece of the platform backend. A **second, independent Cloudflare Worker** (`awonderfullife-api`) now runs at **`api.awonderfullife.ca`**, alongside the static blog — which is untouched. This begins turning awonderfullife.ca from a static blog into a personal platform ("one backend, many faces"). Spec at `docs/superpowers/specs/2026-06-13-api-spine-foundation-design.md`; plan at `docs/superpowers/plans/2026-06-13-api-spine-foundation.md`.
+
+### What shipped
+
+- **`GET /health`** — public liveness probe (`{status:"ok", time}`).
+- **`GET /admin/whoami`** — gated by **Cloudflare Access** (`api.awonderfullife.ca/admin*`, policy = Vijay's personal email); returns the verified email + a **D1** connectivity flag (`SELECT 1`).
+- **Defence in depth:** the worker independently verifies the Access JWT (`src/access.ts`, via `jose` over WebCrypto) — safe even if reached directly. `workers_dev` disabled.
+- **TypeScript** on the Workers runtime, no framework; **Vitest** (`@cloudflare/vitest-pool-workers`) with **9 passing tests** (router, JWT-verification matrix, gated route over a local D1).
+- **D1** database `awonderfullife-api` bound as `DB` — no application schema yet (that's Phase 2's owned newsletter list).
+- **Secrets** (`ACCESS_TEAM_DOMAIN`, `ACCESS_AUD`) live as Wrangler secrets, never in the repo. `.assetsignore` extended to keep `/api` source out of the public asset bundle.
+
+### Deploy model
+
+The API worker deploys **manually** (`cd api && npm run deploy`); it is not part of the static site's push-to-`main` build. Wiring it into its own Workers Build is tracked in `ROADMAP.md`.
+
+---
+
 ## 2026-06-11 — Quiet Magazine redesign + generated illustration series
 
 A full visual redesign of the site, shipped on branch `redesign/quiet-magazine` (PR: Quiet Magazine redesign + generated illustration series). The centerpiece is replacing all 16 Picsum stand-in heroes with a cohesive AI-generated editorial-illustration series, while simultaneously overhauling the homepage, category pages, and single-post layout. Spec at `docs/superpowers/specs/2026-06-11-quiet-magazine-redesign-design.md`; implementation plan at `docs/superpowers/plans/`; image manifest (all 16 images with seeds, prompts, and alt texts) at `docs/superpowers/specs/2026-06-11-image-manifest.md`.

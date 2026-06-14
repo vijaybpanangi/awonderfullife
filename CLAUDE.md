@@ -13,7 +13,28 @@ There is no build system. No `package.json`, no bundler, no test framework. Edit
 - **Live site:** <https://awonderfullife.ca> — Cloudflare Workers with Static Assets auto-deploys from `main` on every push (config lives in `wrangler.jsonc`; the Pages-style integration was set up via the Cloudflare GitHub PR).
 - **Preview locally:** `python3 -m http.server 8000` from the repo root, open `http://localhost:8000/`.
 - **Verify a deploy:** after pushing, the Cloudflare dashboard shows the build, and the live site updates within ~30s. There are no automated tests; verification is visual.
-- **Asset exclusion:** `.assetsignore` (gitignore-style) keeps repo internals (`.git/`, `.wrangler/`, `docs/`, `wrangler.jsonc`, this file, the README) out of the public asset bundle. When adding new private files, add them there too.
+- **Asset exclusion:** `.assetsignore` (gitignore-style) keeps repo internals (`.git/`, `.wrangler/`, `docs/`, `wrangler.jsonc`, this file, the README) **and the `/api` worker (`api`, `api/**`, `node_modules`)** out of the public asset bundle. When adding new private files, add them there too.
+
+## The API worker (`/api`)
+
+The repo hosts a **second, independent Cloudflare Worker** alongside the static site — the platform spine.
+
+- **Static site (repo root):** still no build system — plain HTML/CSS, `assets.directory: "."`, auto-deploys from `main`.
+- **API worker (`/api`):** TypeScript on the Workers runtime, with its own `package.json`, `wrangler.jsonc`, and Vitest tests. Served at **`api.awonderfullife.ca`** (custom domain; `workers_dev` off). The static site is untouched.
+
+**Routes:** `GET /health` (public → `{status,time}`) and `GET /admin/whoami` (Cloudflare-Access-gated → verified email + a D1 `SELECT 1` flag).
+
+**Security:** Access protects `api.awonderfullife.ca/admin*`; the worker *also* verifies the Access JWT in-code (`src/access.ts`, via `jose`) — safe even if reached directly. `ACCESS_TEAM_DOMAIN` and `ACCESS_AUD` are **Wrangler secrets** (never committed — this repo is public). D1 binding is `DB` (database `awonderfullife-api`); no application schema yet.
+
+**Working in `/api`:**
+- Test: `cd api && npm test` (Vitest + `@cloudflare/vitest-pool-workers` — runs in workerd with a local D1)
+- Typecheck: `cd api && npm run typecheck`
+- Local dev: `cd api && npm run dev` (needs `api/.dev.vars` — copy from `.dev.vars.example`)
+- Deploy: `cd api && npm run deploy` — **manual**; the API worker is *not* in the static site's push-to-`main` build (see `ROADMAP.md`).
+
+**Toolchain note (vitest-pool-workers v4):** the Vitest config uses the v4 plugin API — `cloudflareTest({...})` from `@cloudflare/vitest-pool-workers` composed with `defineConfig` from `vitest/config` (the older `defineWorkersConfig` from `…/config` no longer exists). The `cloudflare:test` ambient types come from the package's `./types` entry, referenced in `api/test/env.d.ts`.
+
+Spec: `docs/superpowers/specs/2026-06-13-api-spine-foundation-design.md` · Plan: `docs/superpowers/plans/2026-06-13-api-spine-foundation.md`.
 
 ## The big picture: where content lives
 

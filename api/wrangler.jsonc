@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "awonderfullife-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-06-13",
+  "observability": { "enabled": true },
+  "workers_dev": false,
+  "routes": [
+    { "pattern": "api.awonderfullife.ca", "custom_domain": true }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "awonderfullife-api",
+      "database_id": "397ace16-32f8-472b-b0b2-5910c3497c44"
+    }
+  ]
+}

@@ -27,3 +27,9 @@ CHANGELOG.md
 ROADMAP.md
 docs
 docs/**
+
+# API worker — a separate Cloudflare Worker (api.awonderfullife.ca), never a static asset of the site.
+api
+api/**
+node_modules
+node_modules/**
