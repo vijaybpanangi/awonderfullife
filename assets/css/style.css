@@ -41,7 +41,7 @@ body {
 /* Where backdrop-filter is unsupported, make the glass surfaces near-opaque
    so they don't turn see-through. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  header { background: rgba(255,255,255,0.96); }
+  header:not(.post-header) { background: rgba(255,255,255,0.96); }
   .newsletter { background: var(--color-bg-soft); }
   .facet-chip { background: #fff; }
 }
@@ -73,8 +73,9 @@ strong { font-weight: 600; }
 }
 .container--wide { max-width: var(--max-width-wide); }
 
-/* Header */
-header {
+/* Header — site masthead only. `:not(.post-header)` keeps this off the post
+   title block, which is also a <header> element (<header class="post-header">). */
+header:not(.post-header) {
   position: sticky;
   top: 0;
   z-index: 100;
@@ -87,7 +88,7 @@ header {
   backdrop-filter: var(--glass-blur);
   box-shadow: 0 6px 24px -18px rgba(17,17,17,0.28), var(--glass-rim);
 }
-header > .container {
+header:not(.post-header) > .container {
   display: flex;
   align-items: baseline;
   column-gap: 1rem;
