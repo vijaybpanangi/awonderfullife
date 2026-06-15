@@ -535,3 +535,49 @@ input:focus-visible {
   .facet-chip { padding: 0.35rem 0.75rem; font-size: 0.8rem; }
   .browse-title { font-size: 1.5rem; }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   EXPERIMENTAL: edge-lensing Liquid Glass (PROTOTYPE — branch only)
+   ─────────────────────────────────────────────────────────────────────────
+   Approximates Apple's real-time refraction ("Liquid Glass") by routing the
+   backdrop through an SVG filter (feTurbulence → feDisplacementMap) so the
+   content seen *through* the glass bends, instead of only blurring. The
+   <svg><filter id="edge-lensing"> definition lives inline in the HTML
+   (currently index.html only; full rollout would add it to every page since
+   the header is duplicated per-page — there is no build/include step).
+
+   GATING — three layers of graceful degradation:
+   1. Opt-in class `lensing` on a surface, so unflagged pages are untouched.
+   2. @supports (backdrop-filter: url("#x")) — true on Chromium, false on
+      Safari/Firefox, which keep the existing blur()+saturate() glass above.
+   3. prefers-reduced-motion: reduce — drop displacement (the warped, per-frame
+      re-sampled edge reads as motion to some users) and fall back to a calm
+      heavy blur.
+
+   KNOWN LIMITATIONS (see PR body): Chromium-only; the displaced region can
+   shimmer/judder while scrolling because the backdrop re-samples each frame;
+   sub-pixel text behind the rim may smear. Not production-ready.
+   ───────────────────────────────────────────────────────────────────────── */
+@supports (backdrop-filter: url("#edge-lensing")) or (-webkit-backdrop-filter: url("#edge-lensing")) {
+  /* Refract the backdrop through the SVG filter. The filter chain itself does
+     the blur + displacement (see feGaussianBlur/feDisplacementMap in the inline
+     <svg>), so we reference it alone. The blur()+saturate() tokens above remain
+     as the documented non-Chromium fallback. */
+  header:not(.post-header).lensing {
+    -webkit-backdrop-filter: url("#edge-lensing");
+    backdrop-filter: url("#edge-lensing");
+  }
+  .newsletter.lensing {
+    -webkit-backdrop-filter: url("#edge-lensing");
+    backdrop-filter: url("#edge-lensing");
+  }
+
+  /* Reduced-motion: no displacement, just a steady heavy blur. */
+  @media (prefers-reduced-motion: reduce) {
+    header:not(.post-header).lensing,
+    .newsletter.lensing {
+      -webkit-backdrop-filter: blur(20px) saturate(1.8) brightness(1.06);
+      backdrop-filter: blur(20px) saturate(1.8) brightness(1.06);
+    }
+  }
+}
