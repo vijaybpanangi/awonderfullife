@@ -3,3 +3,7 @@
 ACCESS_TEAM_DOMAIN="your-team.cloudflareaccess.com"
 ACCESS_AUD="your-access-application-audience-tag"
 TURNSTILE_SECRET="your-turnstile-secret"
+
+# --- Newsletter send CLI (scripts/send-issue.mjs) — LOCAL env for the CLI, not Worker secrets ---
+RESEND_API_KEY="re_..."
+NEWSLETTER_FROM="A Wonderful Life <hello@send.awonderfullife.ca>"

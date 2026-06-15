@@ -8,10 +8,12 @@
     "deploy": "wrangler deploy",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "send": "node scripts/send-issue.mjs"
   },
   "dependencies": {
-    "jose": "^6.2.3"
+    "jose": "^6.2.3",
+    "marked": "^18.0.5"
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.16.15",
