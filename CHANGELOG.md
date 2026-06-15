@@ -4,6 +4,17 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.11.0 — Newsletter compose UI (login-protected, in-browser authoring) (2026-06-15 23:23 UTC)
+
+A web UI for writing the newsletter — no terminal needed. Served by the API worker at **`api.awonderfullife.ca/admin/compose`**, behind the **existing Cloudflare Access** login (gated at the edge and re-verified in-code). Schedule-only by design:
+
+- **Compose** subject + preheader + Markdown body, with a live **Preview** (rendered through the exact email template in an iframe).
+- **Send test to me** — sends one copy to the signed-in admin's address (never the list).
+- **Queue for Saturday** — adds the rendered issue to the D1 queue the weekly cron drains; a list of queued/recently-sent issues with one-click **Unqueue**.
+- There is deliberately **no "broadcast now"** button — full sends only go through the Saturday 7pm ET cron.
+- **Shared render module** (`src/render.mjs`) is now the single source of the email template, imported by both the worker (compose/preview/test) and the CLI — so they can't drift. The CLI (`--queue`/`--test`/`--dry-run`) is unchanged.
+- New admin endpoints (all Access-gated): `GET /admin/compose`, `GET|POST /admin/issues`, `POST /admin/issues/preview`, `POST /admin/issues/test`, `POST /admin/issues/unqueue`. 9 new Vitest tests (auth gate, queue, list, preview, test-send, unqueue).
+
 ## v2.10.1 — Fix: Cloudflare's non-standard cron day-of-week (deploy was rejected) (2026-06-15 23:08 UTC)
 
 The v2.10.0 cron expressions (`0 23 * * 6`, `0 0 * * 0`) failed to deploy: **Cloudflare's day-of-week field is non-standard — `1`=Sunday … `7`=Saturday**, not the usual `0`/`6`. So `0` was rejected outright (API error 10100) and `6` would have meant *Friday*, not Saturday. Switched both to the abbreviations Cloudflare recommends — `0 23 * * SAT` (7pm EDT) and `0 0 * * SUN` (7pm EST) — which now register cleanly. The DST code-gate was already correct and unchanged; this was purely the trigger syntax.

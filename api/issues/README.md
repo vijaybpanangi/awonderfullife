@@ -18,6 +18,8 @@ Your issue body in **Markdown**.
 
 ## Send
 
+> **Prefer a UI?** There's a login-protected web editor at **`https://api.awonderfullife.ca/admin/compose`** (behind Cloudflare Access) — compose, preview, send a test to yourself, and queue for Saturday without the terminal. This CLI remains the power-user path and does exactly the same things.
+
 There are two ways to send: **scheduled** (the normal path — it goes out automatically) and **immediate** (send right now from your laptop).
 
 ### Scheduled — the weekly newsletter (recommended)
