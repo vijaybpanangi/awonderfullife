@@ -33,40 +33,13 @@ Shipped. The `india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` hero was
 
 ---
 
-## Email setup for the domain
+## Email setup for the domain — DONE (2026-06-15)
 
-**Current state (DoH-checked 2026-06-15):** there is **no MX** for `awonderfullife.ca`, so nothing receives mail there today — this is a clean setup, not a migration. The DNS still carries two vestigial WordPress-era records:
+Live on **iCloud+ Custom Email Domain** (see `CHANGELOG.md`). Set up under Vijay's Apple ID ("Only Me"); there was no prior email (no MX), so it was a clean setup. MX → `mx01`/`mx02.mail.icloud.com`; SPF trimmed to `v=spf1 include:icloud.com ~all` (legacy wpcloud removed); DKIM CNAME at `sig1._domainkey`; `apple-domain` verification TXT kept; DMARC upgraded to `p=none; rua=mailto:postmaster@awonderfullife.ca; fo=1`. Addresses `postmaster@` + `v@` created (catch-all on). Verified all-green via `bash docs/superpowers/tools/check-email-dns.sh awonderfullife.ca` plus a live send test.
 
-```
-awonderfullife.ca        TXT   "v=spf1 include:_spf.wpcloud.com ~all"   (legacy sender auth; nothing sends from there now)
-_dmarc.awonderfullife.ca TXT   "v=DMARC1;p=none;"                       (inert — no rua=, collects/enforces nothing)
-```
+**Remaining:** after ~1–2 weeks of clean `rua` reports at `postmaster@`, tighten DMARC `p=none → quarantine → reject`. Keep `~all` (not `-all`). When the Phase-2 newsletter (Resend) lands, send from a subdomain (e.g. `send.awonderfullife.ca`) with its own SPF/DKIM/DMARC, leaving the apex SPF iCloud-only.
 
-**Goal:** stand up a real mailbox via **iCloud+ Custom Email Domain** (included in Vijay's Apple One Premier / iCloud+), authenticate it (SPF/DKIM/DMARC), and replace the legacy records. **Decisions locked:** scope = just Vijay ("Only Me", a Family-Sharing sharee — supported); two addresses, `postmaster@awonderfullife.ca` and `v@awonderfullife.ca` (single-letter local part is allowed).
-
-**Target records (Apple generates exact values during its add-domain flow):**
-
-| Type | Name | Value |
-|---|---|---|
-| TXT | `@` | `apple-domain=<code>` (verification — keep permanently) |
-| MX | `@` | `mx01.mail.icloud.com` and `mx02.mail.icloud.com`, both priority 10 |
-| TXT | `@` | `v=spf1 include:icloud.com ~all` (replaces the wpcloud SPF; exactly ONE SPF record) |
-| CNAME | `sig1._domainkey` | `sig1.dkim.awonderfullife.ca.at.icloudmailadmin.com` (DKIM, single selector) |
-| TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:postmaster@awonderfullife.ca; fo=1` |
-
-**Order:** clear/disable any Cloudflare mail records → add domain in Apple (this mints the records) → enter them in Cloudflare (all DNS-only / grey cloud) → Verify in Apple → create `postmaster@` and `v@` → test → only then tighten DMARC.
-
-**Safeguards (from a 3-subagent verification pass against Apple/Cloudflare docs):**
-- **Keep all records permanently** — Apple periodically re-validates; removing the `apple-domain=` TXT (or any record) can de-activate the domain.
-- **Cloudflare Email-Routing first:** if it was ever enabled, its MX/SPF/`cf2024-1._domainkey` DKIM can persist and even lock, blocking Apple's MX. Unlock + remove before entering Apple's records (re-enable→disable forces a reset if stuck). Back up the current SPF/DMARC values first.
-- **Audit before adding:** exactly one SPF and one DMARC TXT must survive (two SPF = PermError); confirm no leftover `wpcloud2._domainkey` CNAME and that nothing still legitimately sends via wpcloud (else merge, don't replace).
-- **`~all` stays permanently** (do not move to `-all`); ramp DMARC `p=none → quarantine → reject` over ~1–2 weeks each, watching `rua` reports at `postmaster@`.
-- **3 addresses/person/domain is a hard cap** — `postmaster@` + `v@` uses 2 of 3.
-- **Verify with the helper:** `bash docs/superpowers/tools/check-email-dns.sh awonderfullife.ca` (DoH smoke test — Apple's "Verify" remains authoritative). It flags partial/legacy/Email-Routing records.
-
-**Newsletter foresight:** when the Phase-2 newsletter (Resend) lands, send from a subdomain (e.g. `send.awonderfullife.ca`) with its own SPF/DKIM/DMARC, keeping the apex SPF iCloud-only.
-
-The same flow applies to **ezziclarity.ca** as a separate follow-on (its own ROADMAP item); the checker takes a domain argument and is reused as-is.
+**ezziclarity.ca** is the same flow (its own repo's ROADMAP). Heads-up from the 2026-06-15 check: its iCloud records are already live, but its SPF still carries **both** `_spf.wpcloud.com` *and* `spf.titan.email` includes, and its DMARC still has no `rua` — so its cleanup needs a decision on whether Titan Email is still in use before trimming, and a `rua` target chosen.
 
 ---
 
