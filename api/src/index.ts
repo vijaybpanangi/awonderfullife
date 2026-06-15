@@ -1,21 +1,33 @@
 import { getAccessEmail } from './access'
+import { verifyTurnstile } from './turnstile'
 
 export interface Env {
   DB: D1Database
   ACCESS_TEAM_DOMAIN: string
   ACCESS_AUD: string
+  TURNSTILE_SECRET: string
 }
 
 export interface Deps {
   getAccessEmail: (request: Request, env: Env) => Promise<string>
+  verifyTurnstile: (token: string, ip: string | null, env: Env) => Promise<boolean>
 }
 
-const defaultDeps: Deps = { getAccessEmail }
+const defaultDeps: Deps = { getAccessEmail, verifyTurnstile }
 
-export function createWorker(deps: Deps = defaultDeps) {
+const ALLOWED_ORIGINS = new Set([
+  'https://awonderfullife.ca',
+  'https://www.awonderfullife.ca',
+])
+
+// Pragmatic email check: a single @, no spaces, a dotted domain, ≤254 chars.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+export function createWorker(overrides: Partial<Deps> = {}) {
+  const deps: Deps = { ...defaultDeps, ...overrides }
   return {
     async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
-      const { pathname } = new URL(request.url)
+      const { pathname, searchParams } = new URL(request.url)
 
       if (request.method === 'GET' && pathname === '/health') {
         return json({ status: 'ok', time: new Date().toISOString() })
@@ -38,16 +50,135 @@ export function createWorker(deps: Deps = defaultDeps) {
         return json({ email, db })
       }
 
+      if (pathname === '/subscribe') {
+        const cors = corsHeaders(request)
+        if (request.method === 'OPTIONS') {
+          return new Response(null, { status: 204, headers: cors })
+        }
+        if (request.method === 'POST') {
+          return handleSubscribe(request, env, deps, cors)
+        }
+      }
+
+      if (request.method === 'GET' && pathname === '/unsubscribe') {
+        return handleUnsubscribe(searchParams.get('token'), env)
+      }
+
       return json({ error: 'not_found' }, 404)
     },
   }
 }
 
+async function handleSubscribe(
+  request: Request,
+  env: Env,
+  deps: Deps,
+  cors: Record<string, string>,
+): Promise<Response> {
+  let email = ''
+  let token = ''
+  let source: string | null = null
+
+  const contentType = request.headers.get('content-type') ?? ''
+  try {
+    if (contentType.includes('application/json')) {
+      const body = (await request.json()) as {
+        email?: unknown
+        token?: unknown
+        source?: unknown
+      }
+      email = typeof body.email === 'string' ? body.email : ''
+      token = typeof body.token === 'string' ? body.token : ''
+      source = typeof body.source === 'string' ? body.source : null
+    } else {
+      const form = await request.formData()
+      email = String(form.get('email') ?? '')
+      token = String(form.get('cf-turnstile-response') ?? form.get('token') ?? '')
+      const formSource = form.get('source')
+      source = typeof formSource === 'string' ? formSource : null
+    }
+  } catch {
+    return json({ error: 'invalid_email' }, 400, cors)
+  }
+
+  email = email.trim().toLowerCase()
+  if (email.length > 254 || !EMAIL_RE.test(email)) {
+    return json({ error: 'invalid_email' }, 400, cors)
+  }
+
+  const ok = await deps.verifyTurnstile(token, request.headers.get('CF-Connecting-IP'), env)
+  if (!ok) {
+    return json({ error: 'turnstile_failed' }, 403, cors)
+  }
+
+  const now = new Date().toISOString()
+  const unsubToken = crypto.randomUUID()
+  await env.DB.prepare(
+    `INSERT INTO subscribers (email, status, consent_at, source, unsub_token, created_at)
+     VALUES (?, 'active', ?, ?, ?, ?)
+     ON CONFLICT(email) DO UPDATE SET status = 'active', consent_at = excluded.consent_at`,
+  )
+    .bind(email, now, source, unsubToken, now)
+    .run()
+
+  return json({ status: 'ok' }, 200, cors)
+}
+
+async function handleUnsubscribe(token: string | null, env: Env): Promise<Response> {
+  if (token) {
+    try {
+      await env.DB.prepare('DELETE FROM subscribers WHERE unsub_token = ?').bind(token).run()
+    } catch {
+      // Swallow — never leak whether the token existed or the query state.
+    }
+  }
+  return new Response(UNSUB_HTML, {
+    status: 200,
+    headers: { 'content-type': 'text/html; charset=utf-8' },
+  })
+}
+
+const UNSUB_HTML = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unsubscribed — A Wonderful Life</title>
+  <style>
+    body { margin: 0; font-family: system-ui, -apple-system, "Manrope", sans-serif;
+           color: #111; background: #fff; display: grid; place-items: center; min-height: 100vh; }
+    main { max-width: 32rem; padding: 2rem; text-align: center; }
+    h1 { font-size: 1.5rem; margin: 0 0 .5rem; }
+    p { color: #666; line-height: 1.6; margin: 0; }
+    a { color: #0a4a9a; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>You've been unsubscribed.</h1>
+    <p>You won't receive any more emails from A Wonderful Life. <a href="https://awonderfullife.ca">Return to the blog</a>.</p>
+  </main>
+</body>
+</html>`
+
+function corsHeaders(request: Request): Record<string, string> {
+  const origin = request.headers.get('Origin') ?? ''
+  const headers: Record<string, string> = {
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    Vary: 'Origin',
+  }
+  if (ALLOWED_ORIGINS.has(origin)) {
+    headers['Access-Control-Allow-Origin'] = origin
+  }
+  return headers
+}
+
 export default createWorker()
 
-export function json(body: unknown, status = 200): Response {
+export function json(body: unknown, status = 200, extraHeaders?: Record<string, string>): Response {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { 'content-type': 'application/json; charset=utf-8' },
+    headers: { 'content-type': 'application/json; charset=utf-8', ...extraHeaders },
   })
 }
