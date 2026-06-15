@@ -36,8 +36,8 @@ export function createWorker(
   const deps: Deps = { ...defaultDeps, ...overrides }
   const scheduledDeps: ScheduledDeps = { ...defaultScheduledDeps, ...scheduledOverrides }
   return {
-    // Weekly broadcast. Both cron triggers (23:00 UTC Sat / 00:00 UTC Sun) call
-    // this; runScheduledSend's ET gate lets exactly one through per week.
+    // Broadcast tick (every 15 min). runScheduledSend sends any issue whose
+    // per-issue scheduled_at has arrived.
     async scheduled(controller: ScheduledController, env: Env, _ctx: ExecutionContext): Promise<void> {
       const result = await runScheduledSend(controller.scheduledTime, env, scheduledDeps)
       console.log(`[scheduled] cron=${controller.cron} ${JSON.stringify(result)}`)

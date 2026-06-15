@@ -19,6 +19,7 @@ import { fileURLToPath } from 'node:url'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { renderEmailHtml, renderEmailText } from '../src/render.mjs'
+import { nextSaturday7pmETISO, etLocalInputToISO, formatET } from '../src/schedule.mjs'
 
 const API = 'https://api.awonderfullife.ca'
 const DB = 'awonderfullife-api'
@@ -45,6 +46,7 @@ for (let i = 0; i < args.length; i++) {
   if (args[i] === '--test') flags.test = args[++i]
   else if (args[i] === '--dry-run') flags.dryRun = true
   else if (args[i] === '--queue') flags.queue = true
+  else if (args[i] === '--at') flags.at = args[++i]
   else if (args[i] === '--queue-list') flags.queueList = true
   else if (args[i] === '--unqueue') flags.unqueue = args[++i]
   else positional.push(args[i])
@@ -52,14 +54,14 @@ for (let i = 0; i < args.length; i++) {
 
 // ---- queue management (no issue file needed) ----
 if (flags.queueList) {
-  const set = d1({ command: 'SELECT id, status, subject, queued_at, sent_at, sent_count FROM issues ORDER BY id DESC LIMIT 25' })
+  const set = d1({ command: 'SELECT id, status, subject, scheduled_at, sent_at, sent_count FROM issues ORDER BY id DESC LIMIT 25' })
   const rows = (set && (set.results || set)) || []
   if (!rows.length) {
     console.log('No issues in the queue yet. Queue one with:  npm run send -- issues/<file>.md --queue')
   } else {
-    console.log(`Newsletter queue (newest first) — sends Saturday 7pm ET, oldest queued first:\n`)
+    console.log(`Newsletter queue (newest first) — each issue sends at its own scheduled time:\n`)
     for (const r of rows) {
-      const when = r.status === 'sent' ? `sent ${r.sent_at} (${r.sent_count ?? 0} recipients)` : r.status === 'queued' ? `queued ${r.queued_at}` : r.status
+      const when = r.status === 'sent' ? `sent ${r.sent_at} (${r.sent_count ?? 0} recipients)` : r.status === 'queued' ? `sends ${formatET(r.scheduled_at)}` : r.status
       console.log(`  #${r.id}  [${r.status.toUpperCase()}]  ${r.subject}\n        ${when}`)
     }
   }
@@ -112,15 +114,31 @@ const preheader = fm.preheader || ''
 const renderHtml = (unsub) => renderEmailHtml({ subject, preheader, markdown: body, unsub })
 const renderText = (unsub) => renderEmailText({ subject, markdown: body, unsub })
 
-// ---- queue for the weekly scheduled send ----
+// ---- queue for the scheduled send ----
 // Render ONCE with a {{UNSUB_URL}} placeholder; the Worker swaps it per recipient
-// at send time. No subscriber lookup here — the cron handler does that on Saturday.
+// at send time. Each issue carries its own scheduled_at: --at "<ET datetime>" for a
+// custom time, otherwise the next Saturday 7pm ET. No subscriber lookup here — the
+// cron tick does that when the time arrives.
 if (flags.queue) {
+  let scheduledAt
+  if (flags.at) {
+    scheduledAt = etLocalInputToISO(String(flags.at).replace(' ', 'T'))
+    if (!scheduledAt) {
+      console.error(`--at "${flags.at}" isn't a valid date/time. Use Eastern Time like --at "2026-07-11 09:00".`)
+      process.exit(1)
+    }
+    if (new Date(scheduledAt).getTime() <= Date.now()) {
+      console.error(`--at "${flags.at}" is in the past. Choose a future Eastern-Time date/time.`)
+      process.exit(1)
+    }
+  } else {
+    scheduledAt = nextSaturday7pmETISO(Date.now())
+  }
   const html = renderHtml(PLACEHOLDER)
   const text = renderText(PLACEHOLDER)
   const queuedAt = new Date().toISOString()
-  const sql = `INSERT INTO issues (subject, preheader, html, text, status, queued_at)
-VALUES (${sqlStr(subject)}, ${sqlStr(preheader)}, ${sqlStr(html)}, ${sqlStr(text)}, 'queued', ${sqlStr(queuedAt)});`
+  const sql = `INSERT INTO issues (subject, preheader, html, text, status, queued_at, scheduled_at)
+VALUES (${sqlStr(subject)}, ${sqlStr(preheader)}, ${sqlStr(html)}, ${sqlStr(text)}, 'queued', ${sqlStr(queuedAt)}, ${sqlStr(scheduledAt)});`
   const tmp = join(tmpdir(), `awl-issue-${process.pid}.sql`)
   writeFileSync(tmp, sql)
   try {
@@ -132,7 +150,7 @@ VALUES (${sqlStr(subject)}, ${sqlStr(preheader)}, ${sqlStr(html)}, ${sqlStr(text
   } finally {
     try { unlinkSync(tmp) } catch {}
   }
-  console.log(`Queued "${subject}" for the next Saturday 7pm ET send.`)
+  console.log(`Queued "${subject}" — sends ${formatET(scheduledAt)}.`)
   console.log(`  See the queue:   npm run send -- --queue-list`)
   console.log(`  Pull it back:    npm run send -- --unqueue <id>`)
   process.exit(0)

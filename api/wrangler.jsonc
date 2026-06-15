@@ -13,13 +13,14 @@
     "NEWSLETTER_FROM": "A Wonderful Life <hello@send.awonderfullife.ca>",
     "NEWSLETTER_REPLY_TO": "v@awonderfullife.ca"
   },
-  // Weekly newsletter broadcast: Saturday 7pm America/New_York, DST-correct.
-  // Crons are UTC-only, so both candidate instants fire — 23:00 UTC Sat (7pm EDT)
-  // and 00:00 UTC Sun (7pm EST). The handler's ET gate passes exactly one per week.
-  // NB: Cloudflare's day-of-week is NON-STANDARD (1=Sun … 7=Sat), so we use the
-  // SAT/SUN abbreviations Cloudflare recommends rather than ambiguous numbers.
+  // Newsletter broadcast tick — every 15 minutes. The handler sends any issue whose
+  // per-issue `scheduled_at` (UTC, computed DST-correct from ET) has arrived, so both
+  // the default "next Saturday 7pm ET" and custom times work, and a missed tick is
+  // caught by the next. (We moved off two fixed Saturday crons when custom scheduling
+  // landed.) NB: Cloudflare cron day-of-week is non-standard (1=Sun…7=Sat) — not used
+  // here, but use SAT/SUN names if you ever add a day-specific trigger.
   "triggers": {
-    "crons": ["0 23 * * SAT", "0 0 * * SUN"]
+    "crons": ["*/15 * * * *"]
   },
   "d1_databases": [
     {

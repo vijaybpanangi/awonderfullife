@@ -18,26 +18,27 @@ Your issue body in **Markdown**.
 
 ## Send
 
-> **Prefer a UI?** There's a login-protected web editor at **`https://api.awonderfullife.ca/admin/compose`** (behind Cloudflare Access) — compose, preview, send a test to yourself, and queue for Saturday without the terminal. This CLI remains the power-user path and does exactly the same things.
+> **Prefer a UI?** There's a login-protected web editor at **`https://api.awonderfullife.ca/admin/compose`** (behind Cloudflare Access) — a rich editor, live preview, send-a-test-to-yourself, schedule picker, and queue management, all without the terminal. This CLI remains the power-user path and does exactly the same things.
 
 There are two ways to send: **scheduled** (the normal path — it goes out automatically) and **immediate** (send right now from your laptop).
 
-### Scheduled — the weekly newsletter (recommended)
+### Scheduled — queue with a send time (recommended)
 
-The newsletter goes out **every Saturday at 7pm Eastern**, automatically, with no laptop involved. You just **queue** an issue sometime during the week:
+Each issue carries **its own send time**. Queue it any time; a 15-minute cron tick sends it when its time arrives. Default is **next Saturday 7pm Eastern**; pass `--at` for a custom Eastern-Time time:
 
 ```bash
 npm run send -- issues/<file>.md --dry-run            # preview it first (writes issues/.preview.html, sends nothing)
-npm run send -- issues/<file>.md --queue              # add it to the weekly queue
-npm run send -- --queue-list                          # see what's pending / already sent
+npm run send -- issues/<file>.md --queue              # queue for the next Saturday 7pm ET
+npm run send -- issues/<file>.md --queue --at "2026-07-11 09:00"   # custom time (Eastern)
+npm run send -- --queue-list                          # see each issue's scheduled time / sent status
 npm run send -- --unqueue <id>                        # pull a queued issue back out
 ```
 
-- The Saturday-7pm-ET cron sends the **oldest queued** issue, then marks it `sent`.
-- **Queue more than one** and they drip out **one per Saturday**, oldest first — write three on a free weekend and they space themselves over three weeks.
-- **Nothing queued → nothing sends.** No empty or filler emails, ever.
+- The cron sends each issue at **its own `scheduled_at`** (oldest-due first), then marks it `sent`.
+- **Each issue sends at its own time** — two issues both left on the default both go that Saturday; give them different `--at` times to space them out.
+- **Nothing due → nothing sends.** No empty or filler emails, ever.
 - Queuing renders the issue once and stores it in D1 (with a `{{UNSUB_URL}}` placeholder the Worker fills per subscriber). Editing the `.md` file afterward has no effect — `--unqueue` and re-`--queue` to change a pending issue.
-- DST is handled automatically: 7pm ET stays 7pm ET in both summer and winter.
+- DST is handled automatically: 7pm ET (or any ET time you pick) stays correct in both summer and winter.
 
 ### Immediate — send right now (test or one-off)
 
