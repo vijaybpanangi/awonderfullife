@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.6.2 — Justify post body text (2026-06-15 19:47 UTC)
+
+Set the post body (`.post-content`) to `text-align: justify` with `hyphens: auto`, so paragraph blocks have even left **and** right edges — a tidier, more "set" reading column. Hyphenation (which relies on each page's `lang="en"`) prevents justification from opening large inter-word gaps. CSS-only; applies to all 16 posts.
+
 ## v2.6.1 — docs: PR-level release table + CHANGELOG for the newsletter & capsule releases (2026-06-15 19:02 UTC)
 
 Documentation-only. Rebuilt the README "Recent updates" into a PR-level **Release history** table (one row per release: version, UTC time, PR link, summary), and added the CHANGELOG entries below for `v2.5.0` and `v2.6.0` (whose feature PRs were built by subagents and merged without docs). Tagged both on their merge commits.

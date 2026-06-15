@@ -259,6 +259,11 @@ a.kicker:hover {
 .post-content {
   font-size: 1.125rem;
   line-height: 1.8;
+  /* Justified body for even right edges / symmetric paragraph blocks;
+     hyphens:auto prevents large word-gaps (needs the page's lang="en"). */
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 .post-content h2, .post-content h3 { font-weight: 700; }
 .post-content img { max-width: 100%; height: auto; margin: 2rem 0; }
