@@ -4,7 +4,14 @@ ACCESS_TEAM_DOMAIN="your-team.cloudflareaccess.com"
 ACCESS_AUD="your-access-application-audience-tag"
 TURNSTILE_SECRET="your-turnstile-secret"
 
-# --- Newsletter send CLI (scripts/send-issue.mjs) — LOCAL env for the CLI, not Worker secrets ---
+# --- Newsletter (Resend) ---
+# RESEND_API_KEY is used in TWO places:
+#   1. The send CLI (scripts/send-issue.mjs) reads it from your LOCAL shell env for
+#      immediate/--test sends.
+#   2. The Worker's WEEKLY SCHEDULED send reads it as a Wrangler SECRET in production
+#      (`wrangler secret put RESEND_API_KEY`) — NOT from this file.
+# NEWSLETTER_FROM / NEWSLETTER_REPLY_TO are non-secret `vars` in wrangler.jsonc for the
+# Worker; set them here too so `wrangler dev` and the CLI match.
 RESEND_API_KEY="re_..."
 NEWSLETTER_FROM="A Wonderful Life <hello@send.awonderfullife.ca>"
 NEWSLETTER_REPLY_TO="v@awonderfullife.ca"

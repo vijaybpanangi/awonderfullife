@@ -22,9 +22,11 @@ The repo hosts a **second, independent Cloudflare Worker** alongside the static 
 - **Static site (repo root):** still no build system — plain HTML/CSS, `assets.directory: "."`, auto-deploys from `main`.
 - **API worker (`/api`):** TypeScript on the Workers runtime, with its own `package.json`, `wrangler.jsonc`, and Vitest tests. Served at **`api.awonderfullife.ca`** (custom domain; `workers_dev` off). The static site is untouched.
 
-**Routes:** `GET /health` (public → `{status,time}`) and `GET /admin/whoami` (Cloudflare-Access-gated → verified email + a D1 `SELECT 1` flag).
+**Routes:** `GET /health` (public → `{status,time}`), `GET /admin/whoami` (Cloudflare-Access-gated → verified email + a D1 `SELECT 1` flag), `POST /subscribe` (Turnstile + CORS + idempotent D1 upsert), and `GET /unsubscribe?token=` (deletes the row, returns an HTML page).
 
-**Security:** Access protects `api.awonderfullife.ca/admin*`; the worker *also* verifies the Access JWT in-code (`src/access.ts`, via `jose`) — safe even if reached directly. `ACCESS_TEAM_DOMAIN` and `ACCESS_AUD` are **Wrangler secrets** (never committed — this repo is public). D1 binding is `DB` (database `awonderfullife-api`); no application schema yet.
+**Scheduled handler (newsletter):** the Worker has a `scheduled` handler (`src/scheduled.ts`) wired to two cron triggers (`0 23 * * 6`, `0 0 * * 0`). It gates on the real `America/New_York` clock so it sends **once weekly, Saturday 7pm ET (DST-correct)**: the oldest `status='queued'` row in the D1 `issues` table goes to all active subscribers via Resend's batch endpoint, then is marked `sent`. Issues are rendered (by the send CLI at queue time) with a `{{UNSUB_URL}}` placeholder the handler swaps per recipient. See `api/issues/README.md`.
+
+**Security:** Access protects `api.awonderfullife.ca/admin*`; the worker *also* verifies the Access JWT in-code (`src/access.ts`, via `jose`) — safe even if reached directly. `ACCESS_TEAM_DOMAIN`, `ACCESS_AUD`, `TURNSTILE_SECRET`, and `RESEND_API_KEY` are **Wrangler secrets** (never committed — this repo is public); `NEWSLETTER_FROM`/`NEWSLETTER_REPLY_TO` are non-secret `vars`. D1 binding is `DB` (database `awonderfullife-api`); schema in `migrations/` — `subscribers` (`0001`) and `issues` (`0002`).
 
 **Working in `/api`:**
 - Test: `cd api && npm test` (Vitest + `@cloudflare/vitest-pool-workers` — runs in workerd with a local D1)
@@ -100,7 +102,7 @@ New components added in the June 2026 Quiet Magazine redesign:
 - **Kickers are links:** `<a class="kicker" href="categories/<slug>.html">CategoryName</a>` on the homepage and inside each post. Path is `categories/...` from root pages, `../categories/...` from post pages.
 - **Faceted browsing strip** on `archive.html` and each `categories/*.html`: a `<div class="facets">` with two `<nav class="facet">` rows (category pills + period chips). The pill on the current page is `<span class="facet-chip is-current">`; others are `<a class="facet-chip">`.
 - **Year anchors:** `<h1 class="archive-year" id="yearYYYY">` so the period chips can scroll-to.
-- **Newsletter form:** Buttondown integration (action URL `https://buttondown.email/api/emails/embed-subscribe/awonderfullife`). Don't change the action — it's the live mailing list endpoint.
+- **Newsletter form:** posts to the **owned API** (`POST https://api.awonderfullife.ca/subscribe`) with a Cloudflare **Turnstile** widget — Buttondown was retired in v2.8.0. Capture, broadcast, and the weekly scheduled send all live in `/api` (see its section above and `api/issues/README.md`).
 - **Disclaimer in footer:** simple copyright. Footer was intentionally kept minimal during the redesign.
 
 ## Post body content
@@ -116,7 +118,7 @@ Post bodies inside `<div class="post-content">` were cleaned in commit `6df6352`
 - `docs/superpowers/specs/` — design specs (the *what* and *why*): `YYYY-MM-DD-<topic>-design.md`.
 - `docs/superpowers/plans/` — implementation plans (the *how*): `YYYY-MM-DD-<topic>.md`.
 - `ROADMAP.md` at the root tracks **future** work and deferred items; `CHANGELOG.md` tracks **past** changes. Always check both before proposing work — the answer to "is this on the radar?" is in one or the other.
-- **Releases & versioning.** Every release gets a semver git tag on its merge commit — **major** = redesign / identity shift, **minor** = new feature or notable enhancement, **patch** = fix / content / docs. When you ship a change, add a versioned `CHANGELOG.md` entry (`## vX.Y.Z — Title (YYYY-MM-DD HH:MM UTC)`, timestamp from the merge commit) and create + push the matching tag (`git tag -a vX.Y.Z -m "…" && git push origin vX.Y.Z`). Latest: `v2.4.1`.
+- **Releases & versioning.** Every release gets a semver git tag on its merge commit — **major** = redesign / identity shift, **minor** = new feature or notable enhancement, **patch** = fix / content / docs. When you ship a change, add a versioned `CHANGELOG.md` entry (`## vX.Y.Z — Title (YYYY-MM-DD HH:MM UTC)`, timestamp from the merge commit) and create + push the matching tag (`git tag -a vX.Y.Z -m "…" && git push origin vX.Y.Z`). Also add a row to the README change-history table (`| version | when | PR | summary |`). Latest: `v2.10.0`.
 - See `docs/superpowers/README.md` for the brainstorm → spec → plan → execute workflow.
 
 ## Known follow-ups
