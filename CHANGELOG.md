@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.4.2 — Fix: site-header glass bleeding onto the post title block (2026-06-15 18:52 UTC)
+
+Bug fix to the v2.4.0 Liquid Glass header. Post pages use `<header class="post-header">` for the title block, so the bare `header { … }` selector (frosted sticky bar) was also styling the post title — drawing a stray frosted/rounded panel behind the headline. Scoped the site-header rules (and the `@supports` fallback) to `header:not(.post-header)`, so the glass applies only to the site masthead and the post title renders clean. CSS-only.
+
 ## v2.4.1 — Release governance: semver tags + versioned changelog + doc currency (2026-06-15 17:39 UTC)
 
 Documentation-only. Adopted explicit semver release numbering: created retroactive git tags for every release back to `v1.0.0` (each on its merge commit), reorganized this CHANGELOG so every entry carries its version, and backfilled the two releases that had shipped without an entry (`v2.2.1` email DNS checker/plan, `v2.3.1` contact email surfaced). Refreshed `CLAUDE.md` (Liquid Glass design-system layer + the sticky frosted header + a Releases & versioning note) and the README "Recent updates" table. No site or code change.

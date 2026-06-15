@@ -2,3 +2,4 @@
 # In production these are Wrangler secrets (set via `wrangler secret put`), not committed.
 ACCESS_TEAM_DOMAIN="your-team.cloudflareaccess.com"
 ACCESS_AUD="your-access-application-audience-tag"
+TURNSTILE_SECRET="your-turnstile-secret"
