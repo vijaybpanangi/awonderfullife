@@ -66,6 +66,11 @@ Because there is no build system, a new post means edits in **four** files plus 
 - **Generate a hero illustration.** Run `docs/superpowers/tools/gen-hero.sh <slug> "<subject prompt>" <seed>` — saves to `assets/images/posts/<slug>.jpg`. Credentials: `$HOME/.cloudflare_ai_token` (API token) and `$HOME/.cloudflare_ai_account` (account ID). **Never commit these files.** View the result and regenerate if needed for style/quality/series cohesion (flat editorial style, terracotta/slate-blue/cream palette).
 - **Add a manifest row.** In `docs/superpowers/specs/2026-06-11-image-manifest.md`, record the slug, seed, prompt, alt text, and file size.
 - **Write a descriptive `alt` attribute.** Describe what the illustration *shows*, not what the post is about (e.g., `alt="A globe resting on a stack of newspapers, terracotta and slate-blue tones"`). Do not restate the post title.
+- **Inject the SEO block.** Re-run `python3 docs/superpowers/tools/seo-inject.py` from the repo root. It is idempotent (skips pages that already have JSON-LD), so it only touches the new post: it adds the canonical, Open Graph + Twitter tags, and the `BlogPosting` JSON-LD, parsing the post's own `<h1>`, byline date, kicker category, and hero. Then add the new post's URL to `sitemap.xml` (with the post's published date as `<lastmod>`). See `docs/superpowers/specs/2026-06-15-blog-seo-foundation-design.md`.
+
+## SEO / structured-data layer (in every page `<head>`)
+
+Every page carries, before `</head>`: an absolute self-canonical, Open Graph + Twitter Card tags (`og:type` is `article` on posts, `website` elsewhere), and a schema.org JSON-LD `@graph`. The graph shares a `WebSite` + `Person` (Vijay Panangipally) + `Blog`, with a per-page node: posts are `BlogPosting` (headline/date/image/section parsed from the page), other pages are `CollectionPage` / `AboutPage`. This block is generated, not hand-written: `docs/superpowers/tools/seo-inject.py` (kept in `docs/`, which `.assetsignore` keeps out of the public bundle). `sitemap.xml` and `robots.txt` live at the repo root and are hand-maintained alongside it. `og:image`: posts use their hero, About uses `vijay.jpg`, other pages use `assets/images/og-default.jpg`.
 
 ## Stylesheet (`assets/css/style.css`)
 
