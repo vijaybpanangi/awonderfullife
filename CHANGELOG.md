@@ -4,6 +4,17 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Releases on this project use semver-style tags (`v1.0.0`, `v1.1.0`, etc.) cut as deliberate milestones, not per-commit. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) for the formal release notes.
 
+## 2026-06-15 — Liquid Glass editorial accents
+
+Blended an Apple-style Liquid Glass material into the blog's crisp editorial design — selectively, to keep "crispness over decoration":
+
+- **Frosted sticky header.** The masthead is now a compact, sticky frosted bar (title + tagline inline, nav right) that blurs, brightens, and saturates the post text and hero illustrations scrolling beneath it — the signature glass moment, and the one place glass genuinely belongs on a white editorial site.
+- **Frosted newsletter card** and **glassy faceted-browse chips**, each with a specular bevel (bright top edge + faint bright base + inner light ring).
+- A **whisper of background depth** — a barely-there accent-blue glow at the very top — gives the glass something to refract at rest; the body and the homepage card grid stay crisp white.
+- Glass tokens (`--glass-bg`, `--glass-blur` = `blur(18px) saturate(1.8) brightness(1.06)`, `--glass-rim`) drive it; an `@supports not (backdrop-filter)` fallback keeps the surfaces near-opaque where unsupported. CSS-only — no markup changes, so it applies on every page.
+
+Note: true Liquid Glass edge-refraction (real-time lensing) needs GPU shaders and isn't replicable in pure CSS; this emulates the material via frost + brightness/saturation + specular bevel.
+
 ## 2026-06-15 — Email live via iCloud+ Custom Email Domain
 
 The domain now sends and receives mail through **iCloud+ Custom Email Domain** (set up under Vijay's Apple ID, "Only Me"). There was no email before — no MX existed — so this was a clean setup, not a migration. Records were published via Apple's Cloudflare integration, then cleaned up by hand:
