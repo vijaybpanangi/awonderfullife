@@ -21,6 +21,7 @@
     inset 0 1px 0 rgba(255,255,255,0.9),
     inset 0 -1px 0 rgba(255,255,255,0.4),
     inset 0 0 0 1px rgba(255,255,255,0.22);
+  --r-pill: 999px;
 }
 
 html { font-size: 16px; line-height: 1.7; }
@@ -41,7 +42,7 @@ body {
 /* Where backdrop-filter is unsupported, make the glass surfaces near-opaque
    so they don't turn see-through. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  header { background: rgba(255,255,255,0.96); }
+  header { background: rgba(255,255,255,0.96); border: 1px solid var(--color-border); }
   .newsletter { background: var(--color-bg-soft); }
   .facet-chip { background: #fff; }
 }
@@ -73,26 +74,38 @@ strong { font-weight: 600; }
 }
 .container--wide { max-width: var(--max-width-wide); }
 
-/* Header */
+/* Header — floating Liquid-Glass capsule nav
+   A detached, centered, rounded-pill glass bar that floats with a margin
+   from the top and sides as the page scrolls under it (not edge-to-edge).
+   CSS-only: the existing <header> element IS the pill — capped to the content
+   width, centered, inset from the viewport edges, and fully rounded. */
 header {
   position: sticky;
-  top: 0;
+  top: 0.9rem;
   z-index: 100;
-  padding: 0.9rem 0;
-  border-bottom: 1px solid var(--color-border);
-  margin-bottom: 3rem;
-  /* frosted glass bar — blurs the post text & hero illustrations scrolling under it */
+  /* inset from the sides; width capped to the content column and centered */
+  max-width: var(--max-width);
+  margin: 0.9rem auto 3rem;
+  /* keep the pill clear of the viewport edges on narrow screens */
+  width: calc(100% - 2rem);
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--r-pill);
+  /* frosted glass capsule — blurs the post text & hero illustrations behind it */
   background: var(--glass-bg);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
-  box-shadow: 0 6px 24px -18px rgba(17,17,17,0.28), var(--glass-rim);
+  /* soft floating shadow + specular rim */
+  box-shadow: 0 12px 32px -16px rgba(17,17,17,0.32), var(--glass-rim);
 }
+/* the capsule manages its own width/padding — neutralise the inner container */
 header > .container {
   display: flex;
   align-items: baseline;
   column-gap: 1rem;
   row-gap: 0.15rem;
   flex-wrap: wrap;
+  max-width: none;
+  padding: 0;
 }
 .site-title {
   font-size: 1.2rem;
@@ -507,7 +520,9 @@ input:focus-visible {
 /* Responsive */
 @media (max-width: 640px) {
   html { font-size: 15px; }
-  header { padding: 2rem 0 1.5rem; }
+  /* keep the capsule a tidy rounded pill on small screens (radius softens
+     to a large corner so a wrapped, taller pill doesn't look like a stadium) */
+  header { padding: 0.7rem 1.25rem; border-radius: 1.5rem; }
   .site-title { font-size: 1.25rem; }
   nav a { margin-right: 1rem; }
   .post-title { font-size: 1.15rem; }
