@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.10.1 — Fix: Cloudflare's non-standard cron day-of-week (deploy was rejected) (2026-06-15 23:08 UTC)
+
+The v2.10.0 cron expressions (`0 23 * * 6`, `0 0 * * 0`) failed to deploy: **Cloudflare's day-of-week field is non-standard — `1`=Sunday … `7`=Saturday**, not the usual `0`/`6`. So `0` was rejected outright (API error 10100) and `6` would have meant *Friday*, not Saturday. Switched both to the abbreviations Cloudflare recommends — `0 23 * * SAT` (7pm EDT) and `0 0 * * SUN` (7pm EST) — which now register cleanly. The DST code-gate was already correct and unchanged; this was purely the trigger syntax.
+
 ## v2.10.0 — Newsletter automation: scheduled weekly send (Saturday 7pm ET) (2026-06-15 22:59 UTC)
 
 The newsletter now sends itself — no laptop required. Authoring stays manual (you still write each issue); **delivery** is automated:

@@ -16,8 +16,10 @@
   // Weekly newsletter broadcast: Saturday 7pm America/New_York, DST-correct.
   // Crons are UTC-only, so both candidate instants fire — 23:00 UTC Sat (7pm EDT)
   // and 00:00 UTC Sun (7pm EST). The handler's ET gate passes exactly one per week.
+  // NB: Cloudflare's day-of-week is NON-STANDARD (1=Sun … 7=Sat), so we use the
+  // SAT/SUN abbreviations Cloudflare recommends rather than ambiguous numbers.
   "triggers": {
-    "crons": ["0 23 * * 6", "0 0 * * 0"]
+    "crons": ["0 23 * * SAT", "0 0 * * SUN"]
   },
   "d1_databases": [
     {
