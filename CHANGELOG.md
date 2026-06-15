@@ -4,6 +4,16 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.12.0 — Compose UI: rich editor, sign-out, and custom scheduling (2026-06-15 23:44 UTC)
+
+Three upgrades to the compose experience, plus the scheduling model behind it:
+
+- **Rich editor.** The Markdown textarea is now a **Toast UI Editor** (WYSIWYG with a formatting toolbar — headings, bold/italic/strike, lists, links, quote, code). It still exports Markdown, so the email pipeline is unchanged.
+- **Sign out.** A header button to Cloudflare Access's logout (`/cdn-cgi/access/logout`).
+- **Custom scheduling.** Each issue now carries its **own send time** (migration `0003` adds `scheduled_at`). The compose UI (and the CLI's new `--at "<ET datetime>"`) let you pick **next Saturday 7pm ET** (default) or a **custom Eastern-Time** time. The cron moved from two fixed Saturday triggers to a **15-minute tick** that sends any issue whose time has arrived — also more resilient (a missed tick is caught by the next). ET→UTC conversion is DST-correct (`src/schedule.mjs`, shared with the CLI).
+- **Behavior change:** queueing several issues no longer drips them one-per-Saturday — each sends at its own chosen time (shown in the queue list). Leave two on the default and they both go that Saturday; set custom times to space them.
+- 5 new Vitest tests (schedule util DST/next-Saturday, due-based send, custom/past-time validation); 37 total.
+
 ## v2.11.0 — Newsletter compose UI (login-protected, in-browser authoring) (2026-06-15 23:23 UTC)
 
 A web UI for writing the newsletter — no terminal needed. Served by the API worker at **`api.awonderfullife.ca/admin/compose`**, behind the **existing Cloudflare Access** login (gated at the edge and re-verified in-code). Schedule-only by design:

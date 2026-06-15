@@ -32,7 +32,7 @@ beforeEach(async () => {
        html TEXT NOT NULL, text TEXT NOT NULL,
        status TEXT NOT NULL DEFAULT 'queued',
        queued_at TEXT NOT NULL, sent_at TEXT,
-       sent_count INTEGER, failed_count INTEGER
+       sent_count INTEGER, failed_count INTEGER, scheduled_at TEXT
      )`,
   ).run()
 })
@@ -58,20 +58,32 @@ describe('GET /admin/compose', () => {
 })
 
 describe('POST /admin/issues (queue)', () => {
-  it('queues a valid issue and stores it with the unsub placeholder', async () => {
+  it('queues a valid issue with the placeholder and a default Saturday-7pm-ET time', async () => {
     const worker = createWorker(authed)
     const res = await call(worker, req('/admin/issues', 'POST', ISSUE))
     expect(res.status).toBe(200)
-    const d = await res.json<{ status: string; id: number }>()
+    const d = await res.json<{ status: string; id: number; scheduled_at: string }>()
     expect(d.status).toBe('queued')
+    expect(new Date(d.scheduled_at).getTime()).toBeGreaterThan(Date.now()) // default is in the future
 
-    const row = await env.DB.prepare('SELECT subject, status, html FROM issues WHERE id = ?')
+    const row = await env.DB.prepare('SELECT subject, status, html, scheduled_at FROM issues WHERE id = ?')
       .bind(d.id)
-      .first<{ subject: string; status: string; html: string }>()
+      .first<{ subject: string; status: string; html: string; scheduled_at: string }>()
     expect(row?.subject).toBe('Hello readers')
     expect(row?.status).toBe('queued')
     expect(row?.html).toContain('{{UNSUB_URL}}')
     expect(row?.html).toContain('<strong>bold</strong>')
+    expect(row?.scheduled_at).toBe(d.scheduled_at)
+  })
+
+  it('honours a custom Eastern-Time schedule and rejects past times', async () => {
+    const worker = createWorker(authed)
+    const future = await call(worker, req('/admin/issues', 'POST', { ...ISSUE, scheduleMode: 'custom', at: '2099-07-10T15:00' }))
+    const d = await future.json<{ scheduled_at: string }>()
+    expect(d.scheduled_at).toBe('2099-07-10T19:00:00.000Z') // 3pm EDT → 19:00 UTC
+
+    const past = await call(worker, req('/admin/issues', 'POST', { ...ISSUE, scheduleMode: 'custom', at: '2000-01-01T09:00' }))
+    expect(past.status).toBe(400)
   })
 
   it('rejects an issue missing subject or body', async () => {
