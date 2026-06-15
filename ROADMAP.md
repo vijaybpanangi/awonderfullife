@@ -35,40 +35,38 @@ Shipped. The `india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` hero was
 
 ## Email setup for the domain
 
-The site has been on Cloudflare Workers for a while, but the DNS still carries WordPress-era email records:
+**Current state (DoH-checked 2026-06-15):** there is **no MX** for `awonderfullife.ca`, so nothing receives mail there today — this is a clean setup, not a migration. The DNS still carries two vestigial WordPress-era records:
 
 ```
-awonderfullife.ca       TXT   "v=spf1 include:_spf.wpcloud.com ~all"
-_dmarc.awonderfullife.ca TXT  "v=DMARC1;p=none;"
+awonderfullife.ca        TXT   "v=spf1 include:_spf.wpcloud.com ~all"   (legacy sender auth; nothing sends from there now)
+_dmarc.awonderfullife.ca TXT   "v=DMARC1;p=none;"                       (inert — no rua=, collects/enforces nothing)
 ```
 
-The SPF authorizes WordPress.com mail servers to send as `@awonderfullife.ca`; DMARC is in monitor-only mode. If WordPress.com no longer routes mail for this domain (almost certainly the case), the SPF is misleading and DMARC is doing nothing useful.
+**Goal:** stand up a real mailbox via **iCloud+ Custom Email Domain** (included in Vijay's Apple One Premier / iCloud+), authenticate it (SPF/DKIM/DMARC), and replace the legacy records. **Decisions locked:** scope = just Vijay ("Only Me", a Family-Sharing sharee — supported); two addresses, `postmaster@awonderfullife.ca` and `v@awonderfullife.ca` (single-letter local part is allowed).
 
-### Plan
+**Target records (Apple generates exact values during its add-domain flow):**
 
-**Step 1 — Decide if email is wanted.**
-A personal essay blog doesn't strictly need its own email — but a single contact address (e.g., `vijay@awonderfullife.ca`, `hello@awonderfullife.ca`) is useful for readers responding to posts, and a `postmaster@` alias is good DMARC hygiene.
+| Type | Name | Value |
+|---|---|---|
+| TXT | `@` | `apple-domain=<code>` (verification — keep permanently) |
+| MX | `@` | `mx01.mail.icloud.com` and `mx02.mail.icloud.com`, both priority 10 |
+| TXT | `@` | `v=spf1 include:icloud.com ~all` (replaces the wpcloud SPF; exactly ONE SPF record) |
+| CNAME | `sig1._domainkey` | `sig1.dkim.awonderfullife.ca.at.icloudmailadmin.com` (DKIM, single selector) |
+| TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:postmaster@awonderfullife.ca; fo=1` |
 
-**Step 2 — Migrate to iCloud+ Custom Email Domain.**
-Vijay has an existing iCloud+ family subscription, which includes Custom Email Domain support (up to 5 domains, 3 addresses per domain). This domain is one of them (ezziclarity.ca is another). Plan:
+**Order:** clear/disable any Cloudflare mail records → add domain in Apple (this mints the records) → enter them in Cloudflare (all DNS-only / grey cloud) → Verify in Apple → create `postmaster@` and `v@` → test → only then tighten DMARC.
 
-1. In **Apple iCloud Settings → iCloud+ → Custom Email Domain**, add `awonderfullife.ca` and follow Apple's verification flow.
-2. Apple will provide the records to add at Cloudflare DNS:
-   - **MX** records pointing to `mx01.mail.icloud.com` and `mx02.mail.icloud.com`
-   - **TXT** verification record
-   - **SPF** record (`v=spf1 include:icloud.com ~all`) — replaces the wpcloud entry
-   - **DKIM** TXT/CNAME at the selector Apple provides
-3. **Update DMARC** — once mail is flowing cleanly, tighten from `p=none` → `p=quarantine` → eventually `p=reject` (after a week or two at each level monitoring delivery reports).
-4. Configure aliases (e.g., `vijay@awonderfullife.ca` → Vijay's iCloud inbox).
-5. Test inbound and outbound delivery; verify the from-address renders correctly in major clients (Gmail, Apple Mail, Outlook).
+**Safeguards (from a 3-subagent verification pass against Apple/Cloudflare docs):**
+- **Keep all records permanently** — Apple periodically re-validates; removing the `apple-domain=` TXT (or any record) can de-activate the domain.
+- **Cloudflare Email-Routing first:** if it was ever enabled, its MX/SPF/`cf2024-1._domainkey` DKIM can persist and even lock, blocking Apple's MX. Unlock + remove before entering Apple's records (re-enable→disable forces a reset if stuck). Back up the current SPF/DMARC values first.
+- **Audit before adding:** exactly one SPF and one DMARC TXT must survive (two SPF = PermError); confirm no leftover `wpcloud2._domainkey` CNAME and that nothing still legitimately sends via wpcloud (else merge, don't replace).
+- **`~all` stays permanently** (do not move to `-all`); ramp DMARC `p=none → quarantine → reject` over ~1–2 weeks each, watching `rua` reports at `postmaster@`.
+- **3 addresses/person/domain is a hard cap** — `postmaster@` + `v@` uses 2 of 3.
+- **Verify with the helper:** `bash docs/superpowers/tools/check-email-dns.sh awonderfullife.ca` (DoH smoke test — Apple's "Verify" remains authoritative). It flags partial/legacy/Email-Routing records.
 
-### Risks / things to know
+**Newsletter foresight:** when the Phase-2 newsletter (Resend) lands, send from a subdomain (e.g. `send.awonderfullife.ca`) with its own SPF/DKIM/DMARC, keeping the apex SPF iCloud-only.
 
-- The iCloud+ family plan caps at 5 domains. With ezziclarity.ca already added, this would be domain #2 of 5. Headroom is fine.
-- DKIM is required for deliverability — don't skip it.
-- DMARC at `p=reject` is the eventual goal but only after monitoring. `rua` reports go to a postmaster mailbox; set that up.
-
-The exact same plan applies to **ezziclarity.ca** — see that repo's `ROADMAP.md`. The two migrations can be done back-to-back since they reuse the same iCloud+ Custom Email Domain flow.
+The same flow applies to **ezziclarity.ca** as a separate follow-on (its own ROADMAP item); the checker takes a domain argument and is reused as-is.
 
 ---
 
