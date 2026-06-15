@@ -4,6 +4,19 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Releases on this project use semver-style tags (`v1.0.0`, `v1.1.0`, etc.) cut as deliberate milestones, not per-commit. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) for the formal release notes.
 
+## 2026-06-15 — Email live via iCloud+ Custom Email Domain
+
+The domain now sends and receives mail through **iCloud+ Custom Email Domain** (set up under Vijay's Apple ID, "Only Me"). There was no email before — no MX existed — so this was a clean setup, not a migration. Records were published via Apple's Cloudflare integration, then cleaned up by hand:
+
+- **MX** → `mx01`/`mx02.mail.icloud.com` (priority 10).
+- **SPF** trimmed to `v=spf1 include:icloud.com ~all` (the legacy `_spf.wpcloud.com` WordPress-era include was removed).
+- **DKIM** CNAME at `sig1._domainkey` → `…icloudmailadmin.com`.
+- **Verification** TXT `apple-domain=…` (kept permanently — Apple re-validates).
+- **DMARC** upgraded from the inert `v=DMARC1;p=none;` to `v=DMARC1; p=none; rua=mailto:postmaster@awonderfullife.ca; fo=1`, so aggregate reports now flow.
+- **Addresses:** `postmaster@awonderfullife.ca` and `v@awonderfullife.ca` (catch-all on).
+
+Verified all-green with `docs/superpowers/tools/check-email-dns.sh awonderfullife.ca` and a live send test (mail from `v@` and `postmaster@` delivered to an external inbox). The record set was checked against Apple/Cloudflare docs by a three-subagent verification pass before any change. DMARC stays at `p=none` for ~1–2 weeks of report monitoring, then tightens to `quarantine` → `reject`.
+
 ## 2026-06-15 — Technical SEO foundation (no copy, design, or URL changes)
 
 The blog had no canonical tags, no Open Graph, no Twitter cards, and no structured data at all. This adds the full metadata layer across all 24 pages, plus the site's first `sitemap.xml` and `robots.txt`. No visible copy, design, or URLs changed; the `/api` worker is untouched. The JSON-LD reuses each page's own title, meta description, and (for posts) `<h1>`, byline date, and category verbatim, so no new prose was authored. Spec at `docs/superpowers/specs/2026-06-15-blog-seo-foundation-design.md`.
