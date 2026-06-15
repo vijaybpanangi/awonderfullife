@@ -562,3 +562,7 @@ input:focus-visible {
     }
   }
 }
+
+/* Owned newsletter (D1 + Turnstile) — widget + status message */
+.newsletter .cf-turnstile { display: flex; justify-content: center; margin-top: 0.75rem; }
+.newsletter-msg { margin: 0.75rem 0 0; min-height: 1.2em; font-size: 0.9rem; color: var(--color-text-light); }
