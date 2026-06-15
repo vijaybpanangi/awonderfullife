@@ -2,9 +2,13 @@
 
 Notable changes to the website, deployment configuration, and project documentation. The detailed history lives in git; this file curates the highlights so a casual reader can scan what's happened over time without scrolling commit logs.
 
-Releases on this project use semver-style tags (`v1.0.0`, `v1.1.0`, etc.) cut as deliberate milestones, not per-commit. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) for the formal release notes.
+Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
-## 2026-06-15 — Liquid Glass editorial accents
+## v2.4.1 — Release governance: semver tags + versioned changelog + doc currency (2026-06-15 17:39 UTC)
+
+Documentation-only. Adopted explicit semver release numbering: created retroactive git tags for every release back to `v1.0.0` (each on its merge commit), reorganized this CHANGELOG so every entry carries its version, and backfilled the two releases that had shipped without an entry (`v2.2.1` email DNS checker/plan, `v2.3.1` contact email surfaced). Refreshed `CLAUDE.md` (Liquid Glass design-system layer + the sticky frosted header + a Releases & versioning note) and the README "Recent updates" table. No site or code change.
+
+## v2.4.0 — Liquid Glass editorial accents (2026-06-15 17:10 UTC)
 
 Blended an Apple-style Liquid Glass material into the blog's crisp editorial design — selectively, to keep "crispness over decoration":
 
@@ -15,7 +19,11 @@ Blended an Apple-style Liquid Glass material into the blog's crisp editorial des
 
 Note: true Liquid Glass edge-refraction (real-time lensing) needs GPU shaders and isn't replicable in pure CSS; this emulates the material via frost + brightness/saturation + specular bevel.
 
-## 2026-06-15 — Email live via iCloud+ Custom Email Domain
+## v2.3.1 — Contact email surfaced (v@) on About + Person JSON-LD (2026-06-15 15:05 UTC)
+
+Surfaced `v@awonderfullife.ca` as the blog's public contact, now that the mailbox is live. A warm, in-voice line was added at the end of the About prose (`mailto:v@awonderfullife.ca`), and `"email": "v@awonderfullife.ca"` was added to the `Person` node of the schema.org `@graph` (plain address, schema-correct) — propagated across all 24 already-injected pages, with the `seo-inject.py` generator updated so future posts inherit it. `postmaster@` stays unpublished (infrastructure only); the footer and newsletter card were left untouched. Placement was chosen via a read-only subagent analysis of the About voice and the generator's skip-guard.
+
+## v2.3.0 — Email live via iCloud+ Custom Email Domain (2026-06-15 14:28 UTC)
 
 The domain now sends and receives mail through **iCloud+ Custom Email Domain** (set up under Vijay's Apple ID, "Only Me"). There was no email before — no MX existed — so this was a clean setup, not a migration. Records were published via Apple's Cloudflare integration, then cleaned up by hand:
 
@@ -28,7 +36,11 @@ The domain now sends and receives mail through **iCloud+ Custom Email Domain** (
 
 Verified all-green with `docs/superpowers/tools/check-email-dns.sh awonderfullife.ca` and a live send test (mail from `v@` and `postmaster@` delivered to an external inbox). The record set was checked against Apple/Cloudflare docs by a three-subagent verification pass before any change. DMARC stays at `p=none` for ~1–2 weeks of report monitoring, then tightens to `quarantine` → `reject`.
 
-## 2026-06-15 — Technical SEO foundation (no copy, design, or URL changes)
+## v2.2.1 — Email DNS checker + hardened iCloud email plan (2026-06-15 13:27 UTC)
+
+Pre-work for the email setup. Added `docs/superpowers/tools/check-email-dns.sh` — a DNS-over-HTTPS smoke-test (dig isn't available in the environment) that checks MX / SPF / DKIM(`sig1`) / DMARC / `apple-domain` against the expected iCloud values and flags Cloudflare Email-Routing leftovers and duplicate SPF records (reusable for any domain via a `$1` argument). The iCloud email plan in `ROADMAP.md` was hardened by a three-subagent validation pass (record set verified against Apple docs; safeguards added: keep the verification TXT permanently, watch the Cloudflare Email-Routing locked-record bug, keep exactly one SPF record, keep `~all` not `-all`). Tooling + planning only — no site or DNS change.
+
+## v2.2.0 — Technical SEO foundation (no copy, design, or URL changes) (2026-06-15 04:39 UTC)
 
 The blog had no canonical tags, no Open Graph, no Twitter cards, and no structured data at all. This adds the full metadata layer across all 24 pages, plus the site's first `sitemap.xml` and `robots.txt`. No visible copy, design, or URLs changed; the `/api` worker is untouched. The JSON-LD reuses each page's own title, meta description, and (for posts) `<h1>`, byline date, and category verbatim, so no new prose was authored. Spec at `docs/superpowers/specs/2026-06-15-blog-seo-foundation-design.md`.
 
@@ -42,11 +54,11 @@ The blog had no canonical tags, no Open Graph, no Twitter cards, and no structur
 
 **Verification.** All 24 pages parse as valid JSON-LD (16 as `BlogPosting` with valid ISO dates, author, and absolute image); zero relative canonical/og/image URLs; `sitemap.xml` well-formed with 24 absolute locs; idempotent re-run is a byte-identical no-op; local HTTP sweep returned 200 for all 24 pages plus `/sitemap.xml` and `/robots.txt`. Cross-checked by independent validation passes plus an adversarial control pass.
 
-## 2026-06-15 — India-Pakistan hero regenerated (series cohesion touch-up)
+## v2.1.1 — India-Pakistan hero regenerated (series cohesion touch-up) (2026-06-15 04:04 UTC)
 
 Closed the one deferred item from the June 2026 Quiet Magazine redesign. The `india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` hero, which the gallery review had flagged as the weakest of the sixteen for series cohesion (all-warm sandy palette, no slate-blue anchor, grainy fills), was regenerated via `gen-hero.sh` (seed 77). The new illustration carries the deep slate-blue dusk sky the series wants, a crenellated terracotta fort wall, and two muted kites (sage-green and cream) in the editorial palette. The post alt text and the image manifest row were updated to match. One-image change, no other content touched.
 
-## 2026-06-13 — API spine (Phase 1): `api.awonderfullife.ca`
+## v2.1.0 — API spine (Phase 1): `api.awonderfullife.ca` (2026-06-14 01:40 UTC)
 
 The first piece of the platform backend. A **second, independent Cloudflare Worker** (`awonderfullife-api`) now runs at **`api.awonderfullife.ca`**, alongside the static blog — which is untouched. This begins turning awonderfullife.ca from a static blog into a personal platform ("one backend, many faces"). Spec at `docs/superpowers/specs/2026-06-13-api-spine-foundation-design.md`; plan at `docs/superpowers/plans/2026-06-13-api-spine-foundation.md`.
 
@@ -65,7 +77,7 @@ The API worker deploys **manually** (`cd api && npm run deploy`); it is not part
 
 ---
 
-## 2026-06-11 — Quiet Magazine redesign + generated illustration series
+## v2.0.0 — Quiet Magazine redesign + generated illustration series (2026-06-11 21:43 UTC)
 
 A full visual redesign of the site, shipped on branch `redesign/quiet-magazine` (PR: Quiet Magazine redesign + generated illustration series). The centerpiece is replacing all 16 Picsum stand-in heroes with a cohesive AI-generated editorial-illustration series, while simultaneously overhauling the homepage, category pages, and single-post layout. Spec at `docs/superpowers/specs/2026-06-11-quiet-magazine-redesign-design.md`; implementation plan at `docs/superpowers/plans/`; image manifest (all 16 images with seeds, prompts, and alt texts) at `docs/superpowers/specs/2026-06-11-image-manifest.md`.
 
@@ -95,9 +107,7 @@ A full visual redesign of the site, shipped on branch `redesign/quiet-magazine` 
 
 ---
 
-## 2026-05-28
-
-### 🏷 Release: `v1.0.0` — Editorial direction launch
+## v1.0.0 — Editorial direction launch (2026-05-28 17:53 UTC)
 
 First formal release. Marks the current state of the project as a stable milestone after the May 2026 redesign, the post-body cleanup, the infrastructure work (www custom domain, `.assetsignore`), and the full documentation surface (README, CLAUDE.md, CHANGELOG, ROADMAP, 12-page Wiki). Full release notes at <https://github.com/vijaybpanangi/awonderfullife/releases/tag/v1.0.0>.
 

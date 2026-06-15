@@ -76,7 +76,11 @@ Anything more substantial than a copy edit goes through a brainstorm → spec �
 
 | Date | Area | What changed |
 |---|---|---|
-| 2026-06-11 | Design | Quiet Magazine redesign: featured homepage, illustrated card grids, display-scale post titles, prev/next nav, 16 AI-generated heroes replacing Picsum stand-ins |
+| 2026-06-15 | 🏷 v2.4.0 | Liquid Glass editorial accents — frosted sticky header, glassy newsletter + browse chips |
+| 2026-06-15 | 🏷 v2.3.0 | Email live via iCloud+ Custom Email Domain (+ `v2.3.1`: contact email `v@` surfaced on About + Person JSON-LD) |
+| 2026-06-15 | 🏷 v2.2.0 | Technical SEO foundation — canonical, Open Graph/Twitter, JSON-LD, sitemap, robots (+ `v2.2.1` email DNS checker) |
+| 2026-06-13 | 🏷 v2.1.0 | API spine (Phase 1) — `api.awonderfullife.ca` (D1 + Cloudflare Access) |
+| 2026-06-11 | 🏷 v2.0.0 | Quiet Magazine redesign: featured homepage, illustrated card grids, display-scale post titles, prev/next nav, 16 AI-generated heroes replacing Picsum stand-ins |
 | 2026-05-28 | 🏷 Release | [`v1.0.0` — Editorial direction launch](https://github.com/vijaybpanangi/awonderfullife/releases/tag/v1.0.0) cut as the first formal milestone |
 | 2026-05-28 | Documentation | GitHub [Wiki](https://github.com/vijaybpanangi/awonderfullife/wiki) populated with twelve pages plus sidebar — long-form companion to the in-repo docs |
 | 2026-05-28 | Documentation | `ROADMAP.md` added; README/CLAUDE updated to cross-link it |
