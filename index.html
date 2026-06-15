@@ -80,6 +80,7 @@
       ]
     }
     </script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
     <!-- Edge-lensing Liquid Glass filter (Chromium-only; referenced by
@@ -260,10 +261,12 @@
         <div class="newsletter lensing">
             <h3>Stay Connected</h3>
             <p>Get new posts delivered to your inbox</p>
-            <form class="newsletter-form" action="https://buttondown.email/api/emails/embed-subscribe/awonderfullife" method="post" target="_blank">
+            <form class="newsletter-form" data-newsletter>
                 <input type="email" name="email" placeholder="your@email.com" required>
                 <button type="submit">Subscribe</button>
             </form>
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAADlXh3xQof3Z3H_E" data-theme="light"></div>
+            <p class="newsletter-msg" role="status" aria-live="polite"></p>
         </div>
     </main>
 
@@ -272,5 +275,33 @@
             <p>&copy; 2026 Vijay Panangipally. All rights reserved.</p>
         </div>
     </footer>
+    <script>
+    (function () {
+      var form = document.querySelector('form[data-newsletter]');
+      if (!form) return;
+      var card = form.closest('.newsletter');
+      var msg = card && card.querySelector('.newsletter-msg');
+      function say(t){ if (msg) msg.textContent = t; }
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var email = (form.querySelector('input[name="email"]').value || '').trim();
+        var token = (window.turnstile && window.turnstile.getResponse) ? window.turnstile.getResponse() : '';
+        if (!token) { say('Please complete the verification below.'); return; }
+        say('Subscribing…');
+        fetch('https://api.awonderfullife.ca/subscribe', {
+          method: 'POST', headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ email: email, token: token, source: 'blog' })
+        })
+        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (res) {
+          if (res.ok && res.d && res.d.status === 'ok') { say('Thanks — you\'re on the list.'); form.reset(); }
+          else if (res.d && res.d.error === 'invalid_email') { say('That email doesn\'t look right.'); }
+          else { say('Sorry, something went wrong. Please try again.'); }
+          if (window.turnstile && window.turnstile.reset) window.turnstile.reset();
+        })
+        .catch(function () { say('Network error — please try again.'); if (window.turnstile && window.turnstile.reset) window.turnstile.reset(); });
+      });
+    })();
+    </script>
 </body>
 </html>
