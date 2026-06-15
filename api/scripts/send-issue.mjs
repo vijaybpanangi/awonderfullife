@@ -127,11 +127,12 @@ if (flags.dryRun) {
 // ---- send via Resend ----
 const KEY = process.env.RESEND_API_KEY
 const FROM = process.env.NEWSLETTER_FROM || 'A Wonderful Life <hello@send.awonderfullife.ca>'
+const REPLY_TO = process.env.NEWSLETTER_REPLY_TO || 'v@awonderfullife.ca'
 if (!KEY) {
   console.error('RESEND_API_KEY is not set. Export it (and optionally NEWSLETTER_FROM) before sending.')
   process.exit(1)
 }
-console.log(`Sending "${subject}" to ${recipients.length} recipient(s) from ${FROM} …`)
+console.log(`Sending "${subject}" to ${recipients.length} recipient(s) from ${FROM} (reply-to ${REPLY_TO}) …`)
 let sent = 0, failed = 0
 for (const r of recipients) {
   const unsub = unsubUrl(r.unsub_token)
@@ -142,6 +143,7 @@ for (const r of recipients) {
       body: JSON.stringify({
         from: FROM,
         to: r.email,
+        reply_to: REPLY_TO,
         subject,
         html: renderHtml(unsub),
         text: renderText(unsub),
