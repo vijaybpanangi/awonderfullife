@@ -116,7 +116,7 @@ Post bodies inside `<div class="post-content">` were cleaned in commit `6df6352`
 - `docs/superpowers/specs/` — design specs (the *what* and *why*): `YYYY-MM-DD-<topic>-design.md`.
 - `docs/superpowers/plans/` — implementation plans (the *how*): `YYYY-MM-DD-<topic>.md`.
 - `ROADMAP.md` at the root tracks **future** work and deferred items; `CHANGELOG.md` tracks **past** changes. Always check both before proposing work — the answer to "is this on the radar?" is in one or the other.
-- **Releases & versioning.** Every release gets a semver git tag on its merge commit — **major** = redesign / identity shift, **minor** = new feature or notable enhancement, **patch** = fix / content / docs. When you ship a change, add a versioned `CHANGELOG.md` entry (`## vX.Y.Z — Title (date)`) and create + push the matching tag (`git tag -a vX.Y.Z -m "…" && git push origin vX.Y.Z`). Latest: `v2.4.0`.
+- **Releases & versioning.** Every release gets a semver git tag on its merge commit — **major** = redesign / identity shift, **minor** = new feature or notable enhancement, **patch** = fix / content / docs. When you ship a change, add a versioned `CHANGELOG.md` entry (`## vX.Y.Z — Title (YYYY-MM-DD HH:MM UTC)`, timestamp from the merge commit) and create + push the matching tag (`git tag -a vX.Y.Z -m "…" && git push origin vX.Y.Z`). Latest: `v2.4.1`.
 - See `docs/superpowers/README.md` for the brainstorm → spec → plan → execute workflow.
 
 ## Known follow-ups
