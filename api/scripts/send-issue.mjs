@@ -13,16 +13,31 @@
  *   RESEND_API_KEY    Resend API key
  *   NEWSLETTER_FROM   e.g. "A Wonderful Life <hello@send.awonderfullife.ca>"
  */
-import { readFileSync, writeFileSync } from 'node:fs'
+import { readFileSync, writeFileSync, unlinkSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { marked } from 'marked'
 
 const SITE = 'https://awonderfullife.ca'
 const API = 'https://api.awonderfullife.ca'
+const DB = 'awonderfullife-api'
+const PLACEHOLDER = '{{UNSUB_URL}}' // swapped per-subscriber by the scheduled Worker
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]))
 const unsubUrl = (token) => `${API}/unsubscribe?token=${encodeURIComponent(token)}`
+const sqlStr = (s) => `'${String(s).replace(/'/g, "''")}'`
+
+// Run a D1 statement (inline SQL or a .sql file) against the remote DB; return parsed JSON.
+function d1(opts) {
+  const cmd = opts.file ? ['--file', opts.file] : ['--command', opts.command]
+  const out = execFileSync('npx', ['wrangler', 'd1', 'execute', DB, '--remote', '--json', ...cmd], {
+    encoding: 'utf8',
+  })
+  const parsed = JSON.parse(out.slice(out.indexOf('[')))
+  return Array.isArray(parsed) ? parsed[0] : parsed
+}
 
 // ---- args ----
 const args = process.argv.slice(2)
@@ -31,11 +46,43 @@ const positional = []
 for (let i = 0; i < args.length; i++) {
   if (args[i] === '--test') flags.test = args[++i]
   else if (args[i] === '--dry-run') flags.dryRun = true
+  else if (args[i] === '--queue') flags.queue = true
+  else if (args[i] === '--queue-list') flags.queueList = true
+  else if (args[i] === '--unqueue') flags.unqueue = args[++i]
   else positional.push(args[i])
 }
+
+// ---- queue management (no issue file needed) ----
+if (flags.queueList) {
+  const set = d1({ command: 'SELECT id, status, subject, queued_at, sent_at, sent_count FROM issues ORDER BY id DESC LIMIT 25' })
+  const rows = (set && (set.results || set)) || []
+  if (!rows.length) {
+    console.log('No issues in the queue yet. Queue one with:  npm run send -- issues/<file>.md --queue')
+  } else {
+    console.log(`Newsletter queue (newest first) — sends Saturday 7pm ET, oldest queued first:\n`)
+    for (const r of rows) {
+      const when = r.status === 'sent' ? `sent ${r.sent_at} (${r.sent_count ?? 0} recipients)` : r.status === 'queued' ? `queued ${r.queued_at}` : r.status
+      console.log(`  #${r.id}  [${r.status.toUpperCase()}]  ${r.subject}\n        ${when}`)
+    }
+  }
+  process.exit(0)
+}
+if (flags.unqueue !== undefined) {
+  if (!/^\d+$/.test(flags.unqueue)) {
+    console.error(`--unqueue needs a numeric issue id (see "npm run send -- --queue-list"). Got "${flags.unqueue}".`)
+    process.exit(1)
+  }
+  const res = d1({ command: `DELETE FROM issues WHERE id = ${flags.unqueue} AND status = 'queued'` })
+  const changed = res?.meta?.changes ?? res?.meta?.rows_written ?? 0
+  if (changed) console.log(`Removed issue #${flags.unqueue} from the queue.`)
+  else console.error(`Nothing removed — issue #${flags.unqueue} isn't queued (already sent, sending, or doesn't exist).`)
+  process.exit(changed ? 0 : 1)
+}
+
 const issuePath = positional[0]
 if (!issuePath) {
-  console.error('Usage: node scripts/send-issue.mjs <issue.md> [--test <email>] [--dry-run]')
+  console.error('Usage: node scripts/send-issue.mjs <issue.md> [--test <email>] [--dry-run] [--queue]')
+  console.error('       node scripts/send-issue.mjs --queue-list | --unqueue <id>')
   process.exit(1)
 }
 const isAscii = (s) => /^[\x00-\x7F]*$/.test(s)
@@ -88,6 +135,32 @@ ${bodyHtml}
 function renderText(unsub) {
   const plain = body.replace(/!\[[^\]]*\]\([^)]*\)/g, '').replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)').replace(/[#>*_`]/g, '').replace(/\n{3,}/g, '\n\n').trim()
   return `${subject}\n\n${plain}\n\n— A Wonderful Life · ${SITE}\nUnsubscribe: ${unsub}\n`
+}
+
+// ---- queue for the weekly scheduled send ----
+// Render ONCE with a {{UNSUB_URL}} placeholder; the Worker swaps it per recipient
+// at send time. No subscriber lookup here — the cron handler does that on Saturday.
+if (flags.queue) {
+  const html = renderHtml(PLACEHOLDER)
+  const text = renderText(PLACEHOLDER)
+  const queuedAt = new Date().toISOString()
+  const sql = `INSERT INTO issues (subject, preheader, html, text, status, queued_at)
+VALUES (${sqlStr(subject)}, ${sqlStr(preheader)}, ${sqlStr(html)}, ${sqlStr(text)}, 'queued', ${sqlStr(queuedAt)});`
+  const tmp = join(tmpdir(), `awl-issue-${process.pid}.sql`)
+  writeFileSync(tmp, sql)
+  try {
+    d1({ file: tmp })
+  } catch (e) {
+    console.error('Failed to queue the issue in D1 (is wrangler authenticated?).')
+    console.error(e.stderr || e.message)
+    process.exit(1)
+  } finally {
+    try { unlinkSync(tmp) } catch {}
+  }
+  console.log(`Queued "${subject}" for the next Saturday 7pm ET send.`)
+  console.log(`  See the queue:   npm run send -- --queue-list`)
+  console.log(`  Pull it back:    npm run send -- --unqueue <id>`)
+  process.exit(0)
 }
 
 // ---- recipients ----

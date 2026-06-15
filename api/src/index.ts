@@ -1,11 +1,16 @@
 import { getAccessEmail } from './access'
 import { verifyTurnstile } from './turnstile'
+import { runScheduledSend, type ScheduledDeps } from './scheduled'
 
 export interface Env {
   DB: D1Database
   ACCESS_TEAM_DOMAIN: string
   ACCESS_AUD: string
   TURNSTILE_SECRET: string
+  // Newsletter send (scheduled handler). Key is a Wrangler secret; from/reply-to are vars.
+  RESEND_API_KEY?: string
+  NEWSLETTER_FROM?: string
+  NEWSLETTER_REPLY_TO?: string
 }
 
 export interface Deps {
@@ -23,9 +28,18 @@ const ALLOWED_ORIGINS = new Set([
 // Pragmatic email check: a single @, no spaces, a dotted domain, ≤254 chars.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-export function createWorker(overrides: Partial<Deps> = {}) {
+export function createWorker(
+  overrides: Partial<Deps> = {},
+  scheduledOverrides: Partial<ScheduledDeps> = {},
+) {
   const deps: Deps = { ...defaultDeps, ...overrides }
   return {
+    // Weekly broadcast. Both cron triggers (23:00 UTC Sat / 00:00 UTC Sun) call
+    // this; runScheduledSend's ET gate lets exactly one through per week.
+    async scheduled(controller: ScheduledController, env: Env, _ctx: ExecutionContext): Promise<void> {
+      const result = await runScheduledSend(controller.scheduledTime, env, scheduledOverrides)
+      console.log(`[scheduled] cron=${controller.cron} ${JSON.stringify(result)}`)
+    },
     async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
       const { pathname, searchParams } = new URL(request.url)
 

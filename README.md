@@ -78,6 +78,14 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
+| `v2.10.0` | 2026-06-15 22:59 | [#23](https://github.com/vijaybpanangi/awonderfullife/pull/23) | Newsletter automation — scheduled weekly send (Saturday 7pm ET, DST-correct) + queue |
+| `v2.9.2` | 2026-06-15 21:44 | [#22](https://github.com/vijaybpanangi/awonderfullife/pull/22) | Newsletter CLI: clear errors for placeholder key/email |
+| `v2.9.1` | 2026-06-15 21:39 | [#21](https://github.com/vijaybpanangi/awonderfullife/pull/21) | Newsletter Reply-To → v@awonderfullife.ca |
+| `v2.9.0` | 2026-06-15 21:12 | [#20](https://github.com/vijaybpanangi/awonderfullife/pull/20) | Newsletter send CLI (markdown → Resend broadcast) |
+| `v2.8.0` | 2026-06-15 20:08 | [#19](https://github.com/vijaybpanangi/awonderfullife/pull/19) | Newsletter live: owned signup (Turnstile + D1) replaces Buttondown |
+| `v2.7.0` | 2026-06-15 19:51 | [#18](https://github.com/vijaybpanangi/awonderfullife/pull/18) | Edge-lensing Liquid Glass, site-wide (Chromium-only) |
+| `v2.6.2` | 2026-06-15 19:47 | [#17](https://github.com/vijaybpanangi/awonderfullife/pull/17) | Justify post body text |
+| `v2.6.1` | 2026-06-15 19:02 | [#14](https://github.com/vijaybpanangi/awonderfullife/pull/14) | docs: PR-level release table + CHANGELOG (newsletter & capsule) |
 | `v2.6.0` | 2026-06-15 18:59 | [#12](https://github.com/vijaybpanangi/awonderfullife/pull/12) | Floating Liquid Glass capsule nav |
 | `v2.5.0` | 2026-06-15 18:56 | [#11](https://github.com/vijaybpanangi/awonderfullife/pull/11) | Owned newsletter capture — `/subscribe` + `/unsubscribe` + Turnstile (D1) |
 | `v2.4.2` | 2026-06-15 18:52 | [#13](https://github.com/vijaybpanangi/awonderfullife/pull/13) | Fix: site-header glass bleeding onto the post title block |

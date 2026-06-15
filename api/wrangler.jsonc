@@ -8,6 +8,17 @@
   "routes": [
     { "pattern": "api.awonderfullife.ca", "custom_domain": true }
   ],
+  // Newsletter From / Reply-To (non-secret). RESEND_API_KEY is a Wrangler secret.
+  "vars": {
+    "NEWSLETTER_FROM": "A Wonderful Life <hello@send.awonderfullife.ca>",
+    "NEWSLETTER_REPLY_TO": "v@awonderfullife.ca"
+  },
+  // Weekly newsletter broadcast: Saturday 7pm America/New_York, DST-correct.
+  // Crons are UTC-only, so both candidate instants fire — 23:00 UTC Sat (7pm EDT)
+  // and 00:00 UTC Sun (7pm EST). The handler's ET gate passes exactly one per week.
+  "triggers": {
+    "crons": ["0 23 * * 6", "0 0 * * 0"]
+  },
   "d1_databases": [
     {
       "binding": "DB",

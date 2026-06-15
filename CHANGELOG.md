@@ -4,6 +4,16 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.10.0 — Newsletter automation: scheduled weekly send (Saturday 7pm ET) (2026-06-15 22:59 UTC)
+
+The newsletter now sends itself — no laptop required. Authoring stays manual (you still write each issue); **delivery** is automated:
+
+- **Queue, not send-now.** A new D1 `issues` table (migration `0002`) holds rendered issues. The send CLI gains `--queue` (enqueue an issue), `--queue-list` (see what's pending), and `--unqueue <id>` (pull one back). Each issue is rendered **once** at queue time with a `{{UNSUB_URL}}` placeholder.
+- **Weekly cron.** The Worker gained a `scheduled` handler firing **Saturday 7pm America/New_York**, sending the oldest queued issue to all active subscribers via Resend's **batch** endpoint (per-recipient unsubscribe link + `List-Unsubscribe`, swapped from the placeholder), then marking it `sent`. Empty queue → nothing sends.
+- **DST-correct.** Cloudflare crons are UTC-only, so two triggers fire (`0 23 * * 6` and `0 0 * * 0`); the handler gates on the real `America/New_York` clock (`Intl`), so exactly one passes each week — genuinely 7pm ET in both EDT and EST, never drifting to 6pm in winter.
+- **Key moves server-side.** Scheduled sends use `RESEND_API_KEY` as a **Wrangler secret** (not a laptop env var); `NEWSLETTER_FROM`/`NEWSLETTER_REPLY_TO` are non-secret vars. The immediate/`--test`/`--dry-run` CLI paths are unchanged.
+- Vitest coverage for the DST gate (EDT/EST/off-twins/non-Saturday) and the queue→send→mark-sent flow. Scale note: batch is chunked at 100; a list in the thousands would warrant Cloudflare Queues (documented, not built).
+
 ## v2.9.2 — Newsletter CLI: clear errors for placeholder key/email (2026-06-15 21:44 UTC)
 
 Hardened the send CLI so pasting the literal placeholders (`re_…`, `you@…`) fails with a plain‑English message instead of a cryptic `Cannot convert argument to a ByteString … value 8230` (the typographic ellipsis is non‑ASCII and broke the HTTP header). It now validates `RESEND_API_KEY` shape (ASCII `re_…`) and the `--test` address before sending. Confirmed delivery: the example issue rendered and landed in‑inbox (not spam) from `hello@send.awonderfullife.ca`.
