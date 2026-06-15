@@ -26,7 +26,7 @@ Give the blog a complete technical SEO and social-sharing foundation across all 
 | Categories | `categories/{politics,reflection,society,technology,travel}.html` | 5 |
 | Posts | `posts/<slug>.html` | 16 |
 
-`404.html` is included in the HTTP sweep but not the sitemap (noindex by nature). The `/api` worker is out of scope entirely.
+The blog has no custom `404.html` (Cloudflare serves a default), so there is nothing to add there. The `/api` worker is out of scope entirely.
 
 ## Work items
 
@@ -75,7 +75,7 @@ Per-page node:
 
 ### 5. sitemap.xml (new)
 
-Create at repo root. Sitemaps 0.9 namespace (no xhtml namespace needed — single language). One `<url>` per indexable page (23: home, about, archive, 5 categories, 16 posts; 404 excluded), each with an absolute `<loc>` and a `<lastmod>`: post URLs use the post's published date, the 7 static/collection URLs use 2026-06-15.
+Create at repo root. Sitemaps 0.9 namespace (no xhtml namespace needed — single language). One `<url>` per indexable page (24: home, about, archive, 5 categories, 16 posts), each with an absolute `<loc>` and a `<lastmod>`: post URLs use the post's published date, the 7 static/collection URLs use 2026-06-15.
 
 ### 6. robots.txt (new)
 
@@ -91,9 +91,9 @@ Create at repo root: allow all, `Sitemap: https://awonderfullife.ca/sitemap.xml`
 
 - All 24 pages contain valid, parseable JSON-LD; the 16 posts validate as `BlogPosting` with a valid ISO `datePublished`, an `author`, and an absolute `image`.
 - Zero relative canonical / og:url / image URLs (every one starts with `https://`).
-- `sitemap.xml` is well-formed XML with 23 absolute `<loc>`s; `robots.txt` present with the Sitemap line.
+- `sitemap.xml` is well-formed XML with 24 absolute `<loc>`s; `robots.txt` present with the Sitemap line.
 - No change to any post body, the newsletter action, or `/api`.
-- Local `python3 -m http.server` sweep: HTTP 200 on all 24 pages plus `/sitemap.xml`, `/robots.txt`, `/404.html`.
+- Local `python3 -m http.server` sweep: HTTP 200 on all 24 pages plus `/sitemap.xml` and `/robots.txt`.
 - Idempotent re-run is a byte-identical no-op.
 - Independent subagent validation passes (structured-data + canonical/OG correctness; sitemap/robots/scope/idempotency), matching the ezziclarity process.
 

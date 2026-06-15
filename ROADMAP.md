@@ -4,6 +4,18 @@ Future updates and deferred items for awonderfullife.ca. Items here have no fixe
 
 ---
 
+## Deferred SEO (post technical-foundation, 2026-06-15)
+
+The technical SEO foundation shipped on 2026-06-15 (see `CHANGELOG.md`): absolute canonicals, Open Graph + Twitter cards, JSON-LD (`WebSite` / `Person` / `Blog` / per-post `BlogPosting`), a brand-default OG image, `sitemap.xml`, and `robots.txt`. Left for later:
+
+- **`sameAs` on the `Person` node.** Omitted deliberately because there are no real social or author profiles to point at yet (no placeholders). Add LinkedIn / X / Mastodon / Substack etc. once they exist.
+- **`BreadcrumbList` schema.** Posts and category pages could carry a breadcrumb (Home > Category > Post) for richer results. Low effort, deferred.
+- **Cloudflare managed `robots.txt`.** awonderfullife.ca is a Cloudflare zone; if AI Crawl Control / managed robots is enabled, the live `robots.txt` may be prepended with a managed block ahead of the committed file (as observed on ezziclarity). Our `Allow: /` and the `Sitemap:` line still serve, so search indexing is unaffected. To serve exactly the repo file, toggle the managed feature off in the dashboard.
+- **`.html`-suffix canonicals.** When the deferred "drop `.html` from internal links" item lands, the canonicals and sitemap `<loc>`s must move to the suffixless form in the same change so they keep matching what is served.
+- **Off-site, manual (needs Vijay):** verify the domain in **Google Search Console** and **Bing Webmaster Tools**, then submit `https://awonderfullife.ca/sitemap.xml` in both.
+
+---
+
 ## Platform API (`api.awonderfullife.ca`) — fast-follows
 
 The Phase-1 API spine shipped 2026-06-13 (see `CHANGELOG.md` and `docs/superpowers/specs/2026-06-13-api-spine-foundation-design.md`): a second Worker with a public `/health` route and a Cloudflare-Access-gated `/admin/whoami` route over D1. Next:

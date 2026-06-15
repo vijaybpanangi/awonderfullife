@@ -4,6 +4,20 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Releases on this project use semver-style tags (`v1.0.0`, `v1.1.0`, etc.) cut as deliberate milestones, not per-commit. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) for the formal release notes.
 
+## 2026-06-15 — Technical SEO foundation (no copy, design, or URL changes)
+
+The blog had no canonical tags, no Open Graph, no Twitter cards, and no structured data at all. This adds the full metadata layer across all 24 pages, plus the site's first `sitemap.xml` and `robots.txt`. No visible copy, design, or URLs changed; the `/api` worker is untouched. The JSON-LD reuses each page's own title, meta description, and (for posts) `<h1>`, byline date, and category verbatim, so no new prose was authored. Spec at `docs/superpowers/specs/2026-06-15-blog-seo-foundation-design.md`.
+
+- **Absolute self-canonical** on every page (home to apex root, the rest to their own `.html` URL, matching the links actually served).
+- **Open Graph + Twitter Card** on every page: title, description, url, site_name, locale, type (`article` for the 16 posts, `website` for the other 8), and an absolute image. Posts also carry `article:published_time` / `author` / `section`. Twitter uses `summary_large_image`.
+- **og:image strategy:** posts use their own hero (1600x896); the About page uses the author portrait; home, archive, and the 5 category pages use a new brand-default illustration (`assets/images/og-default.jpg`, generated in the existing flat-editorial series style). That is the only new asset.
+- **JSON-LD `@graph`** before `</head>` on every page: a shared `WebSite` + `Person` (Vijay Panangipally, `sameAs` intentionally omitted until real socials exist) + `Blog`, plus a per-page node. The 16 posts are `BlogPosting` nodes with headline, description, image, `datePublished` (ISO 8601 parsed from the byline), author, publisher, and `articleSection`. Other pages are `CollectionPage` / `AboutPage`. Serialized with non-ASCII preserved.
+- **sitemap.xml** (new): sitemaps 0.9, 24 absolute `<loc>`s, post `<lastmod>` set to each post's published date.
+- **robots.txt** (new): allows all, points to the sitemap. (Cloudflare's managed-robots feature may prepend a block on the live response, as on ezziclarity; benign for search indexing, noted in ROADMAP.)
+- **Tooling:** an idempotent injector kept at `docs/superpowers/tools/seo-inject.py` (the `docs/` tree is excluded from the public bundle, so it never deploys); re-run after adding a post to give it the same block. Skips pages that already have JSON-LD, so re-runs are no-ops.
+
+**Verification.** All 24 pages parse as valid JSON-LD (16 as `BlogPosting` with valid ISO dates, author, and absolute image); zero relative canonical/og/image URLs; `sitemap.xml` well-formed with 24 absolute locs; idempotent re-run is a byte-identical no-op; local HTTP sweep returned 200 for all 24 pages plus `/sitemap.xml` and `/robots.txt`. Cross-checked by independent validation passes plus an adversarial control pass.
+
 ## 2026-06-15 — India-Pakistan hero regenerated (series cohesion touch-up)
 
 Closed the one deferred item from the June 2026 Quiet Magazine redesign. The `india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` hero, which the gallery review had flagged as the weakest of the sixteen for series cohesion (all-warm sandy palette, no slate-blue anchor, grainy fills), was regenerated via `gen-hero.sh` (seed 77). The new illustration carries the deep slate-blue dusk sky the series wants, a crenellated terracotta fort wall, and two muted kites (sage-green and cream) in the editorial palette. The post alt text and the image manifest row were updated to match. One-image change, no other content touched.
