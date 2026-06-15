@@ -78,6 +78,7 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
+| `v2.10.1` | 2026-06-15 23:08 | [#24](https://github.com/vijaybpanangi/awonderfullife/pull/24) | Fix: Cloudflare's non-standard cron day-of-week (`SAT`/`SUN`) so triggers deploy |
 | `v2.10.0` | 2026-06-15 22:59 | [#23](https://github.com/vijaybpanangi/awonderfullife/pull/23) | Newsletter automation — scheduled weekly send (Saturday 7pm ET, DST-correct) + queue |
 | `v2.9.2` | 2026-06-15 21:44 | [#22](https://github.com/vijaybpanangi/awonderfullife/pull/22) | Newsletter CLI: clear errors for placeholder key/email |
 | `v2.9.1` | 2026-06-15 21:39 | [#21](https://github.com/vijaybpanangi/awonderfullife/pull/21) | Newsletter Reply-To → v@awonderfullife.ca |
