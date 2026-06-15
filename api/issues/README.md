@@ -41,7 +41,8 @@ npm run send -- issues/<file>.md
    ```bash
    export RESEND_API_KEY="re_..."
    export NEWSLETTER_FROM="A Wonderful Life <hello@send.awonderfullife.ca>"
+   export NEWSLETTER_REPLY_TO="v@awonderfullife.ca"
    ```
-   (`NEWSLETTER_FROM` defaults to `hello@send.awonderfullife.ca` if unset.)
+   (`NEWSLETTER_FROM` defaults to `hello@send.awonderfullife.ca` and `NEWSLETTER_REPLY_TO` to `v@awonderfullife.ca` if unset — so replies to an issue reach the real iCloud inbox, since the `send.` subdomain is send‑only.)
 
 Sending happens **locally** (this CLI), not in the Worker — the Worker only handles signups/unsubscribes.
