@@ -66,7 +66,7 @@ async function resendSendBatch(
   return { sent, failed }
 }
 
-const defaultScheduledDeps: ScheduledDeps = { sendBatch: resendSendBatch }
+export const defaultScheduledDeps: ScheduledDeps = { sendBatch: resendSendBatch }
 
 /**
  * The weekly broadcast. Fires from the cron handler; gated to Saturday 7pm ET.

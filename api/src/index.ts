@@ -1,6 +1,7 @@
 import { getAccessEmail } from './access'
 import { verifyTurnstile } from './turnstile'
-import { runScheduledSend, type ScheduledDeps } from './scheduled'
+import { runScheduledSend, defaultScheduledDeps, type ScheduledDeps } from './scheduled'
+import { handleAdmin } from './admin'
 
 export interface Env {
   DB: D1Database
@@ -33,11 +34,12 @@ export function createWorker(
   scheduledOverrides: Partial<ScheduledDeps> = {},
 ) {
   const deps: Deps = { ...defaultDeps, ...overrides }
+  const scheduledDeps: ScheduledDeps = { ...defaultScheduledDeps, ...scheduledOverrides }
   return {
     // Weekly broadcast. Both cron triggers (23:00 UTC Sat / 00:00 UTC Sun) call
     // this; runScheduledSend's ET gate lets exactly one through per week.
     async scheduled(controller: ScheduledController, env: Env, _ctx: ExecutionContext): Promise<void> {
-      const result = await runScheduledSend(controller.scheduledTime, env, scheduledOverrides)
+      const result = await runScheduledSend(controller.scheduledTime, env, scheduledDeps)
       console.log(`[scheduled] cron=${controller.cron} ${JSON.stringify(result)}`)
     },
     async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
@@ -62,6 +64,18 @@ export function createWorker(
           db = 'error'
         }
         return json({ email, db })
+      }
+
+      // Compose UI + its JSON endpoints. Cloudflare Access gates /admin* at the edge;
+      // we re-verify the Access JWT in-code (defense in depth) before any handler runs.
+      if (pathname === '/admin/compose' || pathname.startsWith('/admin/issues')) {
+        let email: string
+        try {
+          email = await deps.getAccessEmail(request, env)
+        } catch {
+          return json({ error: 'forbidden' }, 403)
+        }
+        return handleAdmin(request, env, email, scheduledDeps)
       }
 
       if (pathname === '/subscribe') {
