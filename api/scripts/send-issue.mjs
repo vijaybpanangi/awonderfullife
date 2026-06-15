@@ -38,6 +38,11 @@ if (!issuePath) {
   console.error('Usage: node scripts/send-issue.mjs <issue.md> [--test <email>] [--dry-run]')
   process.exit(1)
 }
+const isAscii = (s) => /^[\x00-\x7F]*$/.test(s)
+if (flags.test !== undefined && (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(flags.test) || !isAscii(flags.test))) {
+  console.error(`--test address "${flags.test}" isn't a real email — looks like the placeholder was pasted. Use an actual address, e.g. --test you@example.com`)
+  process.exit(1)
+}
 
 // ---- parse issue (frontmatter + markdown body) ----
 const raw = readFileSync(issuePath, 'utf8')
@@ -128,8 +133,9 @@ if (flags.dryRun) {
 const KEY = process.env.RESEND_API_KEY
 const FROM = process.env.NEWSLETTER_FROM || 'A Wonderful Life <hello@send.awonderfullife.ca>'
 const REPLY_TO = process.env.NEWSLETTER_REPLY_TO || 'v@awonderfullife.ca'
-if (!KEY) {
-  console.error('RESEND_API_KEY is not set. Export it (and optionally NEWSLETTER_FROM) before sending.')
+if (!KEY || !/^re_[A-Za-z0-9_-]+$/.test(KEY)) {
+  console.error('RESEND_API_KEY is missing or not a real key — it must look like `re_AbC123…` (ASCII).')
+  console.error('You likely pasted the literal placeholder. Export your ACTUAL key from Resend → API keys, then retry.')
   process.exit(1)
 }
 console.log(`Sending "${subject}" to ${recipients.length} recipient(s) from ${FROM} (reply-to ${REPLY_TO}) …`)

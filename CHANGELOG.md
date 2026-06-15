@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.9.2 — Newsletter CLI: clear errors for placeholder key/email (2026-06-15 21:44 UTC)
+
+Hardened the send CLI so pasting the literal placeholders (`re_…`, `you@…`) fails with a plain‑English message instead of a cryptic `Cannot convert argument to a ByteString … value 8230` (the typographic ellipsis is non‑ASCII and broke the HTTP header). It now validates `RESEND_API_KEY` shape (ASCII `re_…`) and the `--test` address before sending. Confirmed delivery: the example issue rendered and landed in‑inbox (not spam) from `hello@send.awonderfullife.ca`.
+
 ## v2.9.1 — Newsletter: Reply-To to v@awonderfullife.ca (2026-06-15 21:39 UTC)
 
 The send CLI now sets `reply_to` on every issue (default `v@awonderfullife.ca`, overridable via `NEWSLETTER_REPLY_TO`), so replies reach the real iCloud inbox rather than the send-only `hello@send.awonderfullife.ca`. **Pipeline verified live:** the `send.awonderfullife.ca` Resend domain is verified (Cloudflare auto-configure: SPF/DKIM/MX, region us-east-1), and a real test issue sent successfully (`sent=1`).
