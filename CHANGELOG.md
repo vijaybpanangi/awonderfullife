@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Releases on this project use semver-style tags (`v1.0.0`, `v1.1.0`, etc.) cut as deliberate milestones, not per-commit. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) for the formal release notes.
 
+## 2026-06-15 — India-Pakistan hero regenerated (series cohesion touch-up)
+
+Closed the one deferred item from the June 2026 Quiet Magazine redesign. The `india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` hero, which the gallery review had flagged as the weakest of the sixteen for series cohesion (all-warm sandy palette, no slate-blue anchor, grainy fills), was regenerated via `gen-hero.sh` (seed 77). The new illustration carries the deep slate-blue dusk sky the series wants, a crenellated terracotta fort wall, and two muted kites (sage-green and cream) in the editorial palette. The post alt text and the image manifest row were updated to match. One-image change, no other content touched.
+
 ## 2026-06-13 — API spine (Phase 1): `api.awonderfullife.ca`
 
 The first piece of the platform backend. A **second, independent Cloudflare Worker** (`awonderfullife-api`) now runs at **`api.awonderfullife.ca`**, alongside the static blog — which is untouched. This begins turning awonderfullife.ca from a static blog into a personal platform ("one backend, many faces"). Spec at `docs/superpowers/specs/2026-06-13-api-spine-foundation-design.md`; plan at `docs/superpowers/plans/2026-06-13-api-spine-foundation.md`.

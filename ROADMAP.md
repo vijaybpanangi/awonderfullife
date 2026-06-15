@@ -15,19 +15,9 @@ The Phase-1 API spine shipped 2026-06-13 (see `CHANGELOG.md` and `docs/superpowe
 
 ---
 
-## India-and-Pakistan hero regeneration
+## India-and-Pakistan hero regeneration — DONE (2026-06-15)
 
-The `india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` illustration shipped in the June 2026 Quiet Magazine redesign and passed QC, but the gallery review rated it the weakest image for series cohesion (see `CHANGELOG.md` for the full redesign entry). All other 15 heroes are solid.
-
-### Plan
-
-1. Wait for the Cloudflare Workers AI free-tier daily quota to reset.
-2. Run `docs/superpowers/tools/gen-hero.sh india-and-pakistan-twin-dreams-divided-bound-by-hope "<refined subject prompt>" <new-seed>`. Try a prompt variation that emphasises the flat editorial illustration style, terracotta/slate-blue/cream palette, and a symbolic geographic or unity motif (no faces).
-3. View the result; regenerate if needed.
-4. Overwrite `assets/images/posts/india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` and update the manifest row in `docs/superpowers/specs/2026-06-11-image-manifest.md`.
-5. Open a small touch-up PR against `main`.
-
-Small, scoped, one-image change.
+Shipped. The `india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` hero was regenerated (seed 77) to fix the cohesion gap the gallery review flagged: it now has the deep slate-blue dusk sky the old version lacked, a crenellated terracotta fort wall, and two muted kites (sage-green and cream) that sit in the muted editorial palette instead of the old all-warm sandy treatment. Manifest row and post alt text updated to match. See `CHANGELOG.md`.
 
 ---
 

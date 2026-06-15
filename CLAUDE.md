@@ -114,5 +114,4 @@ Post bodies inside `<div class="post-content">` were cleaned in commit `6df6352`
 
 ## Known follow-ups
 
-- **India-and-Pakistan hero regeneration.** The current `india-and-pakistan-twin-dreams-divided-bound-by-hope.jpg` passed QC but was rated the weakest image for series cohesion in the gallery review. Regenerate via `gen-hero.sh india-and-pakistan-twin-dreams-divided-bound-by-hope ...` once the Workers AI daily free quota resets, then update the manifest row. Tracked in ROADMAP.md.
 - **Drop `.html` from internal links.** Cloudflare canonicalizes URLs without `.html` (e.g. `/archive` not `/archive.html`). Internal hrefs still use `.html`, so every click goes through one 301 hop. Cosmetic; low priority.
