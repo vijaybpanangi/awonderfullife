@@ -82,7 +82,21 @@
     </script>
 </head>
 <body>
-    <header>
+    <!-- Edge-lensing Liquid Glass filter (Chromium-only; referenced by
+         backdrop-filter: url(#edge-lensing) on .lensing surfaces). -->
+    <svg width="0" height="0" aria-hidden="true" focusable="false"
+         style="position:absolute; pointer-events:none;">
+        <filter id="edge-lensing" x="-20%" y="-20%" width="140%" height="140%"
+                color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012"
+                          numOctaves="1" seed="11" result="noise"/>
+            <feGaussianBlur in="noise" stdDeviation="2" result="softNoise"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="frosted"/>
+            <feDisplacementMap in="frosted" in2="softNoise" scale="14"
+                               xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </svg>
+    <header class="lensing">
         <div class="container">
             <h1 class="site-title"><a href="index.html">A Wonderful Life</a></h1>
             <p class="site-tagline">Data, life, and the space between</p>
@@ -114,7 +128,7 @@
             <p>And if something here resonates—or you just want to say hello—drop me a line at <a href="mailto:v@awonderfullife.ca">v@awonderfullife.ca</a>. I read every message.</p>
         </div>
         
-        <div class="newsletter">
+        <div class="newsletter lensing">
             <h3>Stay Connected</h3>
             <p>Get new posts delivered to your inbox</p>
             <form class="newsletter-form" action="https://buttondown.email/api/emails/embed-subscribe/awonderfullife" method="post" target="_blank">

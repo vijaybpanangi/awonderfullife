@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.7.0 — Edge-lensing Liquid Glass, site-wide (Chromium-only) (2026-06-15 19:51 UTC)
+
+Promoted the edge-lensing prototype (PR #16) to a full site-wide feature. An inline SVG `feTurbulence → feDisplacementMap` filter (`#edge-lensing`) is now on every page, and the floating capsule **header** + the **newsletter** card route their `backdrop-filter` through it (`.lensing` class) so the content seen *through* the glass refracts/bends, not just blurs — the closest pure CSS gets to Apple's Liquid Glass. Triple-gated: opt-in `.lensing`, an `@supports (backdrop-filter: url())` block (Chromium-only — Safari/Firefox keep the flat `blur()+saturate()` glass), and a `prefers-reduced-motion: reduce` fallback that drops the displacement for a calm heavy blur. **Known limitation:** on Chromium, the header rim can shimmer while content scrolls under it (the backdrop re-samples per frame); accepted as a deliberate trade for the effect. Rolled to all 24 pages (SVG inlined per page; no build/include step). See `docs/superpowers/specs/2026-06-15-liquid-glass-design.md`.
+
 ## v2.6.2 — Justify post body text (2026-06-15 19:47 UTC)
 
 Set the post body (`.post-content`) to `text-align: justify` with `hyphens: auto`, so paragraph blocks have even left **and** right edges — a tidier, more "set" reading column. Hyphenation (which relies on each page's `lang="en"`) prevents justification from opening large inter-word gaps. CSS-only; applies to all 16 posts.

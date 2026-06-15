@@ -540,3 +540,25 @@ input:focus-visible {
   .facet-chip { padding: 0.35rem 0.75rem; font-size: 0.8rem; }
   .browse-title { font-size: 1.5rem; }
 }
+
+/* Edge-lensing Liquid Glass (Chromium-only; non-Chromium keeps the flat glass).
+   The SVG <filter id="edge-lensing"> is inlined on every page after <body>.
+   See docs/superpowers/specs/2026-06-15-liquid-glass-design.md. */
+@supports (backdrop-filter: url("#edge-lensing")) or (-webkit-backdrop-filter: url("#edge-lensing")) {
+  header:not(.post-header).lensing {
+    -webkit-backdrop-filter: url("#edge-lensing");
+    backdrop-filter: url("#edge-lensing");
+  }
+  .newsletter.lensing {
+    -webkit-backdrop-filter: url("#edge-lensing");
+    backdrop-filter: url("#edge-lensing");
+  }
+  /* reduced-motion: drop the per-frame displacement, keep a calm heavy blur */
+  @media (prefers-reduced-motion: reduce) {
+    header:not(.post-header).lensing,
+    .newsletter.lensing {
+      -webkit-backdrop-filter: blur(20px) saturate(1.8) brightness(1.06);
+      backdrop-filter: blur(20px) saturate(1.8) brightness(1.06);
+    }
+  }
+}
