@@ -4,6 +4,18 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.6.1 — docs: PR-level release table + CHANGELOG for the newsletter & capsule releases (2026-06-15 19:02 UTC)
+
+Documentation-only. Rebuilt the README "Recent updates" into a PR-level **Release history** table (one row per release: version, UTC time, PR link, summary), and added the CHANGELOG entries below for `v2.5.0` and `v2.6.0` (whose feature PRs were built by subagents and merged without docs). Tagged both on their merge commits.
+
+## v2.6.0 — Floating Liquid Glass capsule nav (2026-06-15 18:59 UTC)
+
+Evolved the blog masthead from a full-width frosted bar into a **floating Liquid Glass capsule** — a detached, centered, rounded-pill glass bar inset from the viewport edges, with the specular rim and a soft floating shadow. Scoped to `header:not(.post-header)` so it never bleeds onto post titles (the bug fixed in v2.4.2). CSS-only — no markup changes across the 24 pages; the `@supports not (backdrop-filter)` fallback and a tighter mobile radius are preserved. Built via subagent in an isolated worktree (PR #12).
+
+## v2.5.0 — Owned newsletter capture: /subscribe + /unsubscribe + Turnstile (2026-06-15 18:56 UTC)
+
+Stood up the owned-newsletter **capture** backend on the API worker (`api.awonderfullife.ca`) — the first step of "own the list" off Buttondown. New D1 `subscribers` table (migration `0001`), `POST /subscribe` (email validation + Cloudflare **Turnstile** verification + CORS for the site origins + idempotent upsert with a per-subscriber `unsub_token`), `GET /unsubscribe?token=…` (deletes the row, returns a branded page), and an injectable `verifyTurnstile` (so tests can stub it). **15/15 Vitest tests pass.** Single opt-in; sending issues via Resend is a later phase. The live **Buttondown form is untouched** — rewiring it to the API is a deliberate follow-up (PR2) once the owner: creates Turnstile keys, `wrangler secret put TURNSTILE_SECRET`, `wrangler d1 migrations apply awonderfullife-api --remote`, and `cd api && npm run deploy`. Built via subagent in an isolated worktree (PR #11).
+
 ## v2.4.2 — Fix: site-header glass bleeding onto the post title block (2026-06-15 18:52 UTC)
 
 Bug fix to the v2.4.0 Liquid Glass header. Post pages use `<header class="post-header">` for the title block, so the bare `header { … }` selector (frosted sticky bar) was also styling the post title — drawing a stray frosted/rounded panel behind the headline. Scoped the site-header rules (and the `@supports` fallback) to `header:not(.post-header)`, so the glass applies only to the site masthead and the post title renders clean. CSS-only.

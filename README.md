@@ -72,20 +72,24 @@ Generate a hero illustration via `docs/superpowers/tools/gen-hero.sh <slug> "<su
 
 Anything more substantial than a copy edit goes through a brainstorm → spec → plan → execute workflow; see `docs/superpowers/README.md` for that convention.
 
-## Recent updates
+## Release history
 
-| Date | Area | What changed |
-|---|---|---|
-| 2026-06-15 | 🏷 v2.4.0 | Liquid Glass editorial accents — frosted sticky header, glassy newsletter + browse chips |
-| 2026-06-15 | 🏷 v2.3.0 | Email live via iCloud+ Custom Email Domain (+ `v2.3.1`: contact email `v@` surfaced on About + Person JSON-LD) |
-| 2026-06-15 | 🏷 v2.2.0 | Technical SEO foundation — canonical, Open Graph/Twitter, JSON-LD, sitemap, robots (+ `v2.2.1` email DNS checker) |
-| 2026-06-13 | 🏷 v2.1.0 | API spine (Phase 1) — `api.awonderfullife.ca` (D1 + Cloudflare Access) |
-| 2026-06-11 | 🏷 v2.0.0 | Quiet Magazine redesign: featured homepage, illustrated card grids, display-scale post titles, prev/next nav, 16 AI-generated heroes replacing Picsum stand-ins |
-| 2026-05-28 | 🏷 Release | [`v1.0.0` — Editorial direction launch](https://github.com/vijaybpanangi/awonderfullife/releases/tag/v1.0.0) cut as the first formal milestone |
-| 2026-05-28 | Documentation | GitHub [Wiki](https://github.com/vijaybpanangi/awonderfullife/wiki) populated with twelve pages plus sidebar — long-form companion to the in-repo docs |
-| 2026-05-28 | Documentation | `ROADMAP.md` added; README/CLAUDE updated to cross-link it |
-| 2026-05-28 | Infrastructure | `www.awonderfullife.ca` added as a second Custom Domain on the Worker (was returning 522); stale `www` CNAME removed from DNS |
-| 2026-05-28 | Documentation | `README.md`, `CLAUDE.md`, `CHANGELOG.md`, `docs/superpowers/README.md` added so the repo home reads well on GitHub |
-| 2026-05-27 | Redesign | Full editorial direction shipped — Manrope typography, hero photography, faceted category browsing, post-body cleanup, 800px container (17 commits) |
+One row per release — every release is a semver git tag on its merge commit. Full notes in [`CHANGELOG.md`](CHANGELOG.md); all tags at [github.com/vijaybpanangi/awonderfullife/tags](https://github.com/vijaybpanangi/awonderfullife/tags). Newest first.
 
-Full chronological log lives in [`CHANGELOG.md`](CHANGELOG.md); planned work lives in [`ROADMAP.md`](ROADMAP.md).
+| Version | When (UTC) | PR | Summary |
+|---|---|---|---|
+| `v2.6.0` | 2026-06-15 18:59 | [#12](https://github.com/vijaybpanangi/awonderfullife/pull/12) | Floating Liquid Glass capsule nav |
+| `v2.5.0` | 2026-06-15 18:56 | [#11](https://github.com/vijaybpanangi/awonderfullife/pull/11) | Owned newsletter capture — `/subscribe` + `/unsubscribe` + Turnstile (D1) |
+| `v2.4.2` | 2026-06-15 18:52 | [#13](https://github.com/vijaybpanangi/awonderfullife/pull/13) | Fix: site-header glass bleeding onto the post title block |
+| `v2.4.1` | 2026-06-15 17:39 | [#10](https://github.com/vijaybpanangi/awonderfullife/pull/10) | Release governance — semver tags + versioned/timestamped CHANGELOG + doc currency |
+| `v2.4.0` | 2026-06-15 17:10 | [#9](https://github.com/vijaybpanangi/awonderfullife/pull/9) | Liquid Glass editorial accents (frosted sticky header, newsletter, chips) |
+| `v2.3.1` | 2026-06-15 15:05 | [#8](https://github.com/vijaybpanangi/awonderfullife/pull/8) | Contact email `v@` surfaced on About + Person JSON-LD |
+| `v2.3.0` | 2026-06-15 14:28 | [#7](https://github.com/vijaybpanangi/awonderfullife/pull/7) | Email live via iCloud+ Custom Email Domain |
+| `v2.2.1` | 2026-06-15 13:27 | [#6](https://github.com/vijaybpanangi/awonderfullife/pull/6) | Email DNS checker + hardened iCloud email plan |
+| `v2.2.0` | 2026-06-15 04:39 | [#5](https://github.com/vijaybpanangi/awonderfullife/pull/5) | Technical SEO foundation (canonical, OG/Twitter, JSON-LD, sitemap, robots) |
+| `v2.1.1` | 2026-06-15 04:04 | [#4](https://github.com/vijaybpanangi/awonderfullife/pull/4) | India-Pakistan hero regenerated (series cohesion) |
+| `v2.1.0` | 2026-06-14 01:40 | [#3](https://github.com/vijaybpanangi/awonderfullife/pull/3) | API spine (Phase 1) — `api.awonderfullife.ca` (D1 + Cloudflare Access) |
+| `v2.0.0` | 2026-06-11 21:43 | [#2](https://github.com/vijaybpanangi/awonderfullife/pull/2) | Quiet Magazine redesign + 16 AI-generated heroes |
+| `v1.0.0` | 2026-05-28 17:53 | [tag](https://github.com/vijaybpanangi/awonderfullife/releases/tag/v1.0.0) | Editorial direction launch (Manrope, hero photography, faceted browsing) |
+
+Planned work lives in [`ROADMAP.md`](ROADMAP.md).
