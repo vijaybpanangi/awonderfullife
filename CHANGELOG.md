@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.16.4 — Favicon: softer gray monogram (2026-06-16 21:10 UTC)
+
+Recolored the favicon "A" monogram from the accent blue to a **semi-light cool gray** (gradient `#9aa0a6 → #777c83`), keeping the white letter and the liquid-glass specular edge. Regenerated `favicon.svg`, `favicon.ico`, and `apple-touch-icon.png`. (Hard-refresh to clear the cached blue one.)
+
 ## v2.16.3 — Favicon: replace the WordPress-era leftover with a brand mark (2026-06-16 20:59 UTC)
 
 The site had **no favicon** (no `<link>`, `/favicon.ico` 404'd), so browsers fell back to a stale WordPress.com icon cached from the old host. Added an on-brand set: an **"A" monogram** in the accent blue (#0a4a9a) with the subtle liquid-glass specular edge — `favicon.svg` (scalable), `favicon.ico` (16/32/48), and `apple-touch-icon.png` (180), linked from every page's `<head>`. Hard-refresh to clear the cached old icon.
