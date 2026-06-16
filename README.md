@@ -78,6 +78,7 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
+| `v2.16.2` | 2026-06-16 20:43 | [#35](https://github.com/vijaybpanangi/awonderfullife/pull/35) | Comments: whole section as one frosted pane with nested translucent comment cards |
 | `v2.16.1` | 2026-06-16 20:33 | [#34](https://github.com/vijaybpanangi/awonderfullife/pull/34) | Comments restyled into the Liquid-Glass design language (frosted pane, recessed inputs, beveled button, avatars) |
 | `v2.16.0` | 2026-06-16 20:16 | [#33](https://github.com/vijaybpanangi/awonderfullife/pull/33) | Comments: email-verified instant posting + AI auto-moderation sweep (D1 + API worker) |
 | `v2.15.1` | 2026-06-16 18:08 | [#32](https://github.com/vijaybpanangi/awonderfullife/pull/32) | Fix: remove invalid host-based `_redirects` that blocked the v2.15.0 deploy (www→apex moves to a dashboard rule) |
