@@ -271,11 +271,9 @@ a.kicker:hover {
      news-like than the previous 18px / 1.8 while keeping Manrope. */
   font-size: 1.0625rem;
   line-height: 1.7;
-  /* Justified body for even right edges / symmetric paragraph blocks;
-     hyphens:auto prevents large word-gaps (needs the page's lang="en"). */
-  text-align: justify;
-  -webkit-hyphens: auto;
-  hyphens: auto;
+  /* Left-aligned / ragged-right — the professional editorial standard (NYT et al.);
+     even word spacing, no justified "rivers" in sans-serif at this measure. */
+  text-align: left;
 }
 .post-content p { margin-bottom: 1.2rem; }
 .post-content h2 { font-size: 1.4rem; margin-top: 2.25rem; }
