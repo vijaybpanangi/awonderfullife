@@ -44,7 +44,7 @@ body {
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   header:not(.post-header) { background: rgba(255,255,255,0.96); border: 1px solid var(--color-border); }
   .newsletter { background: var(--color-bg-soft); }
-  .comment-form { background: var(--color-bg-soft); }
+  .comments { background: var(--color-bg-soft); }
   .facet-chip { background: #fff; }
 }
 
@@ -299,14 +299,26 @@ a.kicker:hover {
   .post-aside { position: static; max-width: 22rem; }
 }
 
-/* Comments — in the site's Liquid-Glass language (matches the newsletter pane),
-   blended with skeuomorphic depth: recessed inputs, a raised beveled button, soft avatars. */
-.comments { max-width: 42rem; margin: 3.5rem auto 0; padding-top: 2rem; border-top: 1px solid var(--color-border); }
-.comments h2 { font-size: 1.35rem; letter-spacing: -0.02em; margin-bottom: 1.25rem; }
+/* Comments — the whole section is ONE frosted-glass pane; each comment and the
+   form are translucent cards nested on it. Only the section blurs (no nested
+   backdrop-filter, which would go muddy); the cards are translucent + beveled. */
+.comments {
+  max-width: 42rem; margin: 3.5rem auto 0; padding: 1.75rem 1.75rem 2rem;
+  background: linear-gradient(160deg, rgba(255,255,255,0.6), rgba(244,248,253,0.48));
+  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+  border: 1px solid rgba(255,255,255,0.65); border-radius: 18px;
+  box-shadow: 0 18px 44px -24px rgba(17,17,17,0.26), var(--glass-rim);
+}
+.comments h2 { font-size: 1.3rem; letter-spacing: -0.02em; margin-bottom: 1.1rem; }
 
-.comment-list { margin-bottom: 2rem; }
-.comment { display: grid; grid-template-columns: auto 1fr; gap: 0.85rem; padding: 1.05rem 0; border-bottom: 1px solid rgba(17,17,17,0.07); }
-.comment:last-child { border-bottom: 0; }
+.comment-list { margin-bottom: 1.75rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.comment {
+  display: grid; grid-template-columns: auto 1fr; gap: 0.85rem; align-items: start;
+  padding: 0.95rem 1.05rem;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.6); border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 1px 3px -1px rgba(17,17,17,0.06);
+}
 .comment-avatar {
   width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
   font-weight: 700; font-size: 0.9rem; color: #fff; user-select: none;
@@ -316,18 +328,17 @@ a.kicker:hover {
 .comment-meta { font-size: 0.8rem; color: var(--color-text-light); margin-bottom: 0.2rem; }
 .comment-meta strong { color: var(--color-text); font-weight: 600; }
 .comment-body { margin: 0; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; }
-.comment-removed { display: block; }
+.comment-removed { display: block; background: rgba(255,255,255,0.32); }
 .comment-removed .comment-body { color: var(--color-text-light); font-style: italic; }
-.comment-empty { color: var(--color-text-light); }
+.comment-empty { color: var(--color-text-light); padding: 0.4rem 0.2rem; }
 
-/* the form — frosted glass pane (same recipe as .newsletter) */
+/* the form — a raised translucent card on the section pane (no second blur) */
 .comment-form {
   display: flex; flex-direction: column; gap: 0.8rem;
-  background: linear-gradient(160deg, rgba(255,255,255,0.62), rgba(244,248,253,0.5));
-  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-  border: 1px solid rgba(255,255,255,0.65); border-radius: 16px;
-  box-shadow: 0 14px 38px -22px rgba(17,17,17,0.22), var(--glass-rim);
-  padding: 1.75rem;
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.7); border-radius: 14px;
+  box-shadow: var(--glass-rim), 0 8px 20px -14px rgba(17,17,17,0.2);
+  padding: 1.5rem;
 }
 .comment-form h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 0.15rem; }
 /* recessed, tactile inputs */
@@ -357,7 +368,7 @@ a.kicker:hover {
 .comment-submit:disabled { opacity: 0.55; cursor: default; transform: none; box-shadow: var(--glass-rim); }
 .comment-msg { font-size: 0.85rem; color: var(--color-text-light); margin: 0; min-height: 1em; }
 .comment-note { font-size: 0.75rem; color: var(--color-text-light); margin: 0.25rem 0 0; line-height: 1.5; }
-@media (max-width: 600px) { .comment-form { padding: 1.4rem; } }
+@media (max-width: 600px) { .comments { padding: 1.3rem; } .comment-form { padding: 1.25rem; } }
 .post-content {
   /* Editorial body: 17px on a calmer 1.7 leading reads tighter and more
      news-like than the previous 18px / 1.8 while keeping Manrope. */
@@ -674,7 +685,7 @@ input:focus-visible {
     backdrop-filter: url("#edge-lensing");
   }
   .newsletter.lensing,
-  .comment-form.lensing {
+  .comments {
     -webkit-backdrop-filter: url("#edge-lensing");
     backdrop-filter: url("#edge-lensing");
   }
@@ -682,7 +693,7 @@ input:focus-visible {
   @media (prefers-reduced-motion: reduce) {
     header:not(.post-header).lensing,
     .newsletter.lensing,
-    .comment-form.lensing {
+    .comments {
       -webkit-backdrop-filter: blur(20px) saturate(1.8) brightness(1.06);
       backdrop-filter: blur(20px) saturate(1.8) brightness(1.06);
     }

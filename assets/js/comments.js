@@ -60,7 +60,7 @@
   }
 
   // --- form ---
-  var form = el('form', 'comment-form lensing');
+  var form = el('form', 'comment-form');
   var fName = el('input'); fName.type = 'text'; fName.placeholder = 'Your name'; fName.required = true; fName.maxLength = 80;
   var fEmail = el('input'); fEmail.type = 'email'; fEmail.placeholder = 'Your email (kept private, used once to confirm)'; fEmail.required = true;
   var fBody = el('textarea'); fBody.placeholder = 'Share a thought…'; fBody.required = true; fBody.rows = 4; fBody.maxLength = 4000;
