@@ -1,0 +1,3 @@
+# Canonicalize www -> apex (301). If the static-assets _redirects file does not
+# honor host-based matching, set this as a Cloudflare Redirect Rule instead.
+https://www.awonderfullife.ca/* https://awonderfullife.ca/:splat 301
