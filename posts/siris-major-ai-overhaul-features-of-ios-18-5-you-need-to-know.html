@@ -136,7 +136,7 @@
                 <p>Apple is making big moves in artificial intelligence, and if the latest reports are true, Siri is about to get a serious upgrade. With the upcoming release of iOS 18.5, Apple is expected to introduce a new AI-powered system called Apple Intelligence, designed to make Siri smarter, more intuitive, and more useful than ever before.</p>
                 <p>But what does this mean for iPhone users? How will this new AI update change the way we use Siri in our daily lives? Let’s break it down in simple terms.</p>
                 <h2>Apple Intelligence: What’s Coming to Siri?</h2>
-                <p>Siri has been around for over a decade, but let’s be honest—compared to AI assistants like ChatGPT and Google Assistant, it’s often felt outdated. That’s about to change with Apple Intelligence, Apple’s ambitious new AI system set to roll out in iOS 18.5.</p>
+                <p>Siri has been around for over a decade, but let’s be honest: compared to AI assistants like ChatGPT and Google Assistant, it’s often felt outdated. That’s about to change with Apple Intelligence, Apple’s ambitious new AI system set to roll out in iOS 18.5.</p>
                 <p>Rumours suggest this upgrade will bring:</p>
                 <ul>
                     <li><strong>Smarter responses:</strong> Siri will be better at understanding context and following multi-step commands.</li>
@@ -144,7 +144,7 @@
                     <li><strong>Tighter integration with Apple apps:</strong> Siri will work more seamlessly across Messages, Mail, Calendar, Safari, and other built-in apps.</li>
                     <li><strong>Better personalization:</strong> Siri will learn more about your habits and preferences, helping you faster and more efficiently.</li>
                 </ul>
-                <p>This isn’t just a minor update—it’s a complete overhaul designed to make Siri actually useful in everyday life.</p>
+                <p>This is more than a minor update. It’s a complete overhaul designed to make Siri actually useful in everyday life.</p>
                 <h2>Why Is Apple Upgrading Siri Now?</h2>
                 <p>Apple has been playing catch-up in the AI race. While companies like OpenAI, Google, and Microsoft have been pushing AI-powered tools into their products, Apple has taken a more cautious approach.</p>
                 <p>This could be because Apple prioritizes privacy and security, meaning they don’t rush to adopt every new technology until they’re sure it meets their strict standards. But with customer demand for smarter AI assistants growing, they’re finally bringing major AI improvements to Siri.</p>
@@ -158,7 +158,7 @@
                     <li><strong>Better app integration:</strong> Want to schedule a meeting, send an email, and look up flight times without switching between apps? Siri may soon juggle multiple tasks without breaking a sweat.</li>
                 </ul>
                 <h3>2. More Natural Conversations</h3>
-                <p>Right now, using Siri can feel robotic—you ask a question, get a basic response, and that’s it. But with Apple Intelligence, Siri may start feeling more like an actual assistant.</p>
+                <p>Right now, using Siri can feel robotic. You ask a question, get a basic response, and that’s it. But with Apple Intelligence, Siri may start feeling more like an actual assistant.</p>
                 <ul>
                     <li><strong>More natural responses:</strong> Instead of stiff, one-line answers, Siri’s responses may become more fluid and conversational.</li>
                     <li><strong>Follow-up questions:</strong> If you ask for nearby restaurants, Siri might ask what cuisine you’re in the mood for instead of listing random options.</li>
@@ -236,12 +236,12 @@
         })
         .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
         .then(function (res) {
-          if (res.ok && res.d && res.d.status === 'ok') { say('Thanks — you\'re on the list.'); form.reset(); }
+          if (res.ok && res.d && res.d.status === 'ok') { say('Thanks, you\'re on the list.'); form.reset(); }
           else if (res.d && res.d.error === 'invalid_email') { say('That email doesn\'t look right.'); }
           else { say('Sorry, something went wrong. Please try again.'); }
           if (window.turnstile && window.turnstile.reset) window.turnstile.reset();
         })
-        .catch(function () { say('Network error — please try again.'); if (window.turnstile && window.turnstile.reset) window.turnstile.reset(); });
+        .catch(function () { say('Network error. Please try again.'); if (window.turnstile && window.turnstile.reset) window.turnstile.reset(); });
       });
     })();
     </script>
