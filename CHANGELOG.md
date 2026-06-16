@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.16.1 — Comments restyled into the site's Liquid-Glass language (2026-06-16 20:33 UTC)
+
+The v2.16.0 comment widget worked but looked utilitarian and off-brand. Restyled to match the site's design system: the form is now a **frosted-glass pane** (same recipe as the newsletter — gradient glass, `--glass-blur`, white border, the specular `--glass-rim`, and the `.lensing` edge-displacement on Chromium), with skeuomorphic depth — **recessed, tactile inputs** (inner shadow), a **raised beveled accent button** (pill, specular top edge, press state), and soft **initial-avatars** on each comment. Inputs now stack full-width correctly. CSS + widget markup only; the comment backend is unchanged.
+
 ## v2.16.0 — Comments: verified, instant-post, auto-moderated (2026-06-16 20:16 UTC)
 
 Post comments, owned end-to-end (D1 + the API worker), in the same privacy-clean spirit as the rest of the stack:
