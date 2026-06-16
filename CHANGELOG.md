@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.15.1 — Fix: remove invalid _redirects that blocked the deploy (2026-06-16 18:08 UTC)
+
+The `www → apex` rule in `_redirects` used an absolute (host-based) URL, which Cloudflare's static-asset `_redirects` rejects (`Only relative URLs are allowed`, code 100324) — and that failed the **entire** v2.15.0 deploy, so none of it went live until caught. Removed the file. `www → apex` will instead be a Cloudflare **Redirect Rule** (dashboard, owner action). Everything else in v2.15.0 is verified live: 1-year asset caching, all five security headers, RSS, clean URLs, rounded 3:2 images, and the author sidebar.
+
 ## v2.15.0 — Site polish: performance, readability, RSS, author sidebar (2026-06-16 17:48 UTC)
 
 A sweep of the website-review punch list plus two design touches:
