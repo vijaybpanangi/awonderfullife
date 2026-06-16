@@ -1,5 +1,8 @@
 .superpowers/
 
+# Staging area for source images before they're optimized into assets/images/.
+assets/staging-images/
+
 # wrangler files
 .wrangler
 .dev.vars*
