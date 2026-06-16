@@ -4,6 +4,16 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.12.1 — Hero refresh (batch 1): photoreal composed covers on 5 posts (2026-06-16 00:39 UTC)
+
+First batch of the hero-image regeneration. Replaced the flat-illustration heroes on five posts with photoreal images generated via ChatGPT (`gpt-image-1`), optimized PNG→JPG (2–3 MB → 160–405 KB):
+
+- **Four composed "cover" heroes** (Leadership Contrasts, Whispers of Wanderlust, An Ode to Winter, Wanderlust Diaries) carry the kicker/title/byline **in the image**. Those posts now hide the duplicate HTML header via a new `.post-header.is-hero-titled` rule — the header stays in the DOM (real `<h1>`, kicker, byline) for SEO, JSON-LD, and screen readers, but the cover visually carries the masthead. As a bonus these become rich `og:image` social-share cards.
+- **The Trump vs. Harris hero is textless** and keeps the normal HTML header.
+- Alt text rewritten to describe each new scene; image manifest updated; source PNGs kept out of git/the asset bundle (`assets/staging-images/`).
+
+The remaining 11 heroes will follow in later batches to restore series cohesion.
+
 ## v2.12.0 — Compose UI: rich editor, sign-out, and custom scheduling (2026-06-15 23:44 UTC)
 
 Three upgrades to the compose experience, plus the scheduling model behind it:

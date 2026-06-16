@@ -238,6 +238,16 @@ a.kicker:hover {
   color: var(--color-text-light);
   margin-bottom: 0;
 }
+/* Posts whose hero image already carries the kicker/title/byline (composed
+   "cover" heroes): hide the duplicate HTML header visually but keep it in the
+   DOM so the document keeps a real <h1> for SEO, JSON-LD, and screen readers. */
+.post-header.is-hero-titled {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
 .post-hero {
   --breakout: clamp(0px, calc((100vw - var(--max-width)) / 2 - 1.5rem), 140px);
   width: calc(100% + var(--breakout) * 2);

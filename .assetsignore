@@ -17,6 +17,10 @@
 .superpowers
 .superpowers/**
 
+# Staging source images (pre-optimization) — not served; processed copies live in assets/images/.
+assets/staging-images
+assets/staging-images/**
+
 # Repo metadata and docs that shouldn't be public assets.
 .gitignore
 .assetsignore
