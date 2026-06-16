@@ -4,6 +4,19 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.13.0 — Editorial formatting sweep across all posts (2026-06-16 15:06 UTC)
+
+A site-wide pass to bring every post to a clean, professional, NYT-style editorial standard (font unchanged — still Manrope):
+
+- **Typography:** body 18px to 17px, line-height 1.8 to 1.7, tighter paragraph/heading rhythm, and **left-aligned** (was justified) for even spacing and a news-like read.
+- **Emphasis:** stripped the inline bold/italic "emphasis spam" (one post had 81 bolded phrases) down to NYT level — bold/italic now only on reference labels, list lead-ins, and titles of works.
+- **Artifacts:** converted all leftover WordPress-export `[text](url)` links and raw `##` headings to real HTML; rebuilt Sources sections as `.post-references` lists with working links.
+- **Closings:** reworked promotional/CTA endings ("join the conversation", "drop your thoughts in the comments" — the site has no comments) into calm, reflective closes in the author's voice.
+- **No em dashes:** removed every em dash from post bodies and the newsletter status messages (kept one inside a cited article's real headline), replacing with natural punctuation.
+- **Canadian English:** prose now uses honour, neighbour, defence, travelled, fuelled, labours, kilometre; proper nouns/URLs/code left intact.
+
+Mechanically assisted by parallel subagents, one per post, against a shared style spec; re-audited to zero artifacts/em dashes and verified structurally.
+
 ## v2.12.2 — Post fixes: data-dilemma references + iOS 18.5 heading (2026-06-16 13:39 UTC)
 
 Fixed leftover WordPress-export artifacts in two posts:
