@@ -78,6 +78,7 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
+| `v2.14.0` | 2026-06-16 17:05 | [#30](https://github.com/vijaybpanangi/awonderfullife/pull/30) | Hero refresh complete: all 16 posts (photoreal ChatGPT covers, 9 composed / 7 textless) |
 | `v2.13.0` | 2026-06-16 15:06 | [#29](https://github.com/vijaybpanangi/awonderfullife/pull/29) | Editorial sweep: 17px left-aligned body, strip emphasis spam, no em dashes, Canadian spelling, calm closings |
 | `v2.12.2` | 2026-06-16 13:39 | [#28](https://github.com/vijaybpanangi/awonderfullife/pull/28) | Post fixes: data-dilemma references (links + smaller font), iOS 18.5 heading |
 | `v2.12.1` | 2026-06-16 00:39 | [#27](https://github.com/vijaybpanangi/awonderfullife/pull/27) | Hero refresh (batch 1): photoreal composed covers on 5 posts |
