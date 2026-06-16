@@ -133,12 +133,12 @@
             <img class="post-hero" src="../assets/images/posts/wanderlust-diaries-journeys-beyond-borders.jpg" alt="A weathered vintage suitcase with travel stickers rests on a sunlit railway platform at golden hour, an ornate iron-and-glass canopy overhead and trains on both sides, the sun low at the end of the tracks.">
             
             <div class="post-content">
-                <p>As the sun sets on another day, I find myself flipping through the pages of my Wanderlust Diaries, each entry a testament to the adventures that have shaped my soul. In a world brimming with wonders, these diaries serve as my faithful companions, capturing the essence of my travels and the stories that unfold along the way.</p>
+                <p>As the sun sets on another day, I find myself flipping through the pages of my Wanderlust Diaries, each entry a testament to the adventures that have shaped my soul. These diaries serve as my faithful companions, capturing the essence of my travels and the stories that unfold along the way.</p>
                 <p>Embark on a journey of discovery with me as we traverse the globe, from the bustling streets of New York City to the serene shores of Bali. Each destination holds a promise of new experiences and unexpected encounters, beckoning us to explore beyond the boundaries of familiarity.</p>
-                <p>"Exploring the world one adventure at a time," my Wanderlust Diaries chronicle the moments that take my breath away—the breathtaking vistas, the vibrant cultures, the chance encounters with fellow wanderers. With each entry, I aim to inspire others to embrace their wanderlust and seek out the beauty that awaits just beyond the horizon.</p>
-                <p>Join me as we unleash our wanderlust together, one diary entry at a time. Let these pages be a testament to the boundless possibilities that await those who dare to dream and explore. Whether you're a seasoned traveler or an armchair adventurer, there's a place for you in the Wanderlust Diaries—a place where every destination has a story to tell and every journey leaves its mark on the soul.</p>
+                <p>"Exploring the world one adventure at a time," my Wanderlust Diaries chronicle the moments that take my breath away: the breathtaking vistas, the vibrant cultures, the chance encounters with fellow wanderers. With each entry, I aim to inspire others to embrace their wanderlust and seek out the beauty that awaits just beyond the horizon.</p>
+                <p>Join me as we unleash our wanderlust together, one diary entry at a time. Let these pages be a testament to the boundless possibilities that await those who dare to dream and explore. Whether you're a seasoned traveler or an armchair adventurer, there's a place for you in the Wanderlust Diaries, a place where every destination has a story to tell and every journey leaves its mark on the soul.</p>
                 <p>So grab your passport, pack your bags, and let's embark on an adventure of a lifetime. Together, we'll write the chapters of adventure, weaving tales of exploration and discovery that will inspire generations to come.</p>
-                <p>Welcome to Wanderlust Diaries—a journey beyond borders, where wanderlust meets pen and paper, and every page holds the promise of a new adventure.</p>
+                <p>Welcome to Wanderlust Diaries, a journey beyond borders, where wanderlust meets pen and paper, and every page holds the promise of a new adventure.</p>
             </div>
         <nav class="post-nav" aria-label="More posts">
   <a class="post-nav-link post-nav-next" href="an-ode-to-winter-discovering-unforeseen-charms-in-torontos-embrace.html">
@@ -184,12 +184,12 @@
         })
         .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
         .then(function (res) {
-          if (res.ok && res.d && res.d.status === 'ok') { say('Thanks — you\'re on the list.'); form.reset(); }
+          if (res.ok && res.d && res.d.status === 'ok') { say('Thanks, you\'re on the list.'); form.reset(); }
           else if (res.d && res.d.error === 'invalid_email') { say('That email doesn\'t look right.'); }
           else { say('Sorry, something went wrong. Please try again.'); }
           if (window.turnstile && window.turnstile.reset) window.turnstile.reset();
         })
-        .catch(function () { say('Network error — please try again.'); if (window.turnstile && window.turnstile.reset) window.turnstile.reset(); });
+        .catch(function () { say('Network error. Please try again.'); if (window.turnstile && window.turnstile.reset) window.turnstile.reset(); });
       });
     })();
     </script>

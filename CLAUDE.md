@@ -115,12 +115,20 @@ Post bodies inside `<div class="post-content">` were cleaned in commit `6df6352`
 - Use `<strong>` for bold, `<em>` for italic, `<blockquote><p>...</p></blockquote>` for quotations, `<h2>` / `<h3>` for section headings.
 - Do not leave raw markdown markers in HTML; they will not render.
 
+**Editorial style (NYT-inspired, locked in `v2.13.0`).** All posts follow these — match them in new posts and edits:
+- **Body is 17px / line-height 1.7 / left-aligned** (not justified). Font stays Manrope.
+- **Minimal inline emphasis.** No "emphasis spam." Reserve `<strong>`/`<em>` for reference-list source labels, definition-list lead-ins, and titles of works/foreign terms — not whole phrases or sentences.
+- **No em dashes (—)** in prose. Use commas, colons, periods, parentheses, or a conjunction. (En dashes `–` are fine in ranges; an em dash inside a *cited* real headline may stay.)
+- **Canadian English:** `honour`, `neighbour`, `defence`, `travelled`, `centre`/`kilometre` (-re), `labour`; keep `-ize` (realize/organize). Never Canadianize proper nouns (Bureau of Labor Statistics, Brennan Center), URLs, or the SVG `color-interpolation-filters` attribute.
+- **No promotional/CTA endings** ("join the conversation", "share in the comments" — there is no comments system). Close reflectively in the author's plain voice.
+- **References** go in `<section class="post-references">` (an `<h3>` + a `<ul>` of `<li><strong>Source</strong> – <a href target=_blank rel=noopener>Title</a></li>`); styled smaller/muted by `.post-references`.
+
 ## Project documentation conventions
 
 - `docs/superpowers/specs/` — design specs (the *what* and *why*): `YYYY-MM-DD-<topic>-design.md`.
 - `docs/superpowers/plans/` — implementation plans (the *how*): `YYYY-MM-DD-<topic>.md`.
 - `ROADMAP.md` at the root tracks **future** work and deferred items; `CHANGELOG.md` tracks **past** changes. Always check both before proposing work — the answer to "is this on the radar?" is in one or the other.
-- **Releases & versioning.** Every release gets a semver git tag on its merge commit — **major** = redesign / identity shift, **minor** = new feature or notable enhancement, **patch** = fix / content / docs. When you ship a change, add a versioned `CHANGELOG.md` entry (`## vX.Y.Z — Title (YYYY-MM-DD HH:MM UTC)`, timestamp from the merge commit) and create + push the matching tag (`git tag -a vX.Y.Z -m "…" && git push origin vX.Y.Z`). Also add a row to the README change-history table (`| version | when | PR | summary |`). Latest: `v2.10.0`.
+- **Releases & versioning.** Every release gets a semver git tag on its merge commit — **major** = redesign / identity shift, **minor** = new feature or notable enhancement, **patch** = fix / content / docs. When you ship a change, add a versioned `CHANGELOG.md` entry (`## vX.Y.Z — Title (YYYY-MM-DD HH:MM UTC)`, timestamp from the merge commit) and create + push the matching tag (`git tag -a vX.Y.Z -m "…" && git push origin vX.Y.Z`). Also add a row to the README change-history table (`| version | when | PR | summary |`). Latest: `v2.13.0`.
 - See `docs/superpowers/README.md` for the brainstorm → spec → plan → execute workflow.
 
 ## Known follow-ups

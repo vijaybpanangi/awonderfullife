@@ -165,12 +165,12 @@
         })
         .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
         .then(function (res) {
-          if (res.ok && res.d && res.d.status === 'ok') { say('Thanks — you\'re on the list.'); form.reset(); }
+          if (res.ok && res.d && res.d.status === 'ok') { say('Thanks, you\'re on the list.'); form.reset(); }
           else if (res.d && res.d.error === 'invalid_email') { say('That email doesn\'t look right.'); }
           else { say('Sorry, something went wrong. Please try again.'); }
           if (window.turnstile && window.turnstile.reset) window.turnstile.reset();
         })
-        .catch(function () { say('Network error — please try again.'); if (window.turnstile && window.turnstile.reset) window.turnstile.reset(); });
+        .catch(function () { say('Network error. Please try again.'); if (window.turnstile && window.turnstile.reset) window.turnstile.reset(); });
       });
     })();
     </script>

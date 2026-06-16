@@ -267,14 +267,17 @@ a.kicker:hover {
   margin: -1.25rem 0 2rem;
 }
 .post-content {
-  font-size: 1.125rem;
-  line-height: 1.8;
-  /* Justified body for even right edges / symmetric paragraph blocks;
-     hyphens:auto prevents large word-gaps (needs the page's lang="en"). */
-  text-align: justify;
-  -webkit-hyphens: auto;
-  hyphens: auto;
+  /* Editorial body: 17px on a calmer 1.7 leading reads tighter and more
+     news-like than the previous 18px / 1.8 while keeping Manrope. */
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  /* Left-aligned / ragged-right — the professional editorial standard (NYT et al.);
+     even word spacing, no justified "rivers" in sans-serif at this measure. */
+  text-align: left;
 }
+.post-content p { margin-bottom: 1.2rem; }
+.post-content h2 { font-size: 1.4rem; margin-top: 2.25rem; }
+.post-content h3 { font-size: 1.15rem; margin-top: 1.75rem; }
 .post-content h2, .post-content h3 { font-weight: 700; }
 .post-content img { max-width: 100%; height: auto; margin: 2rem 0; }
 .post-content blockquote {
