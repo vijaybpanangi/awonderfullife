@@ -4,6 +4,17 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.14.0 — Hero refresh complete: all 16 posts (2026-06-16 17:05 UTC)
+
+Finished the hero-image regeneration begun in v2.12.1. Every post now carries a photoreal ChatGPT (`gpt-image-1`) hero, optimized PNG→JPG (137–405 KB):
+
+- **9 composed covers** (title/byline baked in) use the `.post-header.is-hero-titled` treatment so the cover carries the masthead while the HTML header stays in the DOM for SEO/screen readers; these also serve as rich `og:image` social cards.
+- **7 textless** heroes keep the normal HTML header.
+- Every alt text rewritten to describe the scene and is **em-dash-free** (clears the last stray alt em dash flagged in v2.13.0).
+- Image manifest fully refreshed; source PNGs stay out of git and the asset bundle.
+
+Wired by parallel subagents (one per post): each viewed its image, classified composed vs textless, set the header treatment, and wrote the alt; verified header classes and zero alt em dashes. The series is now visually consistent (photoreal throughout) rather than mixed.
+
 ## v2.13.0 — Editorial formatting sweep across all posts (2026-06-16 15:06 UTC)
 
 A site-wide pass to bring every post to a clean, professional, NYT-style editorial standard (font unchanged — still Manrope):
