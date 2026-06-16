@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.16.3 — Favicon: replace the WordPress-era leftover with a brand mark (2026-06-16 20:59 UTC)
+
+The site had **no favicon** (no `<link>`, `/favicon.ico` 404'd), so browsers fell back to a stale WordPress.com icon cached from the old host. Added an on-brand set: an **"A" monogram** in the accent blue (#0a4a9a) with the subtle liquid-glass specular edge — `favicon.svg` (scalable), `favicon.ico` (16/32/48), and `apple-touch-icon.png` (180), linked from every page's `<head>`. Hard-refresh to clear the cached old icon.
+
 ## v2.16.2 — Comments: one section pane with nested comment cards (2026-06-16 20:43 UTC)
 
 Refined the v2.16.1 styling: the **whole comments section is now the single frosted-glass pane** (gradient glass, `--glass-blur`, `--glass-rim`, edge-`.lensing` on Chromium), and each comment and the form are **translucent beveled cards nested on it**. Deliberately avoids nested `backdrop-filter` (glass-on-glass turns muddy) — only the section blurs; the cards are translucent white with a specular top edge. Recessed inputs, the raised accent pill, and the initial-avatars carry over. CSS + widget markup only.
