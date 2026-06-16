@@ -177,9 +177,9 @@ a.kicker:hover {
 .featured-link:hover { text-decoration: none; }
 .featured img {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 14px;
   margin-bottom: 1.25rem;
 }
 .featured .post-title {
@@ -201,9 +201,9 @@ a.kicker:hover {
 .card-link:hover { text-decoration: none; }
 .card img {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 14px;
   margin-bottom: 0.9rem;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -224,7 +224,7 @@ a.kicker:hover {
 }
 
 /* Single post page */
-.post-header { margin-bottom: 1.5rem; }
+.post-header { margin-bottom: 1.5rem; max-width: 42rem; margin-inline: auto; }
 .post-header h1 {
   font-size: clamp(2.2rem, 5vw, 3.2rem);
   line-height: 1.08;
@@ -254,11 +254,11 @@ a.kicker:hover {
   max-width: none;
   margin-left: calc(var(--breakout) * -1);
   height: auto;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
   margin-top: 1.5rem;
   margin-bottom: 2rem;
-  border-radius: 4px;
+  border-radius: 14px;
 }
 .post-hero-caption {
   font-size: 0.85rem;
@@ -266,11 +266,46 @@ a.kicker:hover {
   font-style: italic;
   margin: -1.25rem 0 2rem;
 }
+
+/* Post page: article + sticky author sidebar */
+.container--post { max-width: 1100px; }
+.post-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 15rem;
+  gap: 3rem;
+  align-items: start;
+}
+.post-layout > article { min-width: 0; }
+/* In the two-column layout the hero fills the article column (no breakout) and
+   the reading column aligns left under it rather than centring. */
+.post-layout .post-hero { --breakout: 0px; }
+.post-layout .post-header,
+.post-layout .post-content { margin-inline: 0; }
+.post-aside { position: sticky; top: 6rem; }
+.author-card {
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 1.4rem 1.25rem;
+  text-align: center;
+  background: #fff;
+}
+.author-card-avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; }
+.author-card-name { font-weight: 700; margin: 0.7rem 0 0.3rem; letter-spacing: -0.01em; }
+.author-card-bio { font-size: 0.85rem; color: var(--color-text-light); line-height: 1.55; margin: 0 0 0.9rem; }
+.author-card-link { font-size: 0.85rem; font-weight: 600; }
+@media (max-width: 900px) {
+  .post-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+  .post-aside { position: static; max-width: 22rem; }
+}
 .post-content {
   /* Editorial body: 17px on a calmer 1.7 leading reads tighter and more
      news-like than the previous 18px / 1.8 while keeping Manrope. */
   font-size: 1.0625rem;
   line-height: 1.7;
+  /* ~70-character reading measure (narrower than the 800px column) for readability;
+     the hero still breaks out wider via its own --breakout. */
+  max-width: 42rem;
+  margin-inline: auto;
   /* Left-aligned / ragged-right — the professional editorial standard (NYT et al.);
      even word spacing, no justified "rivers" in sans-serif at this measure. */
   text-align: left;
