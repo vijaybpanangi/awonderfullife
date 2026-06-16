@@ -4,6 +4,15 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.12.2 — Post fixes: data-dilemma references + iOS 18.5 heading (2026-06-16 13:39 UTC)
+
+Fixed leftover WordPress-export artifacts in two posts:
+
+- **Data Dilemma:** the *Sources & References* section is now a proper, smaller-font list with **working hyperlinks** — the links had been stuck as literal `[text](url)` markdown. Source names stay readable; citation text is muted and set apart with a top rule (new `.post-references` style).
+- **Siri / iOS 18.5:** a raw `## …` markdown heading at the top of the post is now a real `<h2>`.
+
+The same raw `[text](url)` link artifact still exists in four other posts (2024-election, how-integrity, apple-intelligence, dream-big) — to be cleaned in the upcoming formatting sweep.
+
 ## v2.12.1 — Hero refresh (batch 1): photoreal composed covers on 5 posts (2026-06-16 00:39 UTC)
 
 First batch of the hero-image regeneration. Replaced the flat-illustration heroes on five posts with photoreal images generated via ChatGPT (`gpt-image-1`), optimized PNG→JPG (2–3 MB → 160–405 KB):
