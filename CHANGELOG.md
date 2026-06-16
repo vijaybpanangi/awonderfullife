@@ -4,6 +4,15 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.16.0 — Comments: verified, instant-post, auto-moderated (2026-06-16 20:16 UTC)
+
+Post comments, owned end-to-end (D1 + the API worker), in the same privacy-clean spirit as the rest of the stack:
+
+- **Verify then post instantly.** A reader writes a comment, passes Turnstile, and confirms via a one-time **magic link** (Resend). Confirming publishes the comment **immediately** and sets a 30-day session so repeat comments skip the email step. Names are shown; emails are stored for verification only and never displayed.
+- **Auto-moderation sweep, with tombstones.** The 15-minute cron checks new comments (heuristics + Cloudflare **Workers AI**); anything flagged as spam/abuse is replaced **in place** with "This comment was removed because it failed our moderation checks" rather than silently deleted. Graceful: if AI is unavailable, heuristics still run; if the signing secret is unset, comments still work (just verify per comment).
+- New D1 tables (`comments`, `comment_verifications`, migration `0004`); endpoints `GET /comments`, `POST /comments`, `GET /comments/verify`; `AI` binding added. A shared, XSS-safe widget (`assets/js/comments.js`, renders user text as `textContent` only) is embedded on all 16 posts.
+- 7 new Vitest tests (verify flow, instant session post, Turnstile gate, sweep tombstoning + clean-pass). Reuses the existing Resend key and cron.
+
 ## v2.15.1 — Fix: remove invalid _redirects that blocked the deploy (2026-06-16 18:08 UTC)
 
 The `www → apex` rule in `_redirects` used an absolute (host-based) URL, which Cloudflare's static-asset `_redirects` rejects (`Only relative URLs are allowed`, code 100324) — and that failed the **entire** v2.15.0 deploy, so none of it went live until caught. Removed the file. `www → apex` will instead be a Cloudflare **Redirect Rule** (dashboard, owner action). Everything else in v2.15.0 is verified live: 1-year asset caching, all five security headers, RSS, clean URLs, rounded 3:2 images, and the author sidebar.

@@ -28,5 +28,7 @@
       "database_name": "awonderfullife-api",
       "database_id": "397ace16-32f8-472b-b0b2-5910c3497c44"
     }
-  ]
+  ],
+  // Workers AI — used by the comment moderation sweep to flag spam/abuse.
+  "ai": { "binding": "AI" }
 }

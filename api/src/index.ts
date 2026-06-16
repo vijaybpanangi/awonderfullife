@@ -2,6 +2,7 @@ import { getAccessEmail } from './access'
 import { verifyTurnstile } from './turnstile'
 import { runScheduledSend, defaultScheduledDeps, type ScheduledDeps } from './scheduled'
 import { handleAdmin } from './admin'
+import { handleComments, runCommentModeration } from './comments'
 
 export interface Env {
   DB: D1Database
@@ -12,6 +13,9 @@ export interface Env {
   RESEND_API_KEY?: string
   NEWSLETTER_FROM?: string
   NEWSLETTER_REPLY_TO?: string
+  // Comments: AI binding for the moderation sweep; secret for signing verify sessions.
+  AI?: Ai
+  COMMENT_SECRET?: string
 }
 
 export interface Deps {
@@ -40,7 +44,8 @@ export function createWorker(
     // per-issue scheduled_at has arrived.
     async scheduled(controller: ScheduledController, env: Env, _ctx: ExecutionContext): Promise<void> {
       const result = await runScheduledSend(controller.scheduledTime, env, scheduledDeps)
-      console.log(`[scheduled] cron=${controller.cron} ${JSON.stringify(result)}`)
+      const mod = await runCommentModeration(env)
+      console.log(`[scheduled] cron=${controller.cron} send=${JSON.stringify(result)} moderation=${JSON.stringify(mod)}`)
     },
     async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
       const { pathname, searchParams } = new URL(request.url)
@@ -90,6 +95,10 @@ export function createWorker(
 
       if (request.method === 'GET' && pathname === '/unsubscribe') {
         return handleUnsubscribe(searchParams.get('token'), env)
+      }
+
+      if (pathname === '/comments' || pathname === '/comments/verify') {
+        return handleComments(request, env, deps, scheduledDeps.sendBatch)
       }
 
       return json({ error: 'not_found' }, 404)
