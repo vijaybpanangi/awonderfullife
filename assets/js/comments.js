@@ -38,11 +38,15 @@
       if (c.removed) {
         item.appendChild(el('p', 'comment-body', c.body));
       } else {
+        var initial = ((c.name || 'A').trim().charAt(0) || 'A').toUpperCase();
+        item.appendChild(el('div', 'comment-avatar', initial));
+        var main = el('div', 'comment-main');
         var meta = el('div', 'comment-meta');
         meta.appendChild(el('strong', null, c.name || 'Anonymous'));
         meta.appendChild(el('span', null, ' · ' + fmtDate(c.created_at)));
-        item.appendChild(meta);
-        item.appendChild(el('p', 'comment-body', c.body));
+        main.appendChild(meta);
+        main.appendChild(el('p', 'comment-body', c.body));
+        item.appendChild(main);
       }
       list.appendChild(item);
     });
@@ -56,7 +60,7 @@
   }
 
   // --- form ---
-  var form = el('form', 'comment-form');
+  var form = el('form', 'comment-form lensing');
   var fName = el('input'); fName.type = 'text'; fName.placeholder = 'Your name'; fName.required = true; fName.maxLength = 80;
   var fEmail = el('input'); fEmail.type = 'email'; fEmail.placeholder = 'Your email (kept private, used once to confirm)'; fEmail.required = true;
   var fBody = el('textarea'); fBody.placeholder = 'Share a thought…'; fBody.required = true; fBody.rows = 4; fBody.maxLength = 4000;
