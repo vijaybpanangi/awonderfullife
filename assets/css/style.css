@@ -297,6 +297,26 @@ a.kicker:hover {
   .post-layout { grid-template-columns: 1fr; gap: 2.5rem; }
   .post-aside { position: static; max-width: 22rem; }
 }
+
+/* Comments */
+.comments { max-width: 42rem; margin: 3.5rem auto 0; padding-top: 2rem; border-top: 1px solid var(--color-border); }
+.comments h2 { font-size: 1.3rem; margin-bottom: 1.25rem; }
+.comment-list { margin-bottom: 2.5rem; }
+.comment { padding: 0.9rem 0; border-bottom: 1px solid var(--color-border); }
+.comment-meta { font-size: 0.8rem; color: var(--color-text-light); margin-bottom: 0.35rem; }
+.comment-meta strong { color: var(--color-text); font-weight: 600; }
+.comment-body { margin: 0; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; }
+.comment-removed .comment-body { color: var(--color-text-light); font-style: italic; }
+.comment-empty { color: var(--color-text-light); }
+.comment-form { display: flex; flex-direction: column; gap: 0.75rem; }
+.comment-form h3 { font-size: 1rem; margin: 0 0 0.25rem; }
+.comment-form input, .comment-form textarea { font: inherit; padding: 0.6rem 0.7rem; border: 1px solid var(--color-border); border-radius: 8px; background: #fff; color: var(--color-text); width: 100%; }
+.comment-form input:focus, .comment-form textarea:focus { outline: 2px solid var(--color-accent); outline-offset: -1px; border-color: var(--color-accent); }
+.comment-submit { align-self: flex-start; font-weight: 600; border: 1px solid var(--color-accent); background: var(--color-accent); color: #fff; border-radius: 8px; padding: 0.6rem 1.1rem; cursor: pointer; }
+.comment-submit:hover { filter: brightness(1.08); }
+.comment-submit:disabled { opacity: 0.5; cursor: default; }
+.comment-msg { font-size: 0.85rem; color: var(--color-text-light); margin: 0; min-height: 1em; }
+.comment-note { font-size: 0.75rem; color: var(--color-text-light); margin: 0.25rem 0 0; }
 .post-content {
   /* Editorial body: 17px on a calmer 1.7 leading reads tighter and more
      news-like than the previous 18px / 1.8 while keeping Manrope. */
