@@ -78,6 +78,7 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
+| `v2.16.5` | 2026-06-18 13:31 | [#39](https://github.com/vijaybpanangi/awonderfullife/pull/39) | Homepage: 3-column card grid for non-featured posts (rounded corners kept) |
 | `v2.16.4` | 2026-06-16 21:10 | [#37](https://github.com/vijaybpanangi/awonderfullife/pull/37) | Favicon: recolor monogram to a softer semi-light gray |
 | `v2.16.3` | 2026-06-16 20:59 | [#36](https://github.com/vijaybpanangi/awonderfullife/pull/36) | Favicon: brand "A" monogram (svg/ico/apple-touch) replacing the cached WordPress leftover |
 | `v2.16.2` | 2026-06-16 20:43 | [#35](https://github.com/vijaybpanangi/awonderfullife/pull/35) | Comments: whole section as one frosted pane with nested translucent comment cards |
