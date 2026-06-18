@@ -45,7 +45,7 @@ Spec: `docs/superpowers/specs/2026-06-13-api-spine-foundation-design.md` · Plan
 ## The big picture: where content lives
 
 ```
-/index.html                     Homepage — featured opener + illustrated 2-col card grid
+/index.html                     Homepage — featured opener + illustrated 3-col card grid (.card-grid--3)
 /about.html                     About page (180×180 editorial-square portrait + prose)
 /archive.html                   Year-grouped compact list of every post + faceted nav
 /categories/<cat>.html          One page per category, illustrated card grid — same faceted nav
@@ -85,7 +85,7 @@ Single source of styling. Defines a small token palette in `:root`:
 - `--color-bg` (`#ffffff`), `--color-text` (`#111111`), `--color-text-light` (`#666666`)
 - `--color-border` (`#e5e5e5`), `--color-accent` (`#0a4a9a` editorial blue)
 - `--color-bg-soft` (`#f9f9f9`) for code blocks
-- `--max-width: 800px` — page container width (widened from 680px during the redesign)
+- `--max-width: 860px` — base container width (header, about, archive); `--max-width-wide: 1200px` for the home/category grids; post shell `.container--post` 1200px; post reading column `.post-content` capped at 44rem (~73ch)
 - `--font: 'Manrope'` — loaded via Google Fonts `<link>` in each HTML file
 - **Liquid Glass tokens** (`v2.4.0`): `--glass-bg` (~55% white), `--glass-blur` (`blur(18px) saturate(1.8) brightness(1.06)`), `--glass-rim` (specular bevel). Applied to the **sticky frosted `header`** (which blurs content scrolling under it), the **newsletter** card, and **`.facet-chip`** pills. An `@supports not (backdrop-filter)` block near the top of the file keeps those surfaces near-opaque where blur is unsupported. The `<body>` carries a barely-there accent-blue radial glow at the top so the glass has something to refract; the body/card-grid otherwise stay crisp white. Note the header is now `position: sticky` (compact bar: title + tagline inline, nav right) — it was a tall static masthead before.
 
@@ -130,7 +130,7 @@ Post bodies inside `<div class="post-content">` were cleaned in commit `6df6352`
 - `docs/superpowers/specs/` — design specs (the *what* and *why*): `YYYY-MM-DD-<topic>-design.md`.
 - `docs/superpowers/plans/` — implementation plans (the *how*): `YYYY-MM-DD-<topic>.md`.
 - `ROADMAP.md` at the root tracks **future** work and deferred items; `CHANGELOG.md` tracks **past** changes. Always check both before proposing work — the answer to "is this on the radar?" is in one or the other.
-- **Releases & versioning.** Every release gets a semver git tag on its merge commit — **major** = redesign / identity shift, **minor** = new feature or notable enhancement, **patch** = fix / content / docs. When you ship a change, add a versioned `CHANGELOG.md` entry (`## vX.Y.Z — Title (YYYY-MM-DD HH:MM UTC)`, timestamp from the merge commit) and create + push the matching tag (`git tag -a vX.Y.Z -m "…" && git push origin vX.Y.Z`). Also add a row to the README change-history table (`| version | when | PR | summary |`). Latest: `v2.16.5`.
+- **Releases & versioning.** Every release gets a semver git tag on its merge commit — **major** = redesign / identity shift, **minor** = new feature or notable enhancement, **patch** = fix / content / docs. When you ship a change, add a versioned `CHANGELOG.md` entry (`## vX.Y.Z — Title (YYYY-MM-DD HH:MM UTC)`, timestamp from the merge commit) and create + push the matching tag (`git tag -a vX.Y.Z -m "…" && git push origin vX.Y.Z`). Also add a row to the README change-history table (`| version | when | PR | summary |`). Latest: `v2.16.6`.
 - See `docs/superpowers/README.md` for the brainstorm → spec → plan → execute workflow.
 
 ## Known follow-ups
