@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.16.7 — About portrait: rounded corners (2026-06-18 13:45 UTC)
+
+Bumped the About-page portrait's `border-radius` 4px → 14px to match the rounded corners now used site-wide (heroes, cards, comment cards).
+
 ## v2.16.6 — Wider layout (2026-06-18 13:39 UTC)
 
 The whole layout felt too narrow, so widened the containers: home/category grids `--max-width-wide` 1080→1200px, the post shell `.container--post` 1100→1200px, the base `--max-width` (header/about/archive) 800→860px, and the post reading column 42rem→44rem (~73ch — still in the readable range). Rounded corners and the 3-column homepage grid unchanged.

@@ -493,7 +493,7 @@ a.kicker:hover {
 .about-photo {
   width: 180px;
   height: 180px;
-  border-radius: 4px;
+  border-radius: 14px;
   object-fit: cover;
   margin-bottom: 1.5rem;
 }
