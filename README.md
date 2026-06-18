@@ -78,6 +78,7 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
+| `v2.17.1` | 2026-06-18 16:14 | [#43](https://github.com/vijaybpanangi/awonderfullife/pull/43) | Ambient backdrop: brighter + comet-forward (three sweeping comets) |
 | `v2.17.0` | 2026-06-18 16:08 | [#42](https://github.com/vijaybpanangi/awonderfullife/pull/42) | Ambient drifting backdrop on the homepage (palette clouds + comet, reduced-motion safe) |
 | `v2.16.7` | 2026-06-18 13:45 | [#41](https://github.com/vijaybpanangi/awonderfullife/pull/41) | About portrait: rounded corners (4px → 14px) to match the site |
 | `v2.16.6` | 2026-06-18 13:39 | [#40](https://github.com/vijaybpanangi/awonderfullife/pull/40) | Wider layout: grids 1080→1200, post shell →1200, base →860, reading column →44rem |
