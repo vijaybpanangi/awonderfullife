@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.17.2 — Fix: stop immutable-caching CSS/JS (stale-style bug) (2026-06-18 16:22 UTC)
+
+The v2.15.0 caching rule `/assets/* → max-age=31536000, immutable` was also hitting `style.css` and `comments.js`, which use unversioned filenames and change every release — so returning visitors' browsers pinned stale styles/scripts for up to a year (the real cause of the "hard-refresh to see changes" friction). Scoped immutable caching to `/assets/images/*` only; CSS/JS now serve `max-age=0, must-revalidate` (tiny files, cheap 304s), so updates appear on a normal refresh.
+
 ## v2.17.1 — Ambient backdrop: brighter, comet-forward (2026-06-18 16:14 UTC)
 
 Tuned the homepage backdrop per feedback: **brighter** (more vivid palette, higher orb opacity ~0.74–0.8, less blur 72→60px, brighter comet), and made the motion **comet-forward** — now three comets sweeping across at staggered rows, angles, and timings (13s / 17s+4s / 23s+9s) instead of one occasional streak. The soft colour clouds remain as the bright backdrop the Liquid-Glass panes refract. Still pure CSS and frozen under `prefers-reduced-motion`.
