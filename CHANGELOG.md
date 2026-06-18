@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v2.17.1 — Ambient backdrop: brighter, comet-forward (2026-06-18 16:14 UTC)
+
+Tuned the homepage backdrop per feedback: **brighter** (more vivid palette, higher orb opacity ~0.74–0.8, less blur 72→60px, brighter comet), and made the motion **comet-forward** — now three comets sweeping across at staggered rows, angles, and timings (13s / 17s+4s / 23s+9s) instead of one occasional streak. The soft colour clouds remain as the bright backdrop the Liquid-Glass panes refract. Still pure CSS and frozen under `prefers-reduced-motion`.
+
 ## v2.17.0 — Ambient drifting backdrop on the homepage (2026-06-18 16:08 UTC)
 
 Added a quiet, living backdrop behind the homepage: three large, soft, low-opacity colour clouds in the hero-series palette (accent blue, terracotta, slate-blue) that slowly drift, plus an occasional faint comet that streaks across on a ~19s loop. It sits on a fixed `z-index:0` layer behind the content (`main`/`footer` lifted to `z-index:1`), so it reads as atmosphere in the margins and — the nice part — gives the Liquid-Glass header/newsletter/comments panes something live to refract as you scroll. Pure CSS (stays a static site), `aria-hidden`, GPU transforms only, and it **freezes (orbs static, comet hidden) under `prefers-reduced-motion`**. Homepage only (`.ambient` div lives in `index.html`).

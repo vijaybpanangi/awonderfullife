@@ -46,40 +46,55 @@ body {
 .ambient { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
 /* lift real content above the ambient layer (header is already z-index:100) */
 main, footer { position: relative; z-index: 1; }
-.ambient .orb { position: absolute; border-radius: 50%; filter: blur(72px); will-change: transform; }
+.ambient .orb { position: absolute; border-radius: 50%; filter: blur(60px); will-change: transform; }
 .ambient .orb-1 {
-  width: 44vw; height: 44vw; left: -12vw; top: -10vh; opacity: 0.55;
-  background: radial-gradient(circle at 35% 35%, rgba(10,74,154,0.55), transparent 68%);
+  width: 44vw; height: 44vw; left: -12vw; top: -10vh; opacity: 0.8;
+  background: radial-gradient(circle at 35% 35%, rgba(26,110,224,0.72), transparent 70%);
   animation: orbDrift1 36s ease-in-out infinite alternate;
 }
 .ambient .orb-2 {
-  width: 38vw; height: 38vw; right: -10vw; top: 14vh; opacity: 0.5;
-  background: radial-gradient(circle at 50% 50%, rgba(199,98,58,0.5), transparent 68%);
+  width: 38vw; height: 38vw; right: -10vw; top: 14vh; opacity: 0.74;
+  background: radial-gradient(circle at 50% 50%, rgba(230,122,66,0.68), transparent 70%);
   animation: orbDrift2 46s ease-in-out infinite alternate;
 }
 .ambient .orb-3 {
-  width: 36vw; height: 36vw; left: 8vw; bottom: -14vh; opacity: 0.5;
-  background: radial-gradient(circle at 50% 50%, rgba(91,122,154,0.5), transparent 68%);
+  width: 36vw; height: 36vw; left: 8vw; bottom: -14vh; opacity: 0.74;
+  background: radial-gradient(circle at 50% 50%, rgba(108,152,206,0.68), transparent 70%);
   animation: orbDrift3 54s ease-in-out infinite alternate;
 }
 .ambient .comet {
-  position: absolute; top: 8%; left: -12%; width: 200px; height: 2px; border-radius: 2px;
-  background: linear-gradient(90deg, transparent, rgba(10,74,154,0.55));
-  transform: rotate(26deg); opacity: 0;
-  animation: cometRun 19s linear infinite;
+  position: absolute; left: -16%; width: 230px; height: 2.5px; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, rgba(40,120,230,0.8));
+  opacity: 0;
 }
 .ambient .comet::after {
-  content: ""; position: absolute; right: -1px; top: -2px; width: 6px; height: 6px;
-  border-radius: 50%; background: rgba(26,98,196,0.9); box-shadow: 0 0 12px 3px rgba(26,98,196,0.5);
+  content: ""; position: absolute; right: -1px; top: -2.5px; width: 7px; height: 7px;
+  border-radius: 50%; background: rgba(40,120,230,1); box-shadow: 0 0 16px 4px rgba(40,120,230,0.7);
 }
+/* a few comets sweeping the page at staggered rows / angles / timings */
+.ambient .comet-1 { top: 6%;  animation: cometA 13s linear infinite; }
+.ambient .comet-2 { top: 34%; animation: cometB 17s linear infinite 4s; }
+.ambient .comet-3 { top: 60%; animation: cometC 23s linear infinite 9s; }
 @keyframes orbDrift1 { from { transform: translate3d(0,0,0) scale(1); }    to { transform: translate3d(7vw,6vh,0) scale(1.15); } }
 @keyframes orbDrift2 { from { transform: translate3d(0,0,0) scale(1.05); } to { transform: translate3d(-6vw,9vh,0) scale(0.95); } }
 @keyframes orbDrift3 { from { transform: translate3d(0,0,0) scale(1); }    to { transform: translate3d(5vw,-7vh,0) scale(1.12); } }
-@keyframes cometRun {
-  0%   { transform: translate3d(0,0,0) rotate(26deg); opacity: 0; }
-  6%   { opacity: 0.85; }
-  16%  { opacity: 0; }
-  100% { transform: translate3d(128vw,64vh,0) rotate(26deg); opacity: 0; }
+@keyframes cometA {
+  0%   { transform: translate3d(0,0,0) rotate(25deg); opacity: 0; }
+  4%   { opacity: 0.95; }
+  17%  { opacity: 0; }
+  100% { transform: translate3d(135vw,64vh,0) rotate(25deg); opacity: 0; }
+}
+@keyframes cometB {
+  0%   { transform: translate3d(0,0,0) rotate(16deg); opacity: 0; }
+  5%   { opacity: 0.88; }
+  19%  { opacity: 0; }
+  100% { transform: translate3d(135vw,42vh,0) rotate(16deg); opacity: 0; }
+}
+@keyframes cometC {
+  0%   { transform: translate3d(0,0,0) rotate(33deg); opacity: 0; }
+  5%   { opacity: 0.9; }
+  18%  { opacity: 0; }
+  100% { transform: translate3d(135vw,46vh,0) rotate(33deg); opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ambient .orb { animation: none; }
