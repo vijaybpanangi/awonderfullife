@@ -30,7 +30,7 @@ while [ $# -gt 0 ]; do
     *) DOMAINS+=("$1"); shift ;;
   esac
 done
-[ ${#DOMAINS[@]} -eq 0 ] && DOMAINS=(awonderfullife.ca ezziclarity.ca)
+[ ${#DOMAINS[@]} -eq 0 ] && DOMAINS=(awonderfullife.ca ezziclarity.ca trackyourapp.ca trackurapp.ca)
 
 TOKEN="${CLOUDFLARE_ANALYTICS_TOKEN:-}"
 if [ -z "$TOKEN" ] && [ -f "$HOME/.cloudflare_analytics_token" ]; then
@@ -46,6 +46,8 @@ zone_id() {
   case "$1" in
     awonderfullife.ca) echo "3eec7ef1026c1a9f2d6052f0bf7bdaad" ;;
     ezziclarity.ca)    echo "57611fabcdb5da51a08bfe324d367940" ;;
+    trackyourapp.ca)   echo "10cb42dc2031a517d2e4012c0d35b9c2" ;;
+    trackurapp.ca)     echo "66f39c9e1e0ef7b5a3ffeb706638f502" ;;
     *) curl -s -H "Authorization: Bearer $TOKEN" "$API/zones?name=$1" \
          | python3 -c 'import sys,json;r=(json.load(sys.stdin).get("result") or []);print(r[0]["id"] if r else "")' ;;
   esac
