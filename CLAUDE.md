@@ -36,7 +36,7 @@ The repo hosts a **second, independent Cloudflare Worker** alongside the static 
 - Test: `cd api && npm test` (Vitest + `@cloudflare/vitest-pool-workers` — runs in workerd with a local D1)
 - Typecheck: `cd api && npm run typecheck`
 - Local dev: `cd api && npm run dev` (needs `api/.dev.vars` — copy from `.dev.vars.example`)
-- Deploy: `cd api && npm run deploy` — **manual**; the API worker is *not* in the static site's push-to-`main` build (see `ROADMAP.md`).
+- Deploy: **auto-deploys** via its own Cloudflare Workers Build on any push to `main` that touches `/api` (root dir `api`, `npm ci` + `npx wrangler deploy`, watch path `api/*`, production-only). `cd api && npm run deploy` still works for ad-hoc/manual deploys. (The static site has a separate Workers Build at the repo root.)
 
 **Toolchain note (vitest-pool-workers v4):** the Vitest config uses the v4 plugin API — `cloudflareTest({...})` from `@cloudflare/vitest-pool-workers` composed with `defineConfig` from `vitest/config` (the older `defineWorkersConfig` from `…/config` no longer exists). The `cloudflare:test` ambient types come from the package's `./types` entry, referenced in `api/test/env.d.ts`.
 
