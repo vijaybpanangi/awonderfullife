@@ -20,7 +20,7 @@ The technical SEO foundation shipped on 2026-06-15 (see `CHANGELOG.md`): absolut
 
 The Phase-1 API spine shipped 2026-06-13 (see `CHANGELOG.md` and `docs/superpowers/specs/2026-06-13-api-spine-foundation-design.md`): a second Worker with a public `/health` route and a Cloudflare-Access-gated `/admin/whoami` route over D1. Next:
 
-- **Wire `/api` into its own Cloudflare Workers Build** so it auto-deploys on push to `main` (today it deploys manually via `cd api && npm run deploy`).
+- ✅ **`/api` → its own Cloudflare Workers Build (DONE, 2026-06-20):** the API worker now auto-deploys on every push to `main` that touches `/api` (root dir `api`, `npm ci` + `npx wrangler deploy`, watch path `api/*`, production-only — non-production branch builds disabled). Manual `cd api && npm run deploy` still works for ad-hoc deploys.
 - ✅ **Phase 2 — newsletter, owned (DONE, v2.8.0–v2.10.0):** Buttondown is replaced by a self-owned **D1** list with **Resend** sends, behind **Turnstile**. Capture (email + consent timestamp; unsubscribe deletes) is live; broadcasting is a markdown→Resend CLI; and delivery is **automated weekly (Saturday 7pm ET, DST-correct cron)** via a D1 `issues` queue + the Worker's `scheduled` handler. See `api/issues/README.md`.
   - *Remaining polish:* migrate any legacy Buttondown subscribers (CSV → D1); per-subscriber rate limiting on `/subscribe`; if the list ever reaches the thousands, move batch sends to Cloudflare Queues.
 - **Phase 2 — email reconciliation:** the platform brief assumed Resend for sending; this ROADMAP separately plans **iCloud+ Custom Email Domain** for the inbound mailbox (see *Email setup for the domain* below). Design SPF/DKIM/DMARC to authorize both senders (iCloud for mailbox, Resend for newsletter) while cleaning up the stale WordPress-era records.
@@ -44,17 +44,9 @@ Live on **iCloud+ Custom Email Domain** (see `CHANGELOG.md`). Set up under Vijay
 
 ---
 
-## `www → apex` canonical redirect
+## `www → apex` canonical redirect — DONE (2026-06-20)
 
-Both `awonderfullife.ca` and `www.awonderfullife.ca` resolve and serve identical content (as of 2026-05-28, when the stale CNAME was cleaned up and www was added as a Worker custom domain). No single canonical URL is chosen yet, so search engines could in principle index both versions.
-
-A Cloudflare Redirect Rule closes this in ~30 seconds:
-
-- Cloudflare dashboard → `awonderfullife.ca` → **Rules → Redirect Rules → Create rule**
-- Match: `Hostname equals www.awonderfullife.ca`
-- Then: Static target `https://awonderfullife.ca`, preserve path + query, status `301`
-
-Polish, not a fix.
+A Cloudflare Redirect Rule ("Redirect from WWW to root") now 301-redirects `www.awonderfullife.ca/*` → `https://awonderfullife.ca/${1}`, preserving path + query. Verified live: `www/`, `www/archive`, and `www/posts/…?ref=…` all 301 to the apex with path + query intact, and the apex itself stays 200 (no loop). Search engines now see one canonical host.
 
 ---
 
