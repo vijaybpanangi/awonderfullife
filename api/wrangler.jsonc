@@ -1,5 +1,9 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
+  // Deploy: auto-deploys via this worker's own Cloudflare Workers Build on any push to `main`
+  // that touches /api (root dir `api`, build `npm ci`, deploy `npx wrangler deploy`, watch
+  // path `api/*`, production-only — non-production branch builds disabled). `cd api &&
+  // npm run deploy` still works for ad-hoc deploys.
   "name": "awonderfullife-api",
   "main": "src/index.ts",
   "compatibility_date": "2026-06-13",
