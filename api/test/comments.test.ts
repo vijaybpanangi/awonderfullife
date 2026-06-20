@@ -125,4 +125,18 @@ describe('GET /comments + moderation sweep', () => {
     expect(row?.status).toBe('visible')
     expect(row?.moderated_at).not.toBeNull()
   })
+
+  it('runs offline (heuristics only) with no AI binding and no classify override', async () => {
+    const now = new Date().toISOString()
+    await env.DB.prepare(`INSERT INTO comments (slug,name,email,body,status,created_at) VALUES ('p','Ann','a@x.com','A thoughtful, genuine reply','visible',?)`).bind(now).run()
+    await env.DB.prepare(`INSERT INTO comments (slug,name,email,body,status,created_at) VALUES ('p','Bot','b@x.com','viagra viagra viagra','visible',?)`).bind(now).run()
+    // testEnv() carries no AI binding and we pass no classify override, so the real
+    // defaultClassify runs heuristics only and never touches Workers AI — offline, no charges.
+    const r = await runCommentModeration(testEnv())
+    expect(r).toEqual({ checked: 2, removed: 1 })
+    const spam = await env.DB.prepare(`SELECT status FROM comments WHERE email='b@x.com'`).first<{ status: string }>()
+    const clean = await env.DB.prepare(`SELECT status FROM comments WHERE email='a@x.com'`).first<{ status: string }>()
+    expect(spam?.status).toBe('removed')
+    expect(clean?.status).toBe('visible')
+  })
 })
