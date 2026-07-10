@@ -61,10 +61,12 @@
 //    title-case). Confirmed via a corpus-wide grep — the only such anomaly.
 //    Generated standardizes to title case.
 // 3. Brief item 3 — sitemap.xml: legacy hand-freezes <lastmod> at
-//    "2026-06-15" for /archive and every /categories/* URL; generated
-//    computes it from the newest relevant post. Generated rule wins ("/about"
-//    is ALSO hand-frozen at 2026-06-15 in both legacy and the sitemap
-//    template itself, so that one already matches with no allowlisting).
+//    "2026-06-15" for FOUR category URLs — /categories/{politics,reflection,
+//    society,travel}; generated computes it from the newest post in each
+//    category. Generated rule wins. NOT frozen (and already matching with no
+//    allowlisting): /archive and /categories/technology (legacy 2026-07-10 =
+//    the newest-post date the generator computes) and /about (hand-frozen at
+//    2026-06-15 in BOTH legacy and the sitemap template itself).
 // 4. Brief item 4 — posts/built-with-ai-here-to-stay.html: the reference
 //    post's own <head> tag order is a legacy outlier (turnstile script + the
 //    rss/icon links appear before the canonical/OG/twitter block instead of
@@ -84,26 +86,27 @@
 //    differs only in formatting. The generic whitespace-collapsing
 //    normalization absorbs this with no special case (verified below).
 //
-// PENDING-ADJUDICATION (new findings beyond the brief; see task-3-report.md
-// for full detail — flagged to the controller, provisionally allowlisted
-// here only so the gate isn't blocked by them):
+// CONTROLLER-APPROVED findings beyond the brief (P1-P3, discovered during
+// this task and adjudicated by the controller in the Task 3 review,
+// 2026-07-10 — now settled allowlist entries, no longer pending):
 //
-// P1. index.html + archive.html: for the two posts tied on 2024-11-18
-//     (india-and-pakistan-twin-dreams-divided-bound-by-hope and
-//     the-united-states-and-canada-uneasy-neighbors-shared-failures), legacy
-//     archive.html/index.html list "the-united-states-and-canada..." BEFORE
-//     "india-and-pakistan...", while feed.xml AND sitemap.xml — and every
-//     OTHER same-date group on the site (the Oct-09 trio, the Sep-11 pair,
-//     the Mar-14 pair) — use the alphabetical-by-slug tie-break that the
-//     generator's stable sort already produces by default. `git log --
-//     archive.html` shows this exact order has been present since the
-//     "Initial Load" commit, predating feed.xml (added later, at v2.15.0)
-//     entirely — so this is a real, longstanding legacy inconsistency
-//     between the two hand-authored list surfaces and the two
-//     machine-assembled feeds, not a generator defect. The generator matches
-//     the dominant (5-of-6) convention; the archive/index outlier is
-//     provisionally allowlisted pending controller adjudication of which
-//     order should be authoritative for the shared posts collection.
+// P1. Post ordering for the 2024-11-18 tie
+//     (india-and-pakistan-twin-dreams-divided-bound-by-hope /
+//     the-united-states-and-canada-uneasy-neighbors-shared-failures): legacy
+//     archive.html, index.html, AND the hand-authored prev/next chain on all
+//     four neighboring posts (six surfaces) list "the-united-states-and-
+//     canada..." BEFORE "india-and-pakistan...", while feed.xml and
+//     sitemap.xml — and every OTHER same-date group on the site (the Oct-09
+//     trio, the Sep-11 pair, the Mar-14 pair) — use the alphabetical-by-slug
+//     tie-break. `git log -- archive.html` shows the six-surface order has
+//     been present since the "Initial Load" commit, predating feed.xml
+//     (added later, at v2.15.0) entirely — a real, longstanding legacy
+//     inconsistency, not a generator defect. APPROVED resolution: the
+//     generator's SAME_DAY_TIE_BREAK (eleventy.config.js) matches the
+//     dominant six-surface convention; feed.xml's alphabetical order for
+//     this one pair is the accepted residual diff (see compareFeed).
+//     sitemap.xml re-sorts by fileSlug in its own template, so it is
+//     unaffected either way.
 //
 // P2. feed.xml: THREE legacy <title> values are double-HTML-escaped
 //     ("&amp;#x27;" instead of "&#x27;"), which decodes (once, per XML
@@ -113,16 +116,32 @@
 //     leadership-contrasts-in-u-s-election-a-canadians-view-on-global-impact,
 //     an-ode-to-winter-discovering-unforeseen-charms-in-torontos-embrace.
 //     `git log -p -- feed.xml` shows this baked in since feed.xml was first
-//     added at v2.15.0, unrelated to any recent edit. Generated is correct
-//     (single-escaped). NOTE: a fourth double-escape instance exists in
-//     legacy — finding-stability's <description> has "&amp;quot;" — but the
-//     front-matter `description` field is (by design, see Task 2) stored
-//     RAW/entity-laden for reuse inside an HTML attribute, and feed.njk
-//     reuses that same raw value for the XML <description>, so generated
-//     reproduces the identical double-escape there. That one is NOT a parity
-//     diff (both sides match, both buggy) and needs no allowlist entry, but
-//     is worth the controller's attention as a latent generator bug that
-//     happens to currently match legacy's bug.
+//     added at v2.15.0, unrelated to any recent edit. APPROVED: generated
+//     (single-escaped) is correct; the legacy titles are the bug. NOTE: a
+//     fourth double-escape instance exists in legacy — finding-stability's
+//     <description> has "&amp;quot;" — but the front-matter `description`
+//     field is (by design, see Task 2) stored RAW/entity-laden for reuse
+//     inside an HTML attribute, and feed.njk reuses that same raw value for
+//     the XML <description>, so generated reproduces the identical
+//     double-escape there. That one is NOT a parity diff (both sides match,
+//     both buggy) and needs no allowlist entry; it remains on record in
+//     task-3-report.md as a latent feed.njk improvement for after cutover.
+//
+// P3. categories/technology.html is missing a "2026" period-facet chip —
+//     stale since built-with-ai-here-to-stay (2026-07-10) was added in
+//     v2.17.3 (only the card grid was updated, not the year chips).
+//     APPROVED: generated correctly includes #year2026 (the rule every
+//     other year/category combination already follows). See the
+//     missing-2026-period-chip-tech fixup in HTML_FIXUPS.
+//
+// COVERAGE: beyond per-page comparison, the gate also fails on any
+// GENERATED-ONLY file in the comparison scopes (root *.html,
+// categories/*.html, posts/*.html, feed.xml, sitemap.xml) — a leaked draft,
+// stray slug, or Eleventy misconfig that produces an extra page must not
+// slip through just because no legacy counterpart exists to diff against.
+// Expected generated-only content OUTSIDE those scopes (assets/, robots.txt,
+// _headers, favicons, apple-touch-icon.png) is untouched by this check.
+// Legacy-only files already fail via the per-page missing-file path.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -464,9 +483,10 @@ const HTML_FIXUPS = {
   // NOTE on the 2024-11-18 tie (india-and-pakistan / the-united-states-and-canada):
   // fixed at the SOURCE (eleventy.config.js's collection tie-break), not here —
   // archive.html, index.html, and all four neighboring posts' prev/next chains
-  // all agree on one order (see PENDING-ADJUDICATION P1 in task-3-report.md), so
-  // the generator now matches that dominant convention directly. feed.xml is the
-  // one legacy surface that disagrees (alphabetical); handled in compareFeed.
+  // all agree on one order (finding P1, controller-approved — see header comment
+  // and task-3-report.md), so the generator matches that dominant convention
+  // directly. feed.xml is the one legacy surface that disagrees (alphabetical);
+  // handled in compareFeed.
   "categories/technology.html": [
     textFixup(
       "stale-min-read-tech-card",
@@ -484,7 +504,7 @@ const HTML_FIXUPS = {
     ),
     domInsertFixup(
       "missing-2026-period-chip-tech",
-      'PENDING-ADJUDICATION (new finding, not in brief): legacy categories/technology.html is missing a "2026" period-facet chip. built-with-ai-here-to-stay (2026-07-10) was added to this category in v2.17.3, but only the card grid was updated — the period facet\'s year chips were not. Generated correctly includes #year2026 (same rule every other year/category combination already follows). Flagged to controller; provisionally allowlisted.',
+      'Finding P3 (controller-approved, Task 3 review 2026-07-10): legacy categories/technology.html is missing a "2026" period-facet chip. built-with-ai-here-to-stay (2026-07-10) was added to this category in v2.17.3, but only the card grid was updated — the period facet\'s year chips were not. Generated correctly includes #year2026 (same rule every other year/category combination already follows).',
       {
         build($) {
           const periodNav = $('nav.facet[aria-label="Jump to period"]');
@@ -498,7 +518,6 @@ const HTML_FIXUPS = {
           else periodNav.append(el);
         },
       },
-      true,
     ),
   ],
   "categories/reflection.html": [
@@ -593,7 +612,7 @@ function parseFeed(xml) {
 }
 
 // Repairs the residual double-HTML-escape left behind after a single XML
-// entity-decode pass (see PENDING-ADJUDICATION P2 above): a source value like
+// entity-decode pass (see finding P2 above, controller-approved): a value like
 // "Siri&amp;#x27;s" decodes once to the literal text "Siri&#x27;s"; this
 // turns that literal "&#x27;"/"&quot;" back into the real character so we can
 // tell whether the ONLY remaining difference is this known legacy bug.
@@ -616,7 +635,7 @@ function compareFeed(legacyXml, generatedXml) {
   const legacyGuids = legacy.items.map((it) => it.guid);
   const generatedGuids = generated.items.map((it) => it.guid);
   if (JSON.stringify(legacyGuids) !== JSON.stringify(generatedGuids)) {
-    // PENDING-ADJUDICATION (P1): the generator's posts collection now orders
+    // Finding P1 (controller-approved): the generator's posts collection orders
     // the tied 2024-11-18 pair to match the dominant 6-surface legacy
     // convention (archive.html, index.html, and the hand-authored post-nav
     // chain on all 4 neighboring posts — see eleventy.config.js's
@@ -636,8 +655,8 @@ function compareFeed(legacyXml, generatedXml) {
     if (JSON.stringify(adjusted) === JSON.stringify(generatedGuids)) {
       notes.push({
         id: "feed-nov18-order",
-        note: "PENDING-ADJUDICATION (P1): legacy feed.xml orders the tied 2024-11-18 pair alphabetically (india-and-pakistan before the-united-states-and-canada), while archive.html/index.html/the hand-authored post-nav chain use the reverse. The generator now matches that 6-surface dominant convention; feed.xml is the one legacy surface left disagreeing. Flagged to controller; provisionally allowlisted.",
-        pending: true,
+        note: "Finding P1 (controller-approved, Task 3 review 2026-07-10): legacy feed.xml orders the tied 2024-11-18 pair alphabetically (india-and-pakistan before the-united-states-and-canada), while archive.html/index.html/the hand-authored post-nav chain use the reverse. The generator matches that 6-surface dominant convention; feed.xml is the one legacy surface left disagreeing.",
+        pending: false,
       });
     } else {
       failures.push({ section: "item-order", diff: formatUnifiedDiff(legacyGuids.join("\n"), generatedGuids.join("\n")) });
@@ -657,8 +676,8 @@ function compareFeed(legacyXml, generatedXml) {
       if (fixed === Gitem[key]) {
         notes.push({
           id: "feed-double-escape",
-          note: `PENDING-ADJUDICATION (P2): legacy <${key}> for guid ${Litem.guid} is double-HTML-escaped (decodes to literal "&#x27;"/"&quot;" instead of the real character) — a genuine RSS-reader-facing bug present since feed.xml was first added (v2.15.0). Generated is correct. Flagged to controller; provisionally allowlisted.`,
-          pending: true,
+          note: `Finding P2 (controller-approved, Task 3 review 2026-07-10): legacy <${key}> for guid ${Litem.guid} is double-HTML-escaped (decodes to literal "&#x27;"/"&quot;" instead of the real character) — a genuine RSS-reader-facing bug present since feed.xml was first added (v2.15.0). Generated is correct.`,
+          pending: false,
         });
         continue;
       }
@@ -687,11 +706,16 @@ function parseSitemap(xml) {
   });
 }
 
-// Brief item 3: legacy hand-freezes lastmod at 2026-06-15 for /archive and
-// every /categories/* URL (but NOT /about, which is hand-frozen at the same
-// value in the generator too, and NOT /posts/*, which must match exactly).
+// Brief item 3: legacy hand-freezes lastmod at 2026-06-15 for four category
+// URLs — /categories/{politics,reflection,society,travel}. NOT frozen:
+// /archive and /categories/technology (legacy 2026-07-10 already equals the
+// computed newest-post date), /about (frozen at the same value in the
+// generator too, so it matches without allowlisting), and /posts/* (must
+// match exactly). Scoped to /categories/ so a wrong /archive lastmod can
+// never be silently absorbed; the exact-value check below narrows it further
+// to the one known frozen value.
 function isFrozenLastmodAllowlisted(loc) {
-  return /\/archive$/.test(loc) || /\/categories\//.test(loc);
+  return /\/categories\//.test(loc);
 }
 
 function compareSitemap(legacyXml, generatedXml) {
@@ -758,6 +782,36 @@ function buildPageList() {
   return pages;
 }
 
+// Coverage guard (Task 3 review finding): buildPageList enumerates the LEGACY
+// side, so a file existing only in _site/ — a leaked draft, stray slug, or
+// Eleventy misconfig producing an extra page — would otherwise never be
+// compared and would silently ship at cutover. This enumerates the GENERATED
+// output over the same comparison scopes (root *.html, categories/*.html,
+// posts/*.html, plus root *.xml, which covers feed.xml/sitemap.xml and flags
+// any unexpected extra XML) and returns every file with no legacy
+// counterpart in the page list. Expected generated-only content lives
+// OUTSIDE these scopes (assets/, robots.txt, _headers, favicon.ico,
+// favicon.svg, apple-touch-icon.png) and is untouched. The reverse direction
+// (legacy-only) already fails via the per-page missing-file path in main().
+function findGeneratedOnlyFiles(allPages) {
+  const expected = new Set(allPages.map((p) => path.relative(SITE_DIR, p.generated)));
+  const scopes = [
+    { dir: SITE_DIR, prefix: "", match: (f) => f.endsWith(".html") || f.endsWith(".xml") },
+    { dir: path.join(SITE_DIR, "categories"), prefix: "categories/", match: (f) => f.endsWith(".html") },
+    { dir: path.join(SITE_DIR, "posts"), prefix: "posts/", match: (f) => f.endsWith(".html") },
+  ];
+  const extras = [];
+  for (const scope of scopes) {
+    if (!fs.existsSync(scope.dir)) continue;
+    for (const entry of fs.readdirSync(scope.dir, { withFileTypes: true })) {
+      if (!entry.isFile() || !scope.match(entry.name)) continue;
+      const rel = scope.prefix + entry.name;
+      if (!expected.has(rel)) extras.push(rel);
+    }
+  }
+  return extras.sort();
+}
+
 function indentBlock(text, indent) {
   return text.split("\n").map((l) => indent + l).join("\n");
 }
@@ -772,7 +826,8 @@ function main() {
     process.exit(2);
   }
 
-  const pages = buildPageList().filter((p) => !onlyPage || p.name === onlyPage);
+  const allPages = buildPageList();
+  const pages = allPages.filter((p) => !onlyPage || p.name === onlyPage);
   if (onlyPage && pages.length === 0) {
     console.error(`No page matched --page ${onlyPage}`);
     process.exit(2);
@@ -811,9 +866,19 @@ function main() {
     }
   }
 
+  // Generated-only coverage check — always evaluated against the FULL page
+  // list (not the --page-filtered one), so single-page iteration runs can't
+  // misreport every unselected page as an extra, while a genuinely stray
+  // generated file still fails the gate on every invocation.
+  const extras = findGeneratedOnlyFiles(allPages);
+  for (const rel of extras) {
+    anyFail = true;
+    console.log(`FAIL ${rel} — generated-only: exists in _site/ with no legacy counterpart (leaked draft, stray slug, or Eleventy misconfig?)`);
+  }
+
   const passCount = results.filter((r) => r.pass).length;
   console.log("");
-  console.log(`${passCount}/${results.length} pages PASS`);
+  console.log(`${passCount}/${results.length} pages PASS${extras.length ? ` — plus ${extras.length} generated-only file(s) FAILED the coverage check` : ""}`);
   process.exit(anyFail ? 1 : 0);
 }
 

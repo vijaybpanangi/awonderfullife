@@ -63,9 +63,10 @@ export default function (eleventyConfig) {
   // "Confronting Inequality" before "India and Pakistan", the reverse of
   // alphabetical. feed.xml is the only legacy surface using the alphabetical
   // order for this pair, and it was added later (v2.15.0) than archive.html's
-  // ordering (present since the very first commit) — see task-3-report.md's
-  // PENDING-ADJUDICATION P1 for the full evidence trail. SAME_DAY_TIE_BREAK
-  // overrides the stable-sort default for just this one documented pair.
+  // ordering (present since the very first commit) — see task-3-report.md
+  // finding P1 (controller-approved, Task 3 review 2026-07-10) for the full
+  // evidence trail. SAME_DAY_TIE_BREAK overrides the stable-sort default for
+  // just this one documented pair.
   const SAME_DAY_TIE_BREAK = {
     "the-united-states-and-canada-uneasy-neighbors-shared-failures": 0,
     "india-and-pakistan-twin-dreams-divided-bound-by-hope": 1,
