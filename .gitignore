@@ -3,6 +3,10 @@
 # Staging area for source images before they're optimized into assets/images/.
 assets/staging-images/
 
+# Eleventy build pipeline (feat/eleventy-migration).
+node_modules/
+_site/
+
 # wrangler files
 .wrangler
 .dev.vars*

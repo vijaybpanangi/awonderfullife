@@ -1,0 +1,14 @@
+{# Card macro shared by the homepage (kicker + srcset thumb) and category
+   pages (no kicker, single-size image). Call `with context` is not needed —
+   everything the card needs is passed in explicitly. #}
+{% macro card(post, showKicker, categories) %}
+            <li class="card">
+                {% if showKicker %}<a class="kicker" href="/categories/{{ post.data.category }}">{{ post.data.category | categoryName(categories) }}</a>{% endif %}
+                <a class="card-link" href="/posts/{{ post.fileSlug }}">
+                    {% if showKicker %}<img src="/assets/images/posts/{{ post.fileSlug }}.jpg" alt="" loading="lazy" srcset="/assets/images/posts/thumbs/{{ post.fileSlug }}.jpg 640w, /assets/images/posts/{{ post.fileSlug }}.jpg 1536w" sizes="(max-width: 700px) 100vw, 520px">{% else %}<img src="/assets/images/posts/{{ post.fileSlug }}.jpg" alt="" loading="lazy">{% endif %}
+                    <h2 class="post-title">{{ (post.data.listTitle or post.data.title) | safe }}</h2>
+                </a>
+                <p class="post-excerpt">{{ post.data.excerpt | safe }}</p>
+                <p class="post-date">{{ post.data.date | cardDate }} · {{ post.data.minRead or (post.templateContent | readingTime) }} MIN READ</p>
+            </li>
+{% endmacro %}

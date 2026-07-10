@@ -1,0 +1,33 @@
+---
+permalink: sitemap.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{% set newestDate = collections.posts[0].data.date %}
+  <url>
+    <loc>{{ site.url }}/</loc>
+    <lastmod>{{ newestDate | isoDate }}</lastmod>
+  </url>
+  <url>
+    <loc>{{ site.url }}/about</loc>
+    <lastmod>2026-06-15</lastmod>
+  </url>
+  <url>
+    <loc>{{ site.url }}/archive</loc>
+    <lastmod>{{ newestDate | isoDate }}</lastmod>
+  </url>
+{% for c in site.categories | sort(attribute="slug") %}
+{% set catPosts = collections.posts | byCategory(c.slug) %}
+  <url>
+    <loc>{{ site.url }}/categories/{{ c.slug }}</loc>
+    <lastmod>{{ (catPosts[0].data.date if catPosts.length else newestDate) | isoDate }}</lastmod>
+  </url>
+{% endfor %}
+{% for post in collections.posts | sort(attribute="fileSlug") %}
+  <url>
+    <loc>{{ site.url }}/posts/{{ post.fileSlug }}</loc>
+    <lastmod>{{ post.data.date | isoDate }}</lastmod>
+  </url>
+{% endfor %}
+</urlset>

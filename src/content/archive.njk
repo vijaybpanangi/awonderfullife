@@ -1,0 +1,23 @@
+---
+permalink: archive.html
+layout: base.njk
+seoType: archive
+title: "Archive"
+description: "Full archive of posts from A Wonderful Life by Vijay Panangipally."
+mainClass: "container"
+---
+{%- set current = "all" -%}
+{%- set periodPosts = collections.posts -%}
+{% include "facets.njk" %}
+{%- for group in collections.posts | byYear %}
+
+        <h1 class="archive-year" id="year{{ group.year }}">{{ group.year }}</h1>
+        <ul class="archive-list">
+        {%- for post in group.posts %}
+            <li class="archive-item">
+                <span class="archive-title"><a href="/posts/{{ post.fileSlug }}">{{ (post.data.listTitle or post.data.title) | safe }}</a></span>
+                <span class="archive-date">{{ post.data.date | cardDate }}</span>
+            </li>
+        {%- endfor %}
+        </ul>
+{%- endfor %}
