@@ -15,3 +15,10 @@ TURNSTILE_SECRET="your-turnstile-secret"
 RESEND_API_KEY="re_..."
 NEWSLETTER_FROM="A Wonderful Life <hello@send.awonderfullife.ca>"
 NEWSLETTER_REPLY_TO="v@awonderfullife.ca"
+
+# --- Reactions ("appreciate" button, zero-PII) ---
+# REACTION_SALT salts the per-day/IP abuse-throttle hash in src/reactions.ts — the raw IP
+# is never stored, only SHA-256(REACTION_SALT:day:IP). It is a Wrangler SECRET in production
+# (`wrangler secret put REACTION_SALT`), not committed. Any random string works for local dev;
+# if it's unset, the throttle still runs but falls back to an unsalted constant.
+REACTION_SALT="dev-only-change-me"

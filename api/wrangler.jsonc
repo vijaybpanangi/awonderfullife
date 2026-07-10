@@ -35,4 +35,8 @@
   ],
   // Workers AI — used by the comment moderation sweep to flag spam/abuse.
   "ai": { "binding": "AI" }
+  // Reactions ("appreciate" button, zero-PII): REACTION_SALT salts the day+IP abuse-throttle
+  // hash (src/reactions.ts). It's a Wrangler secret (`wrangler secret put REACTION_SALT`),
+  // so — like RESEND_API_KEY/TURNSTILE_SECRET — it is deliberately NOT a var here. See
+  // .dev.vars.example for local dev.
 }
