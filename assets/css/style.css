@@ -301,6 +301,13 @@ a.kicker:hover {
   letter-spacing: -0.03em;
   margin-bottom: 0.6rem;
 }
+.post-header .post-dek {
+  font-size: 1.15rem;
+  line-height: 1.5;
+  font-style: italic;
+  color: var(--color-text-light);
+  margin: 0.5rem 0 0.9rem;
+}
 .post-header .post-byline {
   font-size: 0.75rem;
   letter-spacing: 0.1em;
