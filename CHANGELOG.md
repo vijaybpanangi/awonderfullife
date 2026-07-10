@@ -4,7 +4,7 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
-## v2.17.3 — New post: "Built With AI, Here to Stay" + seo-inject canonical fix (2026-07-10 15:13 UTC)
+## v2.17.3 — New post: "Built With AI, Here to Stay" + seo-inject canonical fix (2026-07-10 15:25 UTC)
 
 New Technology post: **[Built With AI, Here to Stay](https://awonderfullife.ca/posts/built-with-ai-here-to-stay)** — the build story behind [Track Your App](https://trackyourapp.ca) (the Canadian Express Entry immigration tracker), told through two real engineering decisions and a near-miss production incident recovered via Cloudflare D1 point-in-time backups, in service of the argument that AI-assisted software deserves judgment on its merits rather than a reflexive dismissal at the label. Added via the standard four-plus-places flow: `posts/built-with-ai-here-to-stay.html`, homepage featured swap (previous featured post `finding-stability…` moved into the card grid with its `next` nav link added), new card on `categories/technology.html`, `archive.html` entry, `sitemap.xml`, and `feed.xml`; category/all facet counts bumped site-wide (Technology 2→3, All 16→17); AI-generated hero via `gen-hero.sh`.
 
