@@ -10,7 +10,7 @@ guid: "https://awonderfullife.ca/posts/the-united-states-and-canada-uneasy-neigh
 ---
 In the rich and complex histories of North America, the United States and Canada stand as symbols of ambition, resilience, and possibility. Yet beneath the surface of their prosperity lies an unsettling truth: legacies of inequality, displacement, and systemic injustice continue to shape the lives of millions. These nations, though divergent in their beginnings, now find themselves grappling with echoes of similar struggles, demanding a reckoning with their pasts and a commitment to building fairer futures.
 
-Rabindranath Tagore, in his ***Gitanjali***, dreamt of a world “*where the mind is without fear and the head is held high; where knowledge is free*.” Though written in the context of colonial India, Tagore’s vision transcends time and place. It speaks to universal human striving for dignity, equality, and justice. Today, his prayer resonates across the Americas, urging nations like the United States and Canada to confront their contradictions and fulfill their vast potential.
+Rabindranath Tagore, in his **_Gitanjali_**, dreamt of a world “*where the mind is without fear and the head is held high; where knowledge is free*.” Though written in the context of colonial India, Tagore’s vision transcends time and place. It speaks to universal human striving for dignity, equality, and justice. Today, his prayer resonates across the Americas, urging nations like the United States and Canada to confront their contradictions and fulfill their vast potential.
 
 The United States declared independence in 1776 with lofty ideals of liberty and equality but entrenched slavery and dispossession in its fabric.
 
