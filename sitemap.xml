@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://awonderfullife.ca/</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-07-10</lastmod>
   </url>
   <url>
     <loc>https://awonderfullife.ca/about</loc>
@@ -10,7 +10,7 @@
   </url>
   <url>
     <loc>https://awonderfullife.ca/archive</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-07-10</lastmod>
   </url>
   <url>
     <loc>https://awonderfullife.ca/categories/politics</loc>
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://awonderfullife.ca/categories/technology</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-07-10</lastmod>
   </url>
   <url>
     <loc>https://awonderfullife.ca/categories/travel</loc>
@@ -43,6 +43,10 @@
   <url>
     <loc>https://awonderfullife.ca/posts/apple-intelligence-ai-for-us-everyday-users</loc>
     <lastmod>2024-10-29</lastmod>
+  </url>
+  <url>
+    <loc>https://awonderfullife.ca/posts/built-with-ai-here-to-stay</loc>
+    <lastmod>2026-07-10</lastmod>
   </url>
   <url>
     <loc>https://awonderfullife.ca/posts/data-dilemma-starving-for-truth-in-a-sea-of-misinformation</loc>
