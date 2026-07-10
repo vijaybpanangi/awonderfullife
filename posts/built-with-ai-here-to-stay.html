@@ -133,21 +133,111 @@
             <header class="post-header">
                 <a class="kicker" href="../categories/technology">Technology</a>
                 <h1>Built With AI, Here to Stay</h1>
-                <p class="post-byline">VIJAY PANANGIPALLY · JULY 10, 2026 · 7 MIN READ</p>
+                <p class="post-dek"><em>What building Track Your App taught me about software, responsibility, and the wrong way to judge AI-assisted work.</em></p>
+                <p class="post-byline">VIJAY PANANGIPALLY · JULY 10, 2026 · 9 MIN READ</p>
             </header>
             <img class="post-hero" src="../assets/images/posts/built-with-ai-here-to-stay.jpg" alt="A cluttered desk of scattered notes and spreadsheet sketches under a lamp dissolves into a glowing tiled pathway leading to a bright red maple leaf, with a starry night sky, trees, and a lake visible through a large window.">
             <div class="post-content">
-                <p>The moment someone learns a piece of software was built with AI assistance, something shifts in how they look at it. Not a change in what they see: the interface hasn't moved, the feature still works exactly as it did a second ago. What changes is the presumption underneath it. Suddenly it's "vibe coded," a toy, a liability waiting to be discovered, something to be politely impressed by rather than actually trusted. The verdict arrives before the inspection: before anyone has opened the app, clicked through a flow, or asked what happens when something breaks. It is a strange kind of skepticism, because most of the people extending it are, in the very same week, leaning on AI themselves to draft an email, summarize a document, or debug their own code, and extending themselves plenty of grace for it. The assumption seems to be that when AI is involved, the judgment, the trade-offs, the decisions under pressure, all the things that actually make software trustworthy, must have gone missing too. That assumption is wrong often enough that it's worth examining closely. And it matters because AI-assisted development isn't a passing trend to wait out. It's already how a great deal of serious software gets built, ours included, and the habit of judging the method instead of the result needs to catch up to that fact.</p>
-                <p>The tool started with a spreadsheet. The IRCC PR Master Tracker is a Google Sheet that hundreds of Canadian Express Entry applicants collaboratively maintain, each row someone else's journey: when they got their Acknowledgement of Receipt, when biometrics were requested, when their background check cleared, when the final decision landed. It is remarkable because it is real, the collective lived experience of people who went through this before you, not a government estimate. But the one question that mattered most was also the hardest to answer from inside it: how much was actually moving. How many people had an update this week. How many cases had progressed to the next stage since you last looked. In a spreadsheet with hundreds of rows and no real filtering, where sorting by one column broke the grouping of another, that pulse was invisible. You could not glance at it and know whether the process was moving at all; you could only scroll, guess, and scroll again.</p>
-                <p>We built Track Your App for the people staring at that spreadsheet at midnight, doing quiet arithmetic on someone else's timeline to guess at their own. Waiting on a permanent residency decision is not a background process. It sits with you at dinner, it wakes you up, and the only honest comfort available is knowing how long it actually took for people whose situation looked like yours. That is what the spreadsheet held, buried under its own size. We wanted to hand it back to people in a form that actually answered the question they came with.</p>
-                <p>"AI-assisted" did not mean typing a sentence and receiving an app. It meant sitting with an AI collaborator through the same decisions any serious build requires, and living with the consequences of getting them wrong. Early on we had to choose where the data would live, and the obvious modern choice, a popular database service, paused itself automatically after about a week without traffic on its free tier. For most side projects that is a footnote. For something people check anxiously, sometimes disappear from for weeks and return to at the worst possible moment, a database that might be asleep when they need it is not acceptable. We chose a less fashionable option that never sleeps, because the people using this could not be expected to work around our infrastructure. That choice held until the free tier itself became the problem: once enough real timelines were flowing through it, the strict computing limit on that tier made the site start timing out under ordinary traffic, an outage that was entirely ours to own and fix. We moved to a paid tier the same week and the ceiling disappeared.</p>
-                <p>The hardest call we made was not architectural at all, it was ethical. People trusting a stranger's app with details of their immigration status deserved better than having their name, their email, or any real identifying detail sitting in a database that could someday be breached, subpoenaed, or simply misused. So partway through the build we tore out how accounts worked and rebuilt them from nothing: no email stored anywhere, no real name, just a nickname each person could choose for themselves or let us generate. It cost us weeks we had not planned to spend, on a feature nobody using the app would ever notice as a feature. We did it anyway because it was the right call, not because anyone asked for it.</p>
-                <p>That rebuild meant restructuring the one table every other piece of the system depended on. Partway through, a safety guard that existed specifically to stop a rebuild from cascading into connected tables got removed, on the assumption it was no longer needed. It was needed. When the rebuild ran, it cascaded further than intended and deleted real users' application records: actual people's actual immigration milestones, the dates they had trusted us to hold onto, gone in the time it takes a query to execute.</p>
-                <p>We caught it within minutes, and nothing was permanently lost. Every table had automatic point-in-time backups running underneath it, so we restored from the moment before the mistake, carefully rebuilt everything that had changed since, and verified every record was back exactly as it should be, milestone by milestone, application by application. The lesson we carry forward is a plain one: before you touch anything a table depends on, back up everything connected to it, not only the piece you meant to change. It is the kind of lesson most engineering teams learn once, the hard way, and we were fortunate it cost us an afternoon of quiet panic instead of a single person's trust.</p>
-                <p>None of that happened over a weekend. Months later, the web app has been live and growing the whole time, over six hundred real applicants have shared their own timelines through it, thousands of automated tests run against every change before it ships, and a native iOS app is now sitting with Apple, waiting on review, built the same way: decision by decision, incident by incident.</p>
-                <p>Nobody who dismisses a piece of AI-assisted software at first mention has any of that in view. Not the reasoning behind choosing a database, not the ethical call to strip out personal data nobody demanded we strip, not the night we nearly lost real people's records and the hours spent getting every one of them back, not the tests, not the months. What is visible, the only thing visible, is the phrase itself: built with AI. And that phrase alone is apparently enough to render a verdict, long before the verdict has anything to do with what was actually built.</p>
-                <p>That is a strange place to have arrived at. We do not write off all human-written software because one team, somewhere, once let a bad migration take down a production database; we understand that mistakes happen and what matters is whether they were caught, owned, and fixed. AI-assisted development deserves exactly that same standard, and no more suspicion than the standard already provides for. It is not a phase we are waiting out. It is already how a great deal of serious software gets built, ours included, and judging the method instead of the result gets the order of operations backwards.</p>
-                <p>What actually earned trust, in the end, was never the fact that an AI helped write the code. It was what we did the afternoon something went wrong: how fast we caught it, how completely we fixed it, and what we changed afterward so it could not happen the same way twice. That is the whole test, the only one that has ever mattered for any piece of software, and it has nothing to do with who or what held the pen. Somewhere out there tonight, someone is still doing quiet arithmetic on a stranger's timeline, trying to guess at their own. That is who this was always for.</p>
+                <p>The moment someone learns that a piece of software was built with AI assistance, something changes in how they look at it.</p>
+                <p>Not the software itself. The interface has not moved. The feature still works exactly as it did a second earlier. What changes is the presumption underneath it.</p>
+                <p>Suddenly, it is “vibe coded.” A toy. A liability waiting to be discovered. Something to be politely impressed by, perhaps, but not genuinely trusted.</p>
+                <p>The verdict often arrives before the inspection. Before anyone has opened the app, followed a complete flow, reviewed how the data is handled, or asked what happens when something breaks.</p>
+                <p>It is a strange kind of skepticism because many of the same people are already using AI to draft emails, summarize documents, analyze data, or debug their own code. They understand that using a tool does not automatically remove the judgment of the person using it. Yet when software is involved, that understanding seems to disappear.</p>
+                <p>The assumption becomes that if AI helped build it, the reasoning, trade-offs, accountability, and decisions under pressure must have disappeared too.</p>
+                <p>That assumption is wrong often enough that it deserves a closer look.</p>
+                <p>AI-assisted development is not a passing trend that the industry is waiting to outgrow. It is already part of how real software gets built, including ours. The habit of judging the method before examining the result needs to catch up.</p>
+                <h2>It Started With a Spreadsheet</h2>
+                <p>Track Your App began with a Google Sheet.</p>
+                <p>The IRCC PR Master Tracker is collaboratively maintained by Canadian Express Entry applicants. Each row represents someone’s immigration journey: when they received their Acknowledgement of Receipt, when biometrics were requested, when their background check progressed, and when the final decision arrived.</p>
+                <p>It is remarkable because the information is real. It comes from the lived experiences of people who went through the process, not from a generalized government processing estimate.</p>
+                <p>But the question most applicants wanted answered was also one of the hardest to answer from inside the spreadsheet:</p>
+                <p><strong>How much is actually moving?</strong></p>
+                <p>How many people received an update this week? How many applications progressed since the last time you checked? Are applicants with timelines similar to yours beginning to receive decisions?</p>
+                <p>In a spreadsheet containing hundreds of rows, those answers were buried. Sorting one column could disrupt the context provided by another. Filters were limited. Trends were difficult to see. There was no simple way to glance at the information and understand whether the process was moving.</p>
+                <p>You could only scroll, compare, calculate, and scroll again.</p>
+                <p>We built Track Your App for the people staring at that spreadsheet at midnight, quietly doing arithmetic on someone else’s timeline to make sense of their own.</p>
+                <p>Waiting for a permanent residence decision is not a background process. It follows you through the day. It sits with you at dinner. It wakes you up at night. Sometimes the only honest comfort available is understanding how long the process took for people whose circumstances resembled yours.</p>
+                <p>The spreadsheet contained that knowledge. It was simply buried under its own size.</p>
+                <p>We wanted to return it to the community in a form that answered the questions people were actually asking.</p>
+                <h2>What “AI-Assisted” Really Looked Like</h2>
+                <p>Building the application with AI did not mean typing one sentence and receiving a finished product.</p>
+                <p>It meant working with an AI collaborator through the same decisions any serious software project requires, then living with the consequences when those decisions were wrong.</p>
+                <p>Early in the project, we had to decide where the data would live.</p>
+                <p>The obvious modern choice was a popular database service with a generous free tier. However, databases on that tier could automatically pause after roughly a week without activity.</p>
+                <p>For many side projects, that might be an acceptable inconvenience.</p>
+                <p>It was not acceptable for this one.</p>
+                <p>People might use the tracker intensely for several days, step away for a few weeks, and return during one of the most stressful moments of their immigration process. They should not have to wait for our database to wake up because our infrastructure was designed around the convenience of a free plan.</p>
+                <p>We chose a less fashionable option that remained available continuously.</p>
+                <p>That decision worked until the free tier itself became the problem.</p>
+                <p>As more real timelines began flowing through the application, the platform’s strict computing limits caused the site to time out under ordinary traffic. It was a real outage affecting real users, and it was entirely ours to own.</p>
+                <p>We moved to a paid tier that same week. The capacity problem disappeared.</p>
+                <p>The decision was not made by AI. AI helped us understand the options, examine the trade-offs, implement the changes, and test the result. The responsibility for choosing, monitoring, and correcting the system remained ours.</p>
+                <h2>The Most Important Decision Was Not Technical</h2>
+                <p>The hardest decision we made was not architectural. It was ethical.</p>
+                <p>People were trusting an unfamiliar application with information about their immigration status. They deserved better than having their names, email addresses, or other identifying details sitting in a database that might someday be breached, subpoenaed, exposed through an error, or simply misused.</p>
+                <p>Partway through the build, we reconsidered the account system entirely.</p>
+                <p>We removed the collection and storage of email addresses and real names. Users would instead be represented by a nickname they could choose themselves or allow the application to generate.</p>
+                <p>Nobody had requested this feature.</p>
+                <p>Most users would never even notice it as a feature.</p>
+                <p>Implementing it meant tearing out part of the existing account system and rebuilding it from the ground up. It cost us weeks that we had not planned to spend.</p>
+                <p>We did it anyway because it was the right decision.</p>
+                <p>That is the part that gets lost when people hear “built with AI” and imagine that nobody was making deliberate choices. AI could help us restructure the system. It could not decide what responsibility we owed the people using it.</p>
+                <h2>Then We Made a Serious Mistake</h2>
+                <p>The privacy rebuild required us to restructure the central database table that many other parts of the application depended on.</p>
+                <p>During that work, a safety guard designed to prevent changes from cascading into connected tables was removed. The assumption was that the safeguard was no longer necessary.</p>
+                <p>It was necessary.</p>
+                <p>When the rebuild ran, the change cascaded further than intended and deleted real users’ application records.</p>
+                <p>These were not test records. They were actual immigration milestones belonging to actual people. Dates they had trusted us to preserve disappeared in the time it took a database query to execute.</p>
+                <p>We caught the problem within minutes.</p>
+                <p>Fortunately, every table had automatic point-in-time backups running underneath it. We restored the database to the moment before the mistake, reconstructed the legitimate changes that had occurred since then, and verified the restored information carefully.</p>
+                <p>Milestone by milestone. Application by application.</p>
+                <p>Nothing was permanently lost.</p>
+                <p>Still, that does not make the mistake insignificant. The fact that recovery systems worked does not excuse the action that made them necessary.</p>
+                <p>The lesson was painfully simple: before changing anything that other data depends on, back up and protect everything connected to it, not only the component you intend to modify.</p>
+                <p>It is the kind of lesson many engineering teams learn once, the hard way.</p>
+                <p>We were fortunate that it cost us an afternoon of quiet panic instead of a single person’s trust.</p>
+                <h2>Trust Is Built After the Launch</h2>
+                <p>None of this happened over one weekend.</p>
+                <p>The application has now been live and growing for months. More than six hundred real applicants have shared their timelines through it. Thousands of automated tests run against changes before they are released. A native iOS application has also been built through the same process and, at the time of writing, is awaiting Apple’s review.</p>
+                <p>The work happened decision by decision, test by test, and incident by incident.</p>
+                <p>None of that is visible to someone who dismisses the application the moment they hear that AI helped build it.</p>
+                <p>They do not see the reasoning behind the database choice.</p>
+                <p>They do not see the decision to remove personal information that nobody had asked us to remove.</p>
+                <p>They do not see the afternoon when records were accidentally deleted, the backups that restored them, or the safeguards added afterward.</p>
+                <p>They do not see the testing, monitoring, revisions, or months of continued work.</p>
+                <p>They see only the phrase:</p>
+                <p><strong>Built with AI.</strong></p>
+                <p>And sometimes that phrase is enough for them to reach a conclusion before looking at what was actually built.</p>
+                <h2>Judge the Software, Not the Toolchain</h2>
+                <p>We do not dismiss all human-written software because one development team once released a defect or brought down a production database.</p>
+                <p>We understand that mistakes happen.</p>
+                <p>What matters is whether the team anticipated risks, detected problems, took responsibility, restored what was affected, and improved the system afterward.</p>
+                <p>AI-assisted development deserves the same standard. No less scrutiny, certainly, but no automatic presumption of incompetence either.</p>
+                <p>There is plenty of genuinely careless AI-generated software in the world. Applications are launched without proper testing. Security concerns are ignored. Hallucinated code is accepted without review. Products are released by people who do not understand what they have built.</p>
+                <p>That deserves criticism.</p>
+                <p>But the problem in those cases is not merely that AI was involved. The problem is that judgment and accountability were missing.</p>
+                <p>Those failures existed long before generative AI. AI simply allows careless work to be produced faster, just as it allows careful builders to test ideas, investigate problems, and improve systems faster.</p>
+                <p>The useful question is not whether AI touched the code.</p>
+                <p>The useful questions are these:</p>
+                <p>Does the software work?</p>
+                <p>Is the data handled responsibly?</p>
+                <p>What happens when something fails?</p>
+                <p>Was the system tested?</p>
+                <p>Are the people behind it willing to own their decisions?</p>
+                <p>Those are the questions that reveal whether software deserves trust.</p>
+                <h2>What Actually Earned Trust</h2>
+                <p>In the end, trust was never earned because an AI helped write the code.</p>
+                <p>It was earned through what happened when something went wrong.</p>
+                <p>How quickly we noticed it.</p>
+                <p>How completely we restored what had been affected.</p>
+                <p>How honestly we took responsibility.</p>
+                <p>What we changed afterward so the same failure could not happen in the same way again.</p>
+                <p>That is the test that has always mattered for software.</p>
+                <p>It has very little to do with who, or what, held the pen.</p>
+                <p>Somewhere tonight, an applicant is still staring at a spreadsheet and doing quiet arithmetic on a stranger’s timeline, trying to predict their own future.</p>
+                <p>That person is who Track Your App was built for.</p>
+                <p>AI helped us build it.</p>
+                <p>The responsibility for making it worthy of their trust remains entirely ours.</p>
             </div>
         <nav class="post-nav" aria-label="More posts">
   <a class="post-nav-link post-nav-prev" href="finding-stability-in-unfinished-work-a-guide-to-endurance">
