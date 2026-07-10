@@ -42,7 +42,7 @@ def grab(text, pattern, required=True):
 def page_url(path):
     if path == "index.html":
         return APEX
-    return APEX + path  # about.html, archive.html, categories/x.html, posts/x.html
+    return APEX + re.sub(r"\.html$", "", path)  # canonical URLs are extension-less sitewide
 
 
 def iso_date(byline):
