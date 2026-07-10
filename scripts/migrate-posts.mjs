@@ -12,10 +12,10 @@
 //   - feed.xml               guid (verbatim, frozen with .html suffix).
 //   - categories/<cat>.html  excerpt (card excerpt on the post's own category page).
 //   - index.html             excerptHome (only recorded if it differs from excerpt);
-//                            listTitle (only recorded if the card title text differs
-//                            from the post's own h1 — see NOTE below).
-//   - archive.html           cross-checked against h1 for diagnostics only (logged
-//                            to the console, not written to front matter).
+//                            card title cross-checked against h1 for diagnostics.
+//   - archive.html           listTitle (only recorded if the archive-list title text
+//                            differs from the post's own h1 — see NOTE below; no
+//                            post in the current corpus does).
 //
 // Byte-fidelity rules (see .superpowers/sdd/task-2-brief.md):
 //   - `description` and `heroAlt` are consumed by templates via `{{ x | safe }}`
@@ -38,20 +38,22 @@
 // American and Canadian Experience"). The one real byte-level title discrepancy
 // found is on apple-intelligence-ai-for-us-everyday-users: index.html's card and
 // categories/technology.html's card use a straight apostrophe ("Apple's"), while
-// the post's own h1 and archive.html use a curly apostrophe ("Apple’s"). Since
-// `(post.data.listTitle or post.data.title)` is one field consumed identically by
-// card-grid (index + category), archive-list, feed.njk, AND post-nav (which prints
-// a *neighboring* post's title on this post's own page), no single value can match
-// every legacy surface at once — but the surfaces split 3-vs-1 in favour of the
-// straight quote: index.html's card, categories/technology.html's card, AND the
-// legacy post-nav blocks on both of apple-intelligence's chronological neighbors
-// (2024-election-results-a-call-for-change, dream-big-transforming-education-for-
-// every-child) all use the straight apostrophe; only archive.html uses curly. This
-// script therefore derives listTitle from the index.html card text (matching the
-// brief's own wording, "the title used on ... index.html cards"), which resolves
-// 4 of the 5 affected legacy surfaces and leaves archive.html as the sole residual
-// discrepancy — the minimal achievable diff surface. See task-2-report.md for the
-// full surface-by-surface comparison.
+// the post's own h1, archive.html, AND feed.xml's <title> all use a curly
+// apostrophe ("Apple’s"). Controller adjudication (task-2 review, 2026-07-10):
+// the h1 + archive.html + feed.xml consensus is authoritative — feed.xml being
+// the frozen, subscriber-facing surface where a silent change matters most — and
+// the straight apostrophe on the card surfaces is a legacy typo. listTitle is
+// therefore derived from archive.html, set ONLY when the archive-list title text
+// differs from the post's own h1 (no post in the current corpus does, so no .md
+// carries listTitle). Card-level differences (index.html / categories/<cat>.html)
+// are logged as diagnostics — known legacy typos, corrected in the generated
+// output — never written to front matter. Net effect for apple-intelligence:
+// generated feed.xml and archive.html match legacy exactly; the index card, the
+// technology category card, and the post-nav blocks on its two chronological
+// neighbors (2024-election-results-a-call-for-change, dream-big-transforming-
+// education-for-every-child) intentionally differ from legacy by one character
+// (curly apostrophe replacing the straight-apostrophe typo). Documented in
+// task-2-report.md for Task 3's parity allowlist.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -105,6 +107,17 @@ function extractRawAttr(rawHtml, re) {
   return m ? m[1] : null;
 }
 
+// Fail-loud guard for mandatory front-matter fields: silently serializing a
+// null/undefined/empty extraction into YAML would produce a plausible-looking
+// but corrupt .md (e.g. `guid: "null"`). Same posture as parseByline: throw
+// with the slug and field name the moment an extraction comes back empty.
+function requireField(value, slug, field) {
+  if (value === null || value === undefined || value === "") {
+    throw new Error(`${slug}: failed to extract mandatory field "${field}"`);
+  }
+  return value;
+}
+
 // --- turndown setup --------------------------------------------------------
 
 function makeTurndownService() {
@@ -136,21 +149,21 @@ function makeTurndownService() {
 
 // --- per-post extraction ----------------------------------------------------
 
-function parseByline(bylineText) {
+function parseByline(bylineText, slug) {
   // "VIJAY PANANGIPALLY · MARCH 04, 2025 · 9 MIN READ"
   const parts = bylineText.split("·").map((s) => s.trim());
   const dateMatch = /^([A-Z]+) (\d{2}), (\d{4})$/.exec(parts[1]);
   if (!dateMatch) {
-    throw new Error(`Unrecognized byline date segment: ${JSON.stringify(parts[1])}`);
+    throw new Error(`${slug}: unrecognized byline date segment: ${JSON.stringify(parts[1])}`);
   }
   const [, monthName, day, year] = dateMatch;
   const month = MONTHS[monthName];
-  if (!month) throw new Error(`Unknown month name: ${monthName}`);
+  if (!month) throw new Error(`${slug}: unknown month name: ${monthName}`);
   const date = `${year}-${month}-${day}`;
 
   const minReadMatch = /^(\d+) MIN READ$/.exec(parts[2]);
   if (!minReadMatch) {
-    throw new Error(`Unrecognized byline minRead segment: ${JSON.stringify(parts[2])}`);
+    throw new Error(`${slug}: unrecognized byline minRead segment: ${JSON.stringify(parts[2])}`);
   }
   const minRead = parseInt(minReadMatch[1], 10);
 
@@ -208,50 +221,68 @@ function migrateOne(slug, ctx) {
   const headerClass = header.attr("class") || "";
   const heroTitled = headerClass.split(/\s+/).includes("is-hero-titled");
 
-  const title = header.children("h1").first().text().trim();
+  const title = requireField(header.children("h1").first().text().trim(), slug, "title (h1)");
 
   const kickerHref = header.find("a.kicker").attr("href") || "";
-  const category = kickerHref.split("/").filter(Boolean).pop();
+  const category = requireField(
+    kickerHref.split("/").filter(Boolean).pop(),
+    slug,
+    "category (kicker href)"
+  );
 
-  const bylineText = header.find("p.post-byline").text().trim();
-  const { date, minRead } = parseByline(bylineText);
+  const bylineText = requireField(
+    header.find("p.post-byline").text().trim(),
+    slug,
+    "byline (p.post-byline)"
+  );
+  const { date, minRead } = parseByline(bylineText, slug);
 
   const dekEm = header.find(".post-dek em");
   const dek = dekEm.length ? dekEm.text().trim() : null;
 
-  const description = extractRawAttr(
-    rawHtml,
-    /<meta name="description" content="([^"]*)">/
+  const description = requireField(
+    extractRawAttr(rawHtml, /<meta name="description" content="([^"]*)">/),
+    slug,
+    "description (meta)"
   );
-  const heroAlt = extractRawAttr(
-    rawHtml,
-    /<img class="post-hero"[^>]*\balt="([^"]*)"/
+  const heroAlt = requireField(
+    extractRawAttr(rawHtml, /<img class="post-hero"[^>]*\balt="([^"]*)"/),
+    slug,
+    "heroAlt (post-hero alt)"
   );
 
-  const guid = extractGuid(ctx.feedRaw, slug);
+  const guid = requireField(extractGuid(ctx.feedRaw, slug), slug, "guid (feed.xml <guid>)");
 
-  // listTitle: set if index.html's card title text differs from h1 (see the
-  // module-level NOTE — index.html is used as the comparison source because,
-  // empirically, it resolves the most legacy surfaces for the one post where
-  // this actually occurs). Also cross-checked against archive.html purely for
-  // reporting/diagnostics (surfaced via ctx.diagnostics, not written to disk).
+  // listTitle: set ONLY when archive.html's list title text differs from h1
+  // (the h1 + archive.html + feed.xml consensus is authoritative per the
+  // module-level NOTE; no post in the current corpus differs, so no .md gets
+  // listTitle). Card-title differences on index.html are known legacy typos:
+  // logged as diagnostics, corrected in the generated output, never persisted.
   const categoryDoc = ctx.categoryDocs[category];
-  const indexCardTitle = extractCardTitle(ctx.indexDoc, slug, "posts/");
-  const listTitle = indexCardTitle && indexCardTitle !== title ? indexCardTitle : null;
+  const archiveTitle = requireField(
+    extractArchiveTitle(ctx.archiveRaw, slug),
+    slug,
+    "archive.html list title"
+  );
+  const listTitle = archiveTitle !== title ? archiveTitle : null;
 
-  const archiveTitle = extractArchiveTitle(ctx.archiveRaw, slug);
-  if (archiveTitle && archiveTitle !== title) {
+  const indexCardTitle = extractCardTitle(ctx.indexDoc, slug, "posts/");
+  if (indexCardTitle && indexCardTitle !== title) {
     ctx.diagnostics.push(
-      `${slug}: archive.html title (${JSON.stringify(archiveTitle)}) differs from h1 ` +
-        `(${JSON.stringify(title)})` +
-        (listTitle ? ` — listTitle is set to the index.html variant instead` : "")
+      `${slug}: index.html card title (${JSON.stringify(indexCardTitle)}) differs from h1 ` +
+        `(${JSON.stringify(title)}) — treated as a legacy card typo (h1/archive/feed ` +
+        `consensus wins); generated cards will show the h1 text`
     );
   }
 
   // excerpt / excerptHome
   const categoryExcerpt = categoryDoc ? extractExcerpt(categoryDoc, slug, "../posts/") : null;
   const indexExcerpt = extractExcerpt(ctx.indexDoc, slug, "posts/");
-  const excerpt = categoryExcerpt ?? indexExcerpt;
+  const excerpt = requireField(
+    categoryExcerpt ?? indexExcerpt,
+    slug,
+    `excerpt (categories/${category}.html card, index.html fallback)`
+  );
   const excerptHome =
     indexExcerpt !== null && categoryExcerpt !== null && indexExcerpt !== categoryExcerpt
       ? indexExcerpt

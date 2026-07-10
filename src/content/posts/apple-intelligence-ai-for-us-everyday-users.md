@@ -1,6 +1,5 @@
 ---
 title: "How Apple’s AI Enhances Everyday Life: A Review"
-listTitle: "How Apple's AI Enhances Everyday Life: A Review"
 date: 2024-10-29
 category: technology
 description: "Apple Intelligence, introduced in iOS 18.1, marks a significant step in making AI accessible for everyday users. This update enhances Siri with new features suc"
