@@ -17,9 +17,9 @@ export interface Env {
   // Comments: AI binding for the moderation sweep; secret for signing verify sessions.
   AI?: Ai
   COMMENT_SECRET?: string
-  // Reactions: salts the zero-PII day+IP abuse-throttle hash (src/reactions.ts). Optional
-  // Wrangler secret — see .dev.vars.example; the throttle degrades to an unsalted fallback
-  // if it isn't set yet.
+  // Reactions: salts the zero-PII day+IP abuse-throttle hash (src/reactions.ts). Wrangler
+  // secret — see .dev.vars.example. If unset, POST /reactions fails loud (503 + console.warn);
+  // GET /reactions still works (reads never need the salt).
   REACTION_SALT?: string
 }
 

@@ -5,10 +5,6 @@ import type { Env } from './index'
 const SITE = 'https://awonderfullife.ca'
 const SLUG_RE = /^[a-z0-9-]{1,120}$/
 const DAILY_CAP = 10
-// Non-secret fallback, used only if the REACTION_SALT Wrangler secret hasn't been set yet
-// (e.g. right after this endpoint first deploys, before `wrangler secret put REACTION_SALT`
-// runs). The throttle still works, just unsalted, until the real secret is in place.
-const FALLBACK_SALT = 'awonderfullife-reactions-unsalted-fallback'
 
 function jc(body: unknown, status = 200, extra: Record<string, string> = {}): Response {
   return new Response(JSON.stringify(body), {
@@ -36,8 +32,7 @@ function utcDate(nowMs: number = Date.now()): string {
 // non-reversible: nothing date- or IP-readable is ever persisted from this value.
 // A missing CF-Connecting-IP (shouldn't happen on Cloudflare) falls back to a fixed
 // sentinel so it still gets its own throttle bucket for the day.
-async function dayHash(env: Env, ip: string | null, day: string): Promise<string> {
-  const salt = env.REACTION_SALT || FALLBACK_SALT
+async function dayHash(salt: string, ip: string | null, day: string): Promise<string> {
   const bytes = new TextEncoder().encode(`${salt}:${day}:${ip ?? 'no-ip'}`)
   const digest = await crypto.subtle.digest('SHA-256', bytes)
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('')
@@ -94,8 +89,16 @@ async function postReaction(request: Request, env: Env): Promise<Response> {
   const slug = typeof b.slug === 'string' ? b.slug : ''
   if (!SLUG_RE.test(slug)) return jc({ error: 'invalid' }, 400, c)
 
+  // The throttle hash is only meaningful salted; without the REACTION_SALT secret
+  // (`wrangler secret put REACTION_SALT`) we fail loud rather than run a weakened
+  // throttle — nothing is incremented or stored. GET stays available regardless.
+  if (!env.REACTION_SALT) {
+    console.warn('[reactions] REACTION_SALT secret is not set — POST /reactions disabled')
+    return jc({ error: 'reactions_unavailable' }, 503, c)
+  }
+
   const day = utcDate()
-  const hash = await dayHash(env, request.headers.get('CF-Connecting-IP'), day)
+  const hash = await dayHash(env.REACTION_SALT, request.headers.get('CF-Connecting-IP'), day)
   const allowed = await bumpReactionEvent(env, hash, slug, day)
   if (!allowed) {
     // Silent cap: current count, no error, no hint that a limit exists.

@@ -63,6 +63,20 @@ describe('GET /reactions', () => {
     const res = await call(w, getReq('a-post'))
     expect(await res.json()).toEqual({ count: 2 })
   })
+
+  it('answers an invalid-format slug permissively with {count: 0}', async () => {
+    const w = createWorker(okDeps)
+    const res = await call(w, getReq('Not A Slug!'))
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ count: 0 })
+  })
+
+  it('works without REACTION_SALT configured (reads never need it)', async () => {
+    const w = createWorker(okDeps)
+    const res = await call(w, getReq('any-post'), { REACTION_SALT: undefined })
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ count: 0 })
+  })
 })
 
 describe('POST /reactions', () => {
@@ -95,6 +109,17 @@ describe('POST /reactions', () => {
     )
     await waitOnExecutionContext(ctx)
     expect(res.status).toBe(400)
+  })
+
+  it('returns 503 and stores nothing when REACTION_SALT is not configured', async () => {
+    const w = createWorker(okDeps)
+    const res = await call(w, postReq({ slug: 'a-post' }), { REACTION_SALT: undefined })
+    expect(res.status).toBe(503)
+    expect(await res.json()).toEqual({ error: 'reactions_unavailable' })
+    const reactions = await env.DB.prepare('SELECT COUNT(*) AS n FROM reactions').first<{ n: number }>()
+    const events = await env.DB.prepare('SELECT COUNT(*) AS n FROM reaction_events').first<{ n: number }>()
+    expect(reactions?.n).toBe(0)
+    expect(events?.n).toBe(0)
   })
 })
 
@@ -150,6 +175,8 @@ describe('OPTIONS /reactions', () => {
     )
     expect(res.status).toBe(204)
     expect(res.headers.get('Access-Control-Allow-Origin')).toBe('https://awonderfullife.ca')
+    expect(res.headers.get('Access-Control-Allow-Methods')).toBe('GET, POST, OPTIONS')
+    expect(res.headers.get('Vary')).toBe('Origin')
   })
 })
 
