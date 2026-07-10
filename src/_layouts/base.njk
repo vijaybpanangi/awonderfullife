@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
+{%- include "head-seo.njk" %}
+{%- include "jsonld.njk" %}
     {%- if newsletter %}
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     {%- endif %}
@@ -17,8 +19,6 @@
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-{%- include "head-seo.njk" %}
-{%- include "jsonld.njk" %}
 </head>
 <body>
     <!-- Edge-lensing Liquid Glass filter (Chromium-only; referenced by
@@ -57,6 +57,9 @@
     </main>
 
 {% include "footer.njk" %}
+    {%- if newsletter %}
+{% include "newsletter-script.njk" %}
+    {%- endif %}
     {%- if hasComments %}
     <script src="/assets/js/comments.js" defer></script>
     {%- endif %}
