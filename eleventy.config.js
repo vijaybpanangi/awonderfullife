@@ -54,11 +54,33 @@ export default function (eleventyConfig) {
   // jsonLdGraph(site, ctx) | safe (addShortcode only supports tag-call syntax).
   eleventyConfig.addNunjucksGlobal("jsonLdGraph", (site, ctx) => buildGraph(site, ctx));
 
-  // `posts` collection: every post, newest first.
+  // `posts` collection: every post, newest first. Same-day ties fall back to
+  // Array.sort's stability, which preserves the glob's alphabetical-by-slug
+  // order — matching every same-date group in the corpus except one: the two
+  // 2024-11-18 posts. There, the legacy site's OWN chronological ordering
+  // (archive.html, index.html, AND the hand-authored prev/next chain across
+  // all four neighboring posts — six surfaces in total) consistently places
+  // "Confronting Inequality" before "India and Pakistan", the reverse of
+  // alphabetical. feed.xml is the only legacy surface using the alphabetical
+  // order for this pair, and it was added later (v2.15.0) than archive.html's
+  // ordering (present since the very first commit) — see task-3-report.md's
+  // PENDING-ADJUDICATION P1 for the full evidence trail. SAME_DAY_TIE_BREAK
+  // overrides the stable-sort default for just this one documented pair.
+  const SAME_DAY_TIE_BREAK = {
+    "the-united-states-and-canada-uneasy-neighbors-shared-failures": 0,
+    "india-and-pakistan-twin-dreams-divided-bound-by-hope": 1,
+  };
   eleventyConfig.addCollection("posts", (collectionApi) =>
     collectionApi
       .getFilteredByGlob("src/content/posts/*.md")
-      .sort((a, b) => b.data.date - a.data.date)
+      .sort((a, b) => {
+        const dateDiff = b.data.date - a.data.date;
+        if (dateDiff !== 0) return dateDiff;
+        const aOrder = SAME_DAY_TIE_BREAK[a.fileSlug];
+        const bOrder = SAME_DAY_TIE_BREAK[b.fileSlug];
+        if (aOrder !== undefined && bOrder !== undefined) return aOrder - bOrder;
+        return 0; // preserve stable (alphabetical) order for every other tie
+      })
   );
 
   return {

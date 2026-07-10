@@ -13,7 +13,7 @@
                 {%- for c in site.categories %}
                 {%- set count = (collections.posts | byCategory(c.slug)) | length %}
                 {%- if c.slug == current %}
-                <span class="facet-chip is-current">{{ c.name }}<span class="facet-chip-count">{{ count }}</span></span>
+                <a class="facet-chip is-current" href="/categories/{{ c.slug }}">{{ c.name }}<span class="facet-chip-count">{{ count }}</span></a>
                 {%- else %}
                 <a class="facet-chip" href="/categories/{{ c.slug }}">{{ c.name }}<span class="facet-chip-count">{{ count }}</span></a>
                 {%- endif %}
