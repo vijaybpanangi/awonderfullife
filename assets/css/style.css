@@ -10,6 +10,7 @@
   --color-border: #e5e5e5;
   --color-accent: #0a4a9a;
   --color-bg-soft: #f9f9f9;
+  color-scheme: light;
   --font: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --max-width: 860px;
   --max-width-wide: 1200px;
@@ -30,9 +31,16 @@
      theme can retarget them later. */
   --surface-solid: #fff;                    /* opaque fallback fills: facet-chip (@supports), author-card */
   --header-scrim: rgba(255,255,255,0.96);   /* header background when backdrop-filter is unsupported */
-  --on-accent: #fff;                        /* text/icons on solid accent-blue fills: avatar initials, submit/subscribe buttons */
-  --accent-hover: #08366e;                  /* newsletter subscribe button hover shade */
-  --placeholder-color: #9a9a9a;             /* comment-form input/textarea placeholder text */
+  --on-accent: #fff;                        /* text/icons on solid accent-blue fills: avatar initials, submit button */
+  --placeholder-color: #9a9a9a;             /* comment-form + newsletter input placeholder text */
+
+  /* Solid-CTA pairing (newsletter Subscribe). Decoupled from --color-accent
+     so dark mode can keep a lightened accent for links/kickers while the
+     filled button stays a deeper blue that holds WCAG AA against its white
+     text. Light values equal the prior button colors (#0a4a9a / #08366e / #fff). */
+  --cta-bg: #0a4a9a;
+  --cta-bg-hover: #08366e;
+  --cta-text: #fff;
 
   --glass-panel-bg: linear-gradient(160deg, rgba(255,255,255,0.6), rgba(244,248,253,0.48));      /* .comments pane */
   --glass-panel-bg-alt: linear-gradient(160deg, rgba(255,255,255,0.62), rgba(244,248,253,0.5));  /* .newsletter card (distinct alpha, kept separate) */
@@ -70,13 +78,19 @@
    light via the toggle, OR when the toggle has explicitly chosen dark. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    color-scheme: dark;
     --color-bg: #12151b;
     --color-text: #e8eaed;
     --color-text-light: #9aa0a6;
     --color-border: #262b35;
     --color-bg-soft: #1a1e26;
     --color-accent: #5b9bd5;
-    --accent-hover: #79b3e8;
+
+    /* Deeper CTA fill than the lightened link accent, so white text holds AA:
+       #fff on #1c64c8 = 5.67:1, on hover #2b6fd6 = 4.83:1 (both >= 4.5). */
+    --cta-bg: #1c64c8;
+    --cta-bg-hover: #2b6fd6;
+    --cta-text: #fff;
 
     --glass-bg: rgba(22,24,30,0.55);
     --glass-blur: blur(18px) saturate(1.4) brightness(0.9);
@@ -114,13 +128,19 @@
   }
 }
 :root[data-theme="dark"] {
+  color-scheme: dark;
   --color-bg: #12151b;
   --color-text: #e8eaed;
   --color-text-light: #9aa0a6;
   --color-border: #262b35;
   --color-bg-soft: #1a1e26;
   --color-accent: #5b9bd5;
-  --accent-hover: #79b3e8;
+
+  /* Deeper CTA fill than the lightened link accent, so white text holds AA:
+     #fff on #1c64c8 = 5.67:1, on hover #2b6fd6 = 4.83:1 (both >= 4.5). */
+  --cta-bg: #1c64c8;
+  --cta-bg-hover: #2b6fd6;
+  --cta-text: #fff;
 
   --glass-bg: rgba(22,24,30,0.55);
   --glass-blur: blur(18px) saturate(1.4) brightness(0.9);
@@ -858,15 +878,21 @@ a.kicker:hover {
 .newsletter-form input {
   flex: 1;
   padding: 0.75rem;
+  /* explicit surface + text (matching .comment-form input) so the field
+     never falls back to light UA system colors in dark mode */
+  background: var(--glass-input-bg);
+  color: var(--color-text);
   border: 1px solid var(--color-border);
   border-radius: 4px;
   font-family: var(--font);
   font-size: 0.95rem;
 }
+.newsletter-form input::placeholder { color: var(--placeholder-color); }
 .newsletter-form button {
   padding: 0.75rem 1.5rem;
-  background: var(--color-accent);
-  color: var(--on-accent);
+  /* solid-CTA pairing, not the link accent — see --cta-* tokens */
+  background: var(--cta-bg);
+  color: var(--cta-text);
   border: none;
   border-radius: 4px;
   font-family: var(--font);
@@ -875,7 +901,7 @@ a.kicker:hover {
   cursor: pointer;
   white-space: nowrap;
 }
-.newsletter-form button:hover { background: var(--accent-hover); }
+.newsletter-form button:hover { background: var(--cta-bg-hover); }
 
 /* Footer */
 footer {
