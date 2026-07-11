@@ -76,7 +76,7 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
-| `v3.0.0` | 2026-07-11 | [#PR_NUM] | Re-platform to Eleventy: posts are Markdown, all pages/feed/sitemap/SEO generated; parity-verified byte-faithful; zero visual change |
+| `v3.0.0` | 2026-07-11 | [#55](https://github.com/vijaybpanangi/awonderfullife/pull/55) | Re-platform to Eleventy: posts are Markdown, all pages/feed/sitemap/SEO generated; parity-verified byte-faithful; zero visual change |
 | `v2.17.5` | 2026-07-10 | [#52](https://github.com/vijaybpanangi/awonderfullife/pull/52) | "Built With AI, Here to Stay": full editorial rewrite (owner's edited draft, 7 h2 sections + dek) |
 | `v2.17.4` | 2026-07-10 | [#51](https://github.com/vijaybpanangi/awonderfullife/pull/51) | "Built With AI, Here to Stay": hand-picked photoreal hero replacing the AI-flat-editorial one |
 | `v2.17.3` | 2026-07-10 15:25 | [#49](https://github.com/vijaybpanangi/awonderfullife/pull/49) | New post: "Built With AI, Here to Stay" (Technology) + seo-inject.py canonical `.html` fix |
