@@ -32,9 +32,9 @@ seoType: post
         <section class="related-posts">
             <h2 class="related-posts-title">More reading</h2>
             <ul class="card-grid card-grid--3">
-{% for post in related %}
+        {%- for post in related %}
 {{ cardGrid.card(post, true, site.categories) }}
-{% endfor %}
+        {%- endfor %}
             </ul>
         </section>
 {% endif %}
