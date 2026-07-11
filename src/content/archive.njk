@@ -5,7 +5,10 @@ seoType: archive
 title: "Archive"
 description: "Full archive of posts from A Wonderful Life by Vijay Panangipally."
 mainClass: "container"
+search: true
 ---
+        <div id="search" class="site-search" aria-label="Search posts"></div>
+        <noscript><p class="search-noscript">Search requires JavaScript. Browse the full archive below.</p></noscript>
 {%- set current = "all" -%}
 {%- set periodPosts = collections.posts -%}
 {% include "facets.njk" %}

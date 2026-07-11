@@ -1,6 +1,6 @@
 {% set nav = collections.posts | postNeighbors(page.fileSlug) %}
 {% if nav.older or nav.newer %}
-        <nav class="post-nav" aria-label="More posts">
+        <nav class="post-nav" aria-label="More posts" data-pagefind-ignore>
 {% if nav.older %}
   <a class="post-nav-link post-nav-prev" href="/posts/{{ nav.older.fileSlug }}">
     <span class="post-nav-label">← Older</span>

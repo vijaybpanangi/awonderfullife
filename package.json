@@ -5,7 +5,7 @@
   "type": "module",
   "description": "A Wonderful Life - personal essay blog, built with Eleventy, deployed on Cloudflare Workers Static Assets",
   "scripts": {
-    "build": "eleventy",
+    "build": "eleventy && pagefind --site _site",
     "serve": "eleventy --serve"
   },
   "engines": {
@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
-    "markdown-it": "^14.2.0"
+    "markdown-it": "^14.2.0",
+    "pagefind": "1.5.2"
   }
 }
