@@ -8,18 +8,19 @@ Personal essay blog of Vijay Panangipally, tagline *"Data, life, and the space b
 
 ## Build, run, deploy
 
-There is no build system. No `package.json`, no bundler, no test framework. Edits are made directly to HTML/CSS files.
+The site is built with **Eleventy** (`@11ty/eleventy` v3). Posts are Markdown (`src/content/posts/*.md`); every other page (home, about, archive, categories, feed, sitemap) is a Nunjucks template in `src/content/`. `npm run build` renders everything into `_site/` — that directory, not the repo root, is what Cloudflare serves.
 
-- **Live site:** <https://awonderfullife.ca> — Cloudflare Workers with Static Assets auto-deploys from `main` on every push (config lives in `wrangler.jsonc`; the Pages-style integration was set up via the Cloudflare GitHub PR).
-- **Preview locally:** `python3 -m http.server 8000` from the repo root, open `http://localhost:8000/`.
-- **Verify a deploy:** after pushing, the Cloudflare dashboard shows the build, and the live site updates within ~30s. There are no automated tests; verification is visual.
-- **Asset exclusion:** `.assetsignore` (gitignore-style) keeps repo internals (`.git/`, `.wrangler/`, `docs/`, `wrangler.jsonc`, this file, the README) **and the `/api` worker (`api`, `api/**`, `node_modules`)** out of the public asset bundle. When adding new private files, add them there too.
+- **Live site:** <https://awonderfullife.ca> — Cloudflare Workers with Static Assets auto-deploys from `main` on every push. The Workers Build runs `npm ci && npm run build`; `wrangler.jsonc`'s `assets.directory` is `./_site`.
+- **Build locally:** `npm ci && npm run build` from the repo root — writes `_site/`.
+- **Preview locally:** `npm run serve` (Eleventy's dev server with live reload), or build once and serve the static output (`npm run build && cd _site && python3 -m http.server 8000`).
+- **Verify a deploy:** after pushing, the Cloudflare dashboard shows the Workers Build running `npm ci && npm run build`; the live site updates once it completes. There are no automated tests for the static site; verification is visual (the API worker in `/api` does have Vitest — see below).
+- **No `.assetsignore` anymore.** The asset directory is `_site/`, which contains only Eleventy's build output — nothing sensitive (no `.git`, `node_modules`, `src/`, `docs/`, `api/`) ever lands in it, so there's nothing to exclude.
 
 ## The API worker (`/api`)
 
 The repo hosts a **second, independent Cloudflare Worker** alongside the static site — the platform spine.
 
-- **Static site (repo root):** still no build system — plain HTML/CSS, `assets.directory: "."`, auto-deploys from `main`.
+- **Static site (repo root):** Eleventy build, `assets.directory: "./_site"`, auto-deploys from `main` (see "Build, run, deploy" above).
 - **API worker (`/api`):** TypeScript on the Workers runtime, with its own `package.json`, `wrangler.jsonc`, and Vitest tests. Served at **`api.awonderfullife.ca`** (custom domain; `workers_dev` off). The static site is untouched.
 
 **Routes:** `GET /health` (public → `{status,time}`), `GET /admin/whoami` (Cloudflare-Access-gated → verified email + a D1 `SELECT 1` flag), `POST /subscribe` (Turnstile + CORS + idempotent D1 upsert), and `GET /unsubscribe?token=` (deletes the row, returns an HTML page).
@@ -45,38 +46,57 @@ Spec: `docs/superpowers/specs/2026-06-13-api-spine-foundation-design.md` · Plan
 ## The big picture: where content lives
 
 ```
-/index.html                     Homepage — featured opener + illustrated 3-col card grid (.card-grid--3)
-/about.html                     About page (180×180 editorial-square portrait + prose)
-/archive.html                   Year-grouped compact list of every post + faceted nav
-/categories/<cat>.html          One page per category, illustrated card grid — same faceted nav
-/posts/<slug>.html              Individual post (one file per post)
-/assets/css/style.css           Single global stylesheet (~480 lines)
-/assets/images/                 Author portrait + hero images for each post
-/assets/images/posts/<slug>.jpg Hero image per post (AI-generated editorial illustration series)
+src/content/posts/<slug>.md     Individual post — ONE Markdown file per post, front matter + body
+src/content/index.njk           → _site/index.html — featured opener + illustrated 3-col card grid
+src/content/about.njk           → _site/about.html — About page (180×180 editorial-square portrait + prose)
+src/content/archive.njk         → _site/archive.html — year-grouped compact list of every post + faceted nav
+src/content/categories.njk      → _site/categories/<cat>.html — one page per category (paginated over site.categories)
+src/content/feed.njk            → _site/feed.xml — RSS feed, generated from the posts collection
+src/content/sitemap.njk         → _site/sitemap.xml — generated from every page + post
+src/_layouts/base.njk           Shared page shell (head, header, footer, newsletter)
+src/_layouts/post.njk           Post page shell (hero, dek, byline, post-nav, comments section)
+src/_includes/                  header, footer, card-grid, facets, post-nav, head-seo, jsonld, newsletter, author-card
+src/_data/site.json             Site-wide data: name, tagline, url, author, categories
+eleventy/filters.mjs            Date/URL/text Nunjucks filters (cardDate, readingTime, cleanUrl, etc.)
+eleventy/jsonld.mjs             JSON-LD @graph builder (mirrors the retired seo-inject.py)
+assets/css/style.css            Single global stylesheet (~480 lines), passthrough-copied verbatim into _site/
+assets/images/                  Author portrait + hero images for each post, passthrough-copied
+assets/images/posts/<slug>.jpg  Hero image per post (AI-generated editorial illustration series)
+_site/                          Eleventy's generated output (gitignored) — this is what Cloudflare actually serves
 ```
 
 Five categories in active use: **Reflection** (3 posts), **Society** (3), **Politics** (5), **Technology** (2), **Travel** (3).
 
-## Adding or modifying a post: the four-plus-places rule
+## Adding or modifying a post: one Markdown file
 
-Because there is no build system, a new post means edits in **four** files plus several additional steps:
+Since the Eleventy re-platform (`v3.0.0`), a new post is **one file**: `src/content/posts/<slug>.md`. Everything that used to require hand-edits in four-plus places — the homepage card, the archive row, the category page, prev/next nav, the RSS feed, the sitemap, and the SEO head/JSON-LD — is now generated from that one file plus the posts collection. There is no second, third, or fourth file to touch.
 
-1. `posts/<slug>.html` — the post itself. Open an existing post in the same category as a template; the structure is `<header class="post-header">` with `<a class="kicker">`, `<h1>`, `<p class="post-byline">` (include `· N MIN READ`, words ÷ 200), then `<img class="post-hero">`, then `<div class="post-content">`, ending with a `<nav class="post-nav">` footer block.
-2. `index.html` — add the post as a new card in the illustrated card grid (newest first). Update the featured opener if the new post is the most recent.
-3. `archive.html` — add to the correct `<h1 class="archive-year">` section.
-4. `categories/<category>.html` — add a card to that category's grid.
+**Front matter fields:**
 
-**Additional steps for every new post:**
+- `title` — the post's `<h1>` / `<title>` text.
+- `date` — `YYYY-MM-DD`; drives sort order, byline/card dates, archive year grouping, and feed/sitemap dates. (Front-matter dates parse as UTC midnight — every date filter reads UTC getters for this reason.)
+- `category` — one of the five category slugs in `src/_data/site.json` (`reflection`, `society`, `politics`, `technology`, `travel`).
+- `description` — meta description / OG / Twitter description text.
+- `excerpt` — the card excerpt shown on the homepage, the category page, and (for the newest post) the featured opener. (An `excerptHome` override for a homepage-only excerpt was part of the original migration contract, but no template currently reads it — `card-grid.njk` and `index.njk` both render `excerpt` unconditionally. Don't rely on setting `excerptHome` alone; it would need `card-grid.njk`/`index.njk` wired to prefer it first.)
+- `heroAlt` — descriptive alt text for the hero image (describe what it *shows*, not what the post is about; don't restate the title).
+- `minRead` — pins the "N MIN READ" byline/card figure. Optional: omit it and the `readingTime` filter computes words ÷ 200 (rounded, minimum 1) from the rendered content automatically.
+- `guid` — **omit for new posts.** The RSS `<guid>` auto-falls-back to the extension-less canonical URL (`{{ site.url }}/posts/<slug>`) when absent. Only the legacy-migrated posts carry an explicit `guid` — they froze their original `.html` permalink as the canonical GUID so existing RSS subscriptions don't see a spurious "new" item.
+- `dek` — optional italic sub-headline rendered under the `<h1>` (`.post-dek`). Leave it out if the post doesn't have one.
+- `heroTitled` — optional boolean; adds the `is-hero-titled` class to the post header for posts whose hero art is meant to visually anchor the title differently. Leave it out unless you're matching an existing "hero-titled" post's treatment.
+- `listTitle` — optional; overrides `title` on card grids and prev/next nav (falls back to `title` if absent). Use only if the card/nav title needs to differ from the on-page `<h1>` (e.g. a shorter list-friendly variant).
 
-- **Update neighboring posts' prev/next nav.** The post that was previously the newest gets a "next" link added; the post immediately before the new one gets a "previous" update. Check both `<nav class="post-nav">` blocks.
-- **Generate a hero illustration.** Run `docs/superpowers/tools/gen-hero.sh <slug> "<subject prompt>" <seed>` — saves to `assets/images/posts/<slug>.jpg`. Credentials: `$HOME/.cloudflare_ai_token` (API token) and `$HOME/.cloudflare_ai_account` (account ID). **Never commit these files.** View the result and regenerate if needed for style/quality/series cohesion (flat editorial style, terracotta/slate-blue/cream palette).
-- **Add a manifest row.** In `docs/superpowers/specs/2026-06-11-image-manifest.md`, record the slug, seed, prompt, alt text, and file size.
-- **Write a descriptive `alt` attribute.** Describe what the illustration *shows*, not what the post is about (e.g., `alt="A globe resting on a stack of newspapers, terracotta and slate-blue tones"`). Do not restate the post title.
-- **Inject the SEO block.** Re-run `python3 docs/superpowers/tools/seo-inject.py` from the repo root. It is idempotent (skips pages that already have JSON-LD), so it only touches the new post: it adds the canonical, Open Graph + Twitter tags, and the `BlogPosting` JSON-LD, parsing the post's own `<h1>`, byline date, kicker category, and hero. Then add the new post's URL to `sitemap.xml` (with the post's published date as `<lastmod>`). See `docs/superpowers/specs/2026-06-15-blog-seo-foundation-design.md`.
+Steps for a new post:
+
+1. Create `src/content/posts/<slug>.md` with front matter (above) and the body in Markdown (`markdown-it`, HTML passthrough on, typographer off — literal curly quotes/ellipses in prose render as-is, they are not "smartened" or corrected).
+2. **Generate a hero illustration.** Run `docs/superpowers/tools/gen-hero.sh <slug> "<subject prompt>" <seed>` — saves to `assets/images/posts/<slug>.jpg`. Credentials: `$HOME/.cloudflare_ai_token` (API token) and `$HOME/.cloudflare_ai_account` (account ID). **Never commit these files.** View the result and regenerate if needed for style/quality/series cohesion (flat editorial style, terracotta/slate-blue/cream palette).
+3. **Add a manifest row.** In `docs/superpowers/specs/2026-06-11-image-manifest.md`, record the slug, seed, prompt, alt text, and file size.
+4. `npm run build`. That's it — the homepage card/featured opener, archive row, category page, prev/next nav (chronological neighbors within the posts collection, computed automatically), `feed.xml`, `sitemap.xml`, and the SEO head/JSON-LD are all generated from the front matter above. Nothing else to edit by hand.
+
+**Editing an existing post** is the same: edit its one `.md` file, `npm run build`. No neighboring-post nav edits, no second-file card updates — those are recomputed from the posts collection on every build.
 
 ## SEO / structured-data layer (in every page `<head>`)
 
-Every page carries, before `</head>`: an absolute self-canonical, Open Graph + Twitter Card tags (`og:type` is `article` on posts, `website` elsewhere), and a schema.org JSON-LD `@graph`. The graph shares a `WebSite` + `Person` (Vijay Panangipally) + `Blog`, with a per-page node: posts are `BlogPosting` (headline/date/image/section parsed from the page), other pages are `CollectionPage` / `AboutPage`. This block is generated, not hand-written: `docs/superpowers/tools/seo-inject.py` (kept in `docs/`, which `.assetsignore` keeps out of the public bundle). `sitemap.xml` and `robots.txt` live at the repo root and are hand-maintained alongside it. `og:image`: posts use their hero, About uses `vijay.jpg`, other pages use `assets/images/og-default.jpg`.
+Every page carries, before `</head>`: an absolute self-canonical, Open Graph + Twitter Card tags (`og:type` is `article` on posts, `website` elsewhere), and a schema.org JSON-LD `@graph`. The graph shares a `WebSite` + `Person` (Vijay Panangipally) + `Blog`, with a per-page node: posts are `BlogPosting` (headline/date/image/section parsed from front matter), other pages are `CollectionPage` / `AboutPage`. This block is generated by `src/_includes/head-seo.njk` (canonical + OG + Twitter) and the `jsonld` include, backed by `eleventy/jsonld.mjs` (the `buildGraph()` function, registered as the Nunjucks global `jsonLdGraph`). **The old `docs/superpowers/tools/seo-inject.py` script — a one-time Python injector that regex-parsed hand-authored HTML — is retired**; there is nothing to re-run after adding a post, the build produces the same block automatically. `feed.xml`, `sitemap.xml`, and `robots.txt` are likewise generated (feed/sitemap from the posts collection; `robots.txt` is still a static passthrough file at the repo root). `og:image`: posts use their hero, About uses `vijay.jpg`, other pages use `assets/images/og-default.jpg`.
 
 ## Stylesheet (`assets/css/style.css`)
 
@@ -103,7 +123,7 @@ New components added in the June 2026 Quiet Magazine redesign:
 ## Patterns worth preserving
 
 - **Editorial hierarchy on every list and post:** kicker (category, uppercase, tracked, accent blue) → title → rule/byline → excerpt or body.
-- **Kickers are links:** `<a class="kicker" href="categories/<slug>.html">CategoryName</a>` on the homepage and inside each post. Path is `categories/...` from root pages, `../categories/...` from post pages.
+- **Kickers are links:** `<a class="kicker" href="/categories/<slug>">CategoryName</a>` on the homepage, category pages, and inside each post — always the same absolute, extension-less path (no more relative `../categories/...` from post pages; that was a legacy-HTML artifact the generated templates don't have).
 - **Faceted browsing strip** on `archive.html` and each `categories/*.html`: a `<div class="facets">` with two `<nav class="facet">` rows (category pills + period chips). The pill on the current page is `<span class="facet-chip is-current">`; others are `<a class="facet-chip">`.
 - **Year anchors:** `<h1 class="archive-year" id="yearYYYY">` so the period chips can scroll-to.
 - **Newsletter form:** posts to the **owned API** (`POST https://api.awonderfullife.ca/subscribe`) with a Cloudflare **Turnstile** widget — Buttondown was retired in v2.8.0. Capture, broadcast, and the weekly scheduled send all live in `/api` (see its section above and `api/issues/README.md`).
@@ -130,9 +150,10 @@ Post bodies inside `<div class="post-content">` were cleaned in commit `6df6352`
 - `docs/superpowers/specs/` — design specs (the *what* and *why*): `YYYY-MM-DD-<topic>-design.md`.
 - `docs/superpowers/plans/` — implementation plans (the *how*): `YYYY-MM-DD-<topic>.md`.
 - `ROADMAP.md` at the root tracks **future** work and deferred items; `CHANGELOG.md` tracks **past** changes. Always check both before proposing work — the answer to "is this on the radar?" is in one or the other.
-- **Releases & versioning.** Every release gets a semver git tag on its merge commit — **major** = redesign / identity shift, **minor** = new feature or notable enhancement, **patch** = fix / content / docs. When you ship a change, add a versioned `CHANGELOG.md` entry (`## vX.Y.Z — Title (YYYY-MM-DD HH:MM UTC)`, timestamp from the merge commit) and create + push the matching tag (`git tag -a vX.Y.Z -m "…" && git push origin vX.Y.Z`). Also add a row to the README change-history table (`| version | when | PR | summary |`). Latest: `v2.17.5`.
+- **Releases & versioning.** Every release gets a semver git tag on its merge commit — **major** = redesign / identity shift, **minor** = new feature or notable enhancement, **patch** = fix / content / docs. When you ship a change, add a versioned `CHANGELOG.md` entry (`## vX.Y.Z — Title (YYYY-MM-DD HH:MM UTC)`, timestamp from the merge commit) and create + push the matching tag (`git tag -a vX.Y.Z -m "…" && git push origin vX.Y.Z`). Also add a row to the README change-history table (`| version | when | PR | summary |`). Latest: `v3.0.0`.
 - See `docs/superpowers/README.md` for the brainstorm → spec → plan → execute workflow.
 
 ## Known follow-ups
 
-- **Drop `.html` from internal links.** Cloudflare canonicalizes URLs without `.html` (e.g. `/archive` not `/archive.html`). Internal hrefs still use `.html`, so every click goes through one 301 hop. Cosmetic; low priority.
+- ~~Drop `.html` from internal links.~~ Resolved by the Eleventy re-platform (`v3.0.0`): every generated internal `href` (`header.njk`, `post-nav.njk`, `facets.njk`, `card-grid.njk`) is already extension-less (`/archive`, `/posts/<slug>`, `/categories/<slug>`) — no more 301 hop.
+- See `ROADMAP.md` for what's next now that the build unlocks it (dark mode, search, related posts).

@@ -26,13 +26,20 @@ export default function (eleventyConfig) {
 
   // Passthrough copy, object form, paths relative to the project root.
   eleventyConfig.addPassthroughCopy({
-    assets: "assets",
     "favicon.ico": "favicon.ico",
     "favicon.svg": "favicon.svg",
     "apple-touch-icon.png": "apple-touch-icon.png",
     "robots.txt": "robots.txt",
     _headers: "_headers",
   });
+
+  // assets/ copied separately with a filter: staging-images/ is pre-optimization
+  // source art (gitignored, never meant to be public) and must never land in
+  // _site/. Everything else under assets/ (css, js, images) still copies.
+  eleventyConfig.addPassthroughCopy(
+    { assets: "assets" },
+    { filter: ["**/*", "!staging-images/**", "!staging-images"] }
+  );
 
   // Date / URL / text filters shared by every template.
   eleventyConfig.addFilter("cardDate", cardDate);

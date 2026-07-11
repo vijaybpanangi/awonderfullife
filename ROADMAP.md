@@ -11,7 +11,7 @@ The technical SEO foundation shipped on 2026-06-15 (see `CHANGELOG.md`): absolut
 - **`sameAs` on the `Person` node.** Omitted deliberately because there are no real social or author profiles to point at yet (no placeholders). Add LinkedIn / X / Mastodon / Substack etc. once they exist.
 - **`BreadcrumbList` schema.** Posts and category pages could carry a breadcrumb (Home > Category > Post) for richer results. Low effort, deferred.
 - **Cloudflare managed `robots.txt`.** awonderfullife.ca is a Cloudflare zone; if AI Crawl Control / managed robots is enabled, the live `robots.txt` may be prepended with a managed block ahead of the committed file (as observed on ezziclarity). Our `Allow: /` and the `Sitemap:` line still serve, so search indexing is unaffected. To serve exactly the repo file, toggle the managed feature off in the dashboard.
-- **`.html`-suffix canonicals.** When the deferred "drop `.html` from internal links" item lands, the canonicals and sitemap `<loc>`s must move to the suffixless form in the same change so they keep matching what is served.
+- ✅ **`.html`-suffix canonicals (DONE, v3.0.0).** Resolved as part of the Eleventy re-platform: `head-seo.njk`'s canonical and `sitemap.njk`'s `<loc>` entries both already build the suffixless form (`cleanUrl` filter / root-relative template paths), matching every generated `href` site-wide.
 - **Off-site, manual (needs Vijay):** verify the domain in **Google Search Console** and **Bing Webmaster Tools**, then submit `https://awonderfullife.ca/sitemap.xml` in both.
 
 ---
@@ -50,24 +50,15 @@ A Cloudflare Redirect Rule ("Redirect from WWW to root") now 301-redirects `www.
 
 ---
 
+## Now unlocked by the Eleventy build (v3.0.0)
 
-## Drop `.html` from internal links
+The re-platform isn't just a like-for-like swap — it's the foundation the next few PRs build on. Templates are now data-driven (a `posts` collection, shared includes, generated nav) instead of copy-pasted HTML, which makes site-wide features tractable that would have meant touching all 17 posts by hand before:
 
-Cloudflare canonicalizes URLs without the `.html` suffix (e.g., the canonical form of `https://awonderfullife.ca/archive.html` is `https://awonderfullife.ca/archive`). Internal hrefs in the codebase still use `.html`, so every internal click goes through one 301 hop.
+- **Dark mode** — a CSS custom-property theme toggle, applied once in `base.njk` instead of duplicated across every page.
+- **Search** — Pagefind (static full-text index) over the generated `_site/`.
+- **Related posts** — computed from the `posts` collection (category/tag proximity) and rendered via a shared include, the same way prev/next nav already works.
 
-### Plan
-
-Find-and-replace across all HTML files:
-
-- `href="index.html"` → `href="."` or `href="/"`
-- `href="archive.html"` → `href="archive"` (or absolute `/archive`)
-- `href="about.html"` → `href="about"`
-- `href="categories/<slug>.html"` → `href="categories/<slug>"`
-- `href="posts/<slug>.html"` → `href="posts/<slug>"`
-
-Verify by clicking around the local preview (`python3 -m http.server 8000`) before committing — relative vs absolute paths can interact oddly with the Cloudflare canonicalization rules.
-
-Cosmetic, not urgent.
+Each ships as its own follow-up PR; none is in scope for the re-platform itself.
 
 ---
 
@@ -87,3 +78,6 @@ See [`CHANGELOG.md`](CHANGELOG.md) for items that have shipped (the editorial re
 
 - **Hero curation** — all 16 Picsum stand-ins replaced with a cohesive AI-generated editorial-illustration series. Shipped in the June 2026 Quiet Magazine redesign; see CHANGELOG 2026-06-11 for details and `docs/superpowers/specs/2026-06-11-image-manifest.md` for the full manifest.
 - **Alt text simplification** — every hero `alt` attribute rewritten to describe the illustration content. Shipped in the same PR.
+- **Eleventy re-platform (DONE, v3.0.0).** The site moved from hand-authored HTML to an Eleventy build: posts are Markdown (`src/content/posts/*.md`, one file each), every other page/feed/sitemap/SEO block is generated from templates + a `posts` collection, and a parity gate (27/27 pages) proved the generated output byte-faithful to the legacy site before it was retired. Zero visual or URL change for readers.
+- **The "four-plus-places" post-editing workflow — retired (DONE, v3.0.0).** Adding or editing a post used to mean hand-editing the post file plus the homepage, archive, and category pages, then manually updating neighboring posts' prev/next nav and re-running `seo-inject.py`. All of that is now generated from the post's one Markdown file; see `CLAUDE.md`'s "Adding or modifying a post" section.
+- **Drop `.html` from internal links — retired (DONE, v3.0.0).** Every generated internal `href` (nav, kickers, card grid, prev/next, facets) is already extension-less (`/archive`, `/posts/<slug>`, `/categories/<slug>`) — the Eleventy templates never had the `.html`-suffix habit the legacy hand-authored pages did, so the deferred find-and-replace this section used to describe is moot.

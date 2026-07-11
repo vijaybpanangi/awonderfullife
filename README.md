@@ -16,23 +16,25 @@ Sixteen posts as of this writing, across five categories:
 
 ## Tech
 
-Plain static HTML and one CSS file. No framework, no bundler, no build step. The site was originally a generic blog template and was rebuilt in May 2026 into an editorial design — Manrope typography, hero photography on every post, a year-grouped archive, and a faceted-browsing layer that lets readers move between categories or jump to a year. In June 2026, a second redesign ("Quiet Magazine") refreshed the homepage into a featured opener + 2-column illustrated card grid, upgraded post pages with display-scale titles and prev/next navigation, and replaced all 16 Picsum stand-in heroes with a cohesive AI-generated editorial-illustration series (Cloudflare Workers AI, flat terracotta/slate-blue/cream style).
+Built with **Eleventy** (`@11ty/eleventy` v3). Posts are Markdown (`src/content/posts/*.md`); every other page — home, about, archive, categories, RSS feed, sitemap — is a Nunjucks template. `npm run build` renders it all into `_site/`, which is what actually gets deployed. The site was originally a generic blog template and was rebuilt in May 2026 into an editorial design — Manrope typography, hero photography on every post, a year-grouped archive, and a faceted-browsing layer that lets readers move between categories or jump to a year. In June 2026, a second redesign ("Quiet Magazine") refreshed the homepage into a featured opener + 2-column illustrated card grid, upgraded post pages with display-scale titles and prev/next navigation, and replaced all 16 Picsum stand-in heroes with a cohesive AI-generated editorial-illustration series (Cloudflare Workers AI, flat terracotta/slate-blue/cream style). In July 2026, the site was re-platformed from hand-authored HTML onto this Eleventy build — one Markdown file per post, everything else generated, byte-faithful to the pre-cutover site (see `v3.0.0` below).
 
-Deployment is on **Cloudflare Workers with Static Assets**. The Worker configuration (`wrangler.jsonc`) is committed to the repo, and a push to `main` triggers an automatic build in about 30 seconds. An `.assetsignore` file keeps repo internals (`.git/`, `docs/`, this README, the Claude operating notes, the wrangler config itself) out of the public asset bundle.
+Deployment is on **Cloudflare Workers with Static Assets**. The Worker configuration (`wrangler.jsonc`) is committed to the repo; its `assets.directory` points at `./_site`. A push to `main` triggers a Workers Build (`npm ci && npm run build`) and an automatic deploy in about 30 seconds. There's no `.assetsignore` anymore — the asset directory is `_site/`, which only ever contains Eleventy's generated output, so there's nothing sensitive to exclude.
 
 ## What's in the repo
 
 ```
-/index.html                   Homepage — featured opener + illustrated 2-col card grid
-/about.html                   About page
-/archive.html                 Full archive, year-grouped, with faceted browsing
-/categories/<cat>.html        One page per category
-/posts/<slug>.html            Individual essays — one file per post
-/assets/css/style.css         Single stylesheet (Manrope, white + editorial blue)
-/assets/images/               Author portrait + hero images for each post
-/wrangler.jsonc               Cloudflare Worker configuration
-/.assetsignore                What to exclude from the public deploy
-/docs/superpowers/            Specs and implementation plans
+/src/content/posts/<slug>.md   Individual essays — ONE Markdown file per post
+/src/content/*.njk             Home, about, archive, categories, feed, sitemap templates
+/src/_layouts/                 Shared page shells (base, post)
+/src/_includes/                Header, footer, card-grid, facets, post-nav, SEO head, JSON-LD, newsletter
+/src/_data/site.json           Site-wide data: name, tagline, url, author, categories
+/eleventy/                     Nunjucks filters + the JSON-LD @graph builder
+/eleventy.config.js            Eleventy build config
+/_site/                        Generated output (gitignored) — this is what Cloudflare serves
+/assets/css/style.css          Single stylesheet (Manrope, white + editorial blue)
+/assets/images/                Author portrait + hero images for each post
+/wrangler.jsonc                Cloudflare Worker configuration (assets.directory: ./_site)
+/docs/superpowers/             Specs and implementation plans
 ```
 
 ## Working with the site
@@ -40,27 +42,23 @@ Deployment is on **Cloudflare Workers with Static Assets**. The Worker configura
 ### Preview locally
 
 ```bash
-python3 -m http.server 8000
+npm ci
+npm run build
+npm run serve   # Eleventy dev server with live reload, or:
+cd _site && python3 -m http.server 8000
 ```
-
-Then open <http://localhost:8000/>. No install step. Refresh after each edit.
 
 ### Deploy
 
-Push to `main`. Cloudflare Workers builds and deploys automatically. The Cloudflare dashboard shows the build log; the live site at <https://awonderfullife.ca> updates within ~30 seconds. No automated tests — verification is visual.
+Push to `main`. Cloudflare's Workers Build runs `npm ci && npm run build` and deploys `_site/` automatically. The Cloudflare dashboard shows the build log; the live site at <https://awonderfullife.ca> updates within ~30 seconds. No automated tests for the static site — verification is visual.
 
 ### Adding a new post
 
-There is no build system, so a new post means updating it in four files plus several additional steps:
+A new post is **one file**: `src/content/posts/<slug>.md`. The homepage card/featured opener, the archive row, the category page, prev/next nav, `feed.xml`, `sitemap.xml`, and the SEO head/JSON-LD are all generated from its front matter and the posts collection — nothing else to hand-edit.
 
-1. Create `posts/<slug>.html` (copy an existing post in the same category as the template). Include `· N MIN READ` in the byline (words ÷ 200) and a `<nav class="post-nav">` footer block.
-2. Add the post as the new featured opener in `index.html` (the previous featured post moves down into the card grid as the first card).
-3. Add a row to the correct year in `archive.html`.
-4. Add a row to `categories/<category>.html`.
-5. **Update neighboring posts' `post-nav` blocks.** The post that was previously newest gets a "next" link added; the post immediately before the new one gets a "previous" update.
-6. **Compute the `· N MIN READ` byline** — count the post's words and divide by 200.
-
-Generate a hero illustration via `docs/superpowers/tools/gen-hero.sh <slug> "<subject prompt>" <seed>` (credentials at `$HOME/.cloudflare_ai_token` and `$HOME/.cloudflare_ai_account`, never committed). Add a manifest row in `docs/superpowers/specs/2026-06-11-image-manifest.md` with the seed, prompt, and alt text. Target file size ≤200KB; the generated illustrations average ~95KB.
+1. Create `src/content/posts/<slug>.md` with front matter (`title`, `date`, `category`, `description`, `excerpt`, `heroAlt`, optionally `minRead`/`dek`/`heroTitled`/`listTitle`; omit `guid` — it's only set on legacy-migrated posts to freeze their original canonical URL) and the Markdown body. See `CLAUDE.md` for the full field reference.
+2. Generate a hero illustration via `docs/superpowers/tools/gen-hero.sh <slug> "<subject prompt>" <seed>` (credentials at `$HOME/.cloudflare_ai_token` and `$HOME/.cloudflare_ai_account`, never committed). Add a manifest row in `docs/superpowers/specs/2026-06-11-image-manifest.md` with the seed, prompt, and alt text. Target file size ≤200KB; the generated illustrations average ~95KB.
+3. `npm run build`. Done.
 
 ## Project documentation
 
@@ -78,6 +76,7 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
+| `v3.0.0` | 2026-07-11 | [#55](https://github.com/vijaybpanangi/awonderfullife/pull/55) | Re-platform to Eleventy: posts are Markdown, all pages/feed/sitemap/SEO generated; parity-verified byte-faithful; zero visual change |
 | `v2.17.5` | 2026-07-10 | [#52](https://github.com/vijaybpanangi/awonderfullife/pull/52) | "Built With AI, Here to Stay": full editorial rewrite (owner's edited draft, 7 h2 sections + dek) |
 | `v2.17.4` | 2026-07-10 | [#51](https://github.com/vijaybpanangi/awonderfullife/pull/51) | "Built With AI, Here to Stay": hand-picked photoreal hero replacing the AI-flat-editorial one |
 | `v2.17.3` | 2026-07-10 15:25 | [#49](https://github.com/vijaybpanangi/awonderfullife/pull/49) | New post: "Built With AI, Here to Stay" (Technology) + seo-inject.py canonical `.html` fix |
