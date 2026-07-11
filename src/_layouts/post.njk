@@ -3,6 +3,7 @@ layout: base.njk
 mainClass: "container container--post"
 newsletter: true
 hasComments: true
+hasReactions: true
 seoType: post
 ---
 {%- import "card-grid.njk" as cardGrid -%}
@@ -26,6 +27,8 @@ seoType: post
 {% include "author-card.njk" %}
         </aside>
         </div>
+
+        <section class="reactions" data-slug="{{ page.fileSlug }}"></section>
 
 {% set related = collections.posts | relatedPosts(page, category, 3) %}
 {% if related.length %}

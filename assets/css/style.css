@@ -739,6 +739,51 @@ a.kicker:hover {
   .post-nav-next { margin-left: 0; text-align: left; }
 }
 
+/* Appreciate button — a single ghost/pill control (same recipe as
+   .facet-chip: translucent glass fill + light blur + hairline border) that
+   fills solid accent-blue once a visitor has appreciated the post. Client:
+   assets/js/reactions.js. */
+.reactions {
+  max-width: 44rem;
+  margin: 3rem auto 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+.reaction-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  cursor: pointer;
+  padding: 0.6rem 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--r-pill);
+  background: var(--glass-fill);
+  -webkit-backdrop-filter: blur(8px) saturate(1.3);
+  backdrop-filter: blur(8px) saturate(1.3);
+  box-shadow: var(--glass-rim);
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.12s;
+}
+.reaction-btn:hover {
+  background: var(--color-bg-soft);
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+.reaction-btn:active { transform: translateY(1px); }
+.reaction-btn:disabled { cursor: default; opacity: 0.75; transform: none; }
+.reaction-btn.is-reacted {
+  background: var(--cta-bg);
+  border-color: var(--cta-bg);
+  color: var(--cta-text);
+}
+.reaction-btn.is-reacted:hover { background: var(--cta-bg-hover); border-color: var(--cta-bg-hover); }
+.reaction-icon { font-size: 1.1rem; line-height: 1; }
+.reaction-count { font-variant-numeric: tabular-nums; }
+
 /* Related posts (build-time "more reading" strip, sits outside the article
    and the post/aside grid so it never enters the Pagefind index). Only the
    section wrapper + title are new rules — the cards themselves reuse
