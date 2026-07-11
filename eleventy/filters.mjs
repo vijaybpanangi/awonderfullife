@@ -130,3 +130,32 @@ export function postNeighbors(posts, fileSlug) {
     newer: idx > 0 ? posts[idx - 1] : null,
   };
 }
+
+// Build-time "related posts" selection: same category first, newest first,
+// backfilled from other categories (also newest first) if the same-category
+// pool doesn't reach `limit`. `posts` is the already date-DESC `collections.posts`
+// collection, so a single pass over it (splitting into a same-category bucket
+// and an "others" bucket, each preserving incoming order) is enough to get a
+// stable, deterministic result with no re-sorting needed.
+//
+// Self-exclusion: the current post is skipped by fileSlug before it can land
+// in either bucket, so it can never appear in its own related list.
+// Dedup: every other post is visited exactly once (it lands in exactly one
+// of the two mutually-exclusive buckets), so the same post can never be
+// pushed into the result twice.
+export function relatedPosts(posts, currentPage, category, limit = 3) {
+  const selfSlug = currentPage && currentPage.fileSlug;
+  const sameCategory = [];
+  const others = [];
+  for (const post of posts || []) {
+    if (post.fileSlug === selfSlug) continue;
+    if (post.data.category === category) sameCategory.push(post);
+    else others.push(post);
+  }
+  const result = sameCategory.slice(0, limit);
+  for (const post of others) {
+    if (result.length >= limit) break;
+    result.push(post);
+  }
+  return result;
+}

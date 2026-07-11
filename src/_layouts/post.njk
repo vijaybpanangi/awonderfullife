@@ -5,6 +5,7 @@ newsletter: true
 hasComments: true
 seoType: post
 ---
+{%- import "card-grid.njk" as cardGrid -%}
         <div class="post-layout">
         <article data-pagefind-body data-pagefind-meta="category:{{ category | categoryName(site.categories) }}">
             <header class="post-header{% if heroTitled %} is-hero-titled{% endif %}">
@@ -25,5 +26,17 @@ seoType: post
 {% include "author-card.njk" %}
         </aside>
         </div>
+
+{% set related = collections.posts | relatedPosts(page, category, 3) %}
+{% if related.length %}
+        <section class="related-posts">
+            <h2 class="related-posts-title">More reading</h2>
+            <ul class="card-grid card-grid--3">
+{% for post in related %}
+{{ cardGrid.card(post, true, site.categories) }}
+{% endfor %}
+            </ul>
+        </section>
+{% endif %}
 
         <section id="comments" class="comments" data-slug="{{ page.fileSlug }}"></section>

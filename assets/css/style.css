@@ -739,6 +739,21 @@ a.kicker:hover {
   .post-nav-next { margin-left: 0; text-align: left; }
 }
 
+/* Related posts (build-time "more reading" strip, sits outside the article
+   and the post/aside grid so it never enters the Pagefind index). Only the
+   section wrapper + title are new rules — the cards themselves reuse
+   .card-grid/.card-grid--3/.card verbatim, tokens only, no hardcoded colors. */
+.related-posts {
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+}
+.related-posts-title {
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
 /* About */
 .about-header { text-align: center; margin-bottom: 3rem; }
 .about-photo {
