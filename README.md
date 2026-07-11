@@ -76,6 +76,10 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
+| `v3.4.0` | 2026-07-11 | [#59](https://github.com/vijaybpanangi/awonderfullife/pull/59) | Zero-PII "appreciate" button on posts (owned reactions API, localStorage, dark-safe) |
+| `v3.3.0` | 2026-07-11 | [#58](https://github.com/vijaybpanangi/awonderfullife/pull/58) | Related-posts "More reading" strip on each post (build-time, same-category + backfill) |
+| `v3.2.0` | 2026-07-11 | [#57](https://github.com/vijaybpanangi/awonderfullife/pull/57) | Static search (Pagefind) on the archive — build-time index, posts-only, light+dark |
+| `v3.1.0` | 2026-07-11 | [#56](https://github.com/vijaybpanangi/awonderfullife/pull/56) | Dark mode: prefers-color-scheme + header toggle, no-FOUC pre-paint, WCAG AA |
 | `v3.0.0` | 2026-07-11 | [#55](https://github.com/vijaybpanangi/awonderfullife/pull/55) | Re-platform to Eleventy: posts are Markdown, all pages/feed/sitemap/SEO generated; parity-verified byte-faithful; zero visual change |
 | `v2.17.5` | 2026-07-10 | [#52](https://github.com/vijaybpanangi/awonderfullife/pull/52) | "Built With AI, Here to Stay": full editorial rewrite (owner's edited draft, 7 h2 sections + dek) |
 | `v2.17.4` | 2026-07-10 | [#51](https://github.com/vijaybpanangi/awonderfullife/pull/51) | "Built With AI, Here to Stay": hand-picked photoreal hero replacing the AI-flat-editorial one |
