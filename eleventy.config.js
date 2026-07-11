@@ -14,6 +14,7 @@ import {
   byCategory,
   categoryName,
   postNeighbors,
+  relatedPosts,
 } from "./eleventy/filters.mjs";
 import { buildGraph } from "./eleventy/jsonld.mjs";
 
@@ -55,6 +56,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("byCategory", byCategory);
   eleventyConfig.addFilter("categoryName", categoryName);
   eleventyConfig.addFilter("postNeighbors", postNeighbors);
+  eleventyConfig.addFilter("relatedPosts", relatedPosts);
 
   // JSON-LD @graph builder (mirrors docs/superpowers/tools/seo-inject.py).
   // Registered as a Nunjucks global so jsonld.njk can call it as a function:
