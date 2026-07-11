@@ -6,14 +6,13 @@
   "description": "A Wonderful Life - personal essay blog, built with Eleventy, deployed on Cloudflare Workers Static Assets",
   "scripts": {
     "build": "eleventy",
-    "serve": "eleventy --serve",
-    "parity": "node scripts/parity-check.mjs",
-    "migrate": "node scripts/migrate-posts.mjs"
+    "serve": "eleventy --serve"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
-    "cheerio": "^1.0.0",
-    "markdown-it": "^14.2.0",
-    "turndown": "^7.2.0"
+    "markdown-it": "^14.2.0"
   }
 }
