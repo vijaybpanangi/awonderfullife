@@ -31,6 +31,9 @@
     {%- if newsletter %}
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     {%- endif %}
+    {%- if search %}
+    <link rel="stylesheet" href="/pagefind/pagefind-ui.css">
+    {%- endif %}
     <link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="/feed.xml">
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -78,6 +81,12 @@
     {%- endif %}
     {%- if hasComments %}
     <script src="/assets/js/comments.js" defer></script>
+    {%- endif %}
+    {%- if search %}
+    <script src="/pagefind/pagefind-ui.js"></script>
+    <script>
+    new PagefindUI({ element: "#search", showSubResults: true, showImages: false });
+    </script>
     {%- endif %}
 </body>
 </html>

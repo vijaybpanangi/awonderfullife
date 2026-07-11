@@ -753,6 +753,39 @@ a.kicker:hover {
 }
 .about-content { font-size: 1.05rem; line-height: 1.75; }
 
+/* Site search (Pagefind UI, archive page only). Pagefind ships its own
+   default styling and themes itself entirely through these custom
+   properties — every value below points at an existing site token so the
+   widget follows the light/dark cascade automatically instead of needing
+   its own dark-mode block. */
+.site-search {
+  --pagefind-ui-scale: 1;
+  --pagefind-ui-primary: var(--color-accent);
+  --pagefind-ui-text: var(--color-text);
+  --pagefind-ui-background: var(--surface-solid);
+  --pagefind-ui-border: var(--color-border);
+  --pagefind-ui-tag: var(--color-bg-soft);
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: 8px;
+  --pagefind-ui-font: var(--font);
+  margin-bottom: 2rem;
+}
+/* Highlighted search terms: Pagefind's reset explicitly reverts <mark> to
+   the UA default (system Mark/MarkText colors), which doesn't follow our
+   manual [data-theme] toggle — only the OS-level prefers-color-scheme. Pin
+   it to site tokens so it stays legible under both. */
+.site-search mark {
+  background: var(--glass-fill);
+  color: var(--color-text);
+  font-weight: 600;
+  border-radius: 2px;
+}
+.search-noscript {
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  margin: 0.5rem 0 2rem;
+}
+
 /* Faceted browsing strip (used on archive.html and categories/*.html) */
 .browse-title {
   font-size: 1.75rem;

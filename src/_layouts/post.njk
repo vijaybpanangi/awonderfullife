@@ -6,14 +6,14 @@ hasComments: true
 seoType: post
 ---
         <div class="post-layout">
-        <article>
+        <article data-pagefind-body data-pagefind-meta="category:{{ category | categoryName(site.categories) }}">
             <header class="post-header{% if heroTitled %} is-hero-titled{% endif %}">
                 <a class="kicker" href="/categories/{{ category }}">{{ category | categoryName(site.categories) }}</a>
-                <h1>{{ title | safe }}</h1>
+                <h1 data-pagefind-meta="title">{{ title | safe }}</h1>
                 {%- if dek %}
                 <p class="post-dek"><em>{{ dek | safe }}</em></p>
                 {%- endif %}
-                <p class="post-byline">{{ site.author | upper }} · {{ date | bylineDate }} · {{ minRead or (content | readingTime) }} MIN READ</p>
+                <p class="post-byline" data-pagefind-meta="date:{{ date | isoDate }}">{{ site.author | upper }} · {{ date | bylineDate }} · {{ minRead or (content | readingTime) }} MIN READ</p>
             </header>
             <img class="post-hero" src="/assets/images/posts/{{ page.fileSlug }}.jpg" alt="{{ heroAlt | safe }}">
             <div class="post-content">
