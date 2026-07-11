@@ -10,6 +10,7 @@
   --color-border: #e5e5e5;
   --color-accent: #0a4a9a;
   --color-bg-soft: #f9f9f9;
+  color-scheme: light;
   --font: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --max-width: 860px;
   --max-width-wide: 1200px;
@@ -17,11 +18,163 @@
      content behind, with a specular bevel (bright top edge, faint bright base). */
   --glass-bg: rgba(255,255,255,0.6);
   --glass-blur: blur(18px) saturate(1.8) brightness(1.06);
+  --glass-blur-static: blur(20px) saturate(1.8) brightness(1.06);
   --glass-rim:
     inset 0 1px 0 rgba(255,255,255,0.9),
     inset 0 -1px 0 rgba(255,255,255,0.4),
     inset 0 0 0 1px rgba(255,255,255,0.22);
   --r-pill: 999px;
+
+  /* Tokenized surfaces (v3.1.0 dark-mode groundwork). Every value below is
+     the pre-existing hardcoded literal it replaces, verbatim — introducing
+     this block changes no rendering; it only names the values so a dark
+     theme can retarget them later. */
+  --surface-solid: #fff;                    /* opaque fallback fills: facet-chip (@supports), author-card */
+  --header-scrim: rgba(255,255,255,0.96);   /* header background when backdrop-filter is unsupported */
+  --on-accent: #fff;                        /* text/icons on solid accent-blue fills: avatar initials, submit button */
+  --placeholder-color: #9a9a9a;             /* comment-form + newsletter input placeholder text */
+
+  /* Solid-CTA pairing (newsletter Subscribe). Decoupled from --color-accent
+     so dark mode can keep a lightened accent for links/kickers while the
+     filled button stays a deeper blue that holds WCAG AA against its white
+     text. Light values equal the prior button colors (#0a4a9a / #08366e / #fff). */
+  --cta-bg: #0a4a9a;
+  --cta-bg-hover: #08366e;
+  --cta-text: #fff;
+
+  --glass-panel-bg: linear-gradient(160deg, rgba(255,255,255,0.6), rgba(244,248,253,0.48));      /* .comments pane */
+  --glass-panel-bg-alt: linear-gradient(160deg, rgba(255,255,255,0.62), rgba(244,248,253,0.5));  /* .newsletter card (distinct alpha, kept separate) */
+  --glass-panel-border: rgba(255,255,255,0.65);   /* .comments + .newsletter border (shared literal) */
+
+  --glass-fill: rgba(255,255,255,0.5);            /* .comment card + .facet-chip translucent fill (shared literal) */
+  --glass-fill-border: rgba(255,255,255,0.6);     /* .comment card border */
+  --glass-inset-strong: rgba(255,255,255,0.7);    /* .comment card top inset highlight */
+  --glass-inset-soft: rgba(255,255,255,0.45);     /* .comment-avatar inset highlight */
+  --glass-removed-bg: rgba(255,255,255,0.32);     /* tombstoned/removed comment background */
+
+  --glass-form-bg: rgba(255,255,255,0.55);            /* .comment-form card background */
+  --glass-form-border: rgba(255,255,255,0.7);         /* .comment-form border */
+  --glass-input-bg: rgba(255,255,255,0.72);           /* .comment-form input/textarea background */
+  --glass-submit-inset: rgba(255,255,255,0.5);        /* .comment-submit resting gloss highlight */
+  --glass-submit-inset-hover: rgba(255,255,255,0.55); /* .comment-submit hover gloss highlight */
+
+  /* Dark-mode groundwork continued: ambient/body-glow values tokenized so
+     the dark block below can retune them; light-mode values unchanged. */
+  --control-hover-bg: rgba(17,17,17,0.06);  /* header icon-button hover (theme toggle) */
+  --body-glow: rgba(10,74,154,0.06);
+  --ambient-orb-opacity-1: 0.8;
+  --ambient-orb-opacity-2: 0.74;
+  --ambient-orb-opacity-3: 0.74;
+  --ambient-comet-line: rgba(40,120,230,0.8);
+  --ambient-comet-dot: rgba(40,120,230,1);
+  --ambient-comet-glow: rgba(40,120,230,0.7);
+}
+
+/* Dark theme — calm ink-on-slate editorial night mode: a deep (not pure-black)
+   slate backdrop, soft off-white text, and the Liquid-Glass material re-tuned
+   (less brighten, more saturate) so it reads as frosted glass over dark
+   instead of the washed-out look brightness(1.06) gives on a dark backdrop.
+   Applies when the OS prefers dark and the visitor hasn't explicitly chosen
+   light via the toggle, OR when the toggle has explicitly chosen dark. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-bg: #12151b;
+    --color-text: #e8eaed;
+    --color-text-light: #9aa0a6;
+    --color-border: #262b35;
+    --color-bg-soft: #1a1e26;
+    --color-accent: #5b9bd5;
+
+    /* Deeper CTA fill than the lightened link accent, so white text holds AA:
+       #fff on #1c64c8 = 5.67:1, on hover #2b6fd6 = 4.83:1 (both >= 4.5). */
+    --cta-bg: #1c64c8;
+    --cta-bg-hover: #2b6fd6;
+    --cta-text: #fff;
+
+    --glass-bg: rgba(22,24,30,0.55);
+    --glass-blur: blur(18px) saturate(1.4) brightness(0.9);
+    --glass-blur-static: blur(20px) saturate(1.4) brightness(0.9);
+    --glass-rim:
+      inset 0 1px 0 rgba(255,255,255,0.14),
+      inset 0 -1px 0 rgba(255,255,255,0.05),
+      inset 0 0 0 1px rgba(255,255,255,0.08);
+
+    --surface-solid: #1c2028;
+    --header-scrim: rgba(18,21,27,0.94);
+    --placeholder-color: #868e99;
+
+    --glass-panel-bg: linear-gradient(160deg, rgba(32,36,45,0.6), rgba(20,23,29,0.48));
+    --glass-panel-bg-alt: linear-gradient(160deg, rgba(34,38,48,0.62), rgba(20,23,29,0.5));
+    --glass-panel-border: rgba(255,255,255,0.1);
+
+    --glass-fill: rgba(255,255,255,0.06);
+    --glass-fill-border: rgba(255,255,255,0.08);
+    --glass-inset-strong: rgba(255,255,255,0.08);
+    --glass-removed-bg: rgba(255,255,255,0.03);
+
+    --glass-form-bg: rgba(255,255,255,0.05);
+    --glass-form-border: rgba(255,255,255,0.1);
+    --glass-input-bg: rgba(0,0,0,0.25);
+
+    --control-hover-bg: rgba(255,255,255,0.08);
+    --body-glow: rgba(91,155,213,0.08);
+    --ambient-orb-opacity-1: 0.4;
+    --ambient-orb-opacity-2: 0.37;
+    --ambient-orb-opacity-3: 0.37;
+    --ambient-comet-line: rgba(120,170,230,0.5);
+    --ambient-comet-dot: rgba(120,170,230,0.85);
+    --ambient-comet-glow: rgba(120,170,230,0.45);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #12151b;
+  --color-text: #e8eaed;
+  --color-text-light: #9aa0a6;
+  --color-border: #262b35;
+  --color-bg-soft: #1a1e26;
+  --color-accent: #5b9bd5;
+
+  /* Deeper CTA fill than the lightened link accent, so white text holds AA:
+     #fff on #1c64c8 = 5.67:1, on hover #2b6fd6 = 4.83:1 (both >= 4.5). */
+  --cta-bg: #1c64c8;
+  --cta-bg-hover: #2b6fd6;
+  --cta-text: #fff;
+
+  --glass-bg: rgba(22,24,30,0.55);
+  --glass-blur: blur(18px) saturate(1.4) brightness(0.9);
+  --glass-blur-static: blur(20px) saturate(1.4) brightness(0.9);
+  --glass-rim:
+    inset 0 1px 0 rgba(255,255,255,0.14),
+    inset 0 -1px 0 rgba(255,255,255,0.05),
+    inset 0 0 0 1px rgba(255,255,255,0.08);
+
+  --surface-solid: #1c2028;
+  --header-scrim: rgba(18,21,27,0.94);
+  --placeholder-color: #868e99;
+
+  --glass-panel-bg: linear-gradient(160deg, rgba(32,36,45,0.6), rgba(20,23,29,0.48));
+  --glass-panel-bg-alt: linear-gradient(160deg, rgba(34,38,48,0.62), rgba(20,23,29,0.5));
+  --glass-panel-border: rgba(255,255,255,0.1);
+
+  --glass-fill: rgba(255,255,255,0.06);
+  --glass-fill-border: rgba(255,255,255,0.08);
+  --glass-inset-strong: rgba(255,255,255,0.08);
+  --glass-removed-bg: rgba(255,255,255,0.03);
+
+  --glass-form-bg: rgba(255,255,255,0.05);
+  --glass-form-border: rgba(255,255,255,0.1);
+  --glass-input-bg: rgba(0,0,0,0.25);
+
+  --control-hover-bg: rgba(255,255,255,0.08);
+  --body-glow: rgba(91,155,213,0.08);
+  --ambient-orb-opacity-1: 0.4;
+  --ambient-orb-opacity-2: 0.37;
+  --ambient-orb-opacity-3: 0.37;
+  --ambient-comet-line: rgba(120,170,230,0.5);
+  --ambient-comet-dot: rgba(120,170,230,0.85);
+  --ambient-comet-glow: rgba(120,170,230,0.45);
 }
 
 html { font-size: 16px; line-height: 1.7; }
@@ -32,7 +185,7 @@ body {
   background: var(--color-bg);
   /* whisper of depth at the top so the frosted header has something to refract;
      stays effectively white everywhere else (crispness preserved) */
-  background-image: radial-gradient(60rem 26rem at 50% -10%, rgba(10,74,154,0.06), transparent 62%);
+  background-image: radial-gradient(60rem 26rem at 50% -10%, var(--body-glow), transparent 62%);
   background-attachment: fixed;
   background-repeat: no-repeat;
   -webkit-font-smoothing: antialiased;
@@ -48,28 +201,28 @@ body {
 main, footer { position: relative; z-index: 1; }
 .ambient .orb { position: absolute; border-radius: 50%; filter: blur(60px); will-change: transform; }
 .ambient .orb-1 {
-  width: 44vw; height: 44vw; left: -12vw; top: -10vh; opacity: 0.8;
+  width: 44vw; height: 44vw; left: -12vw; top: -10vh; opacity: var(--ambient-orb-opacity-1);
   background: radial-gradient(circle at 35% 35%, rgba(26,110,224,0.72), transparent 70%);
   animation: orbDrift1 36s ease-in-out infinite alternate;
 }
 .ambient .orb-2 {
-  width: 38vw; height: 38vw; right: -10vw; top: 14vh; opacity: 0.74;
+  width: 38vw; height: 38vw; right: -10vw; top: 14vh; opacity: var(--ambient-orb-opacity-2);
   background: radial-gradient(circle at 50% 50%, rgba(230,122,66,0.68), transparent 70%);
   animation: orbDrift2 46s ease-in-out infinite alternate;
 }
 .ambient .orb-3 {
-  width: 36vw; height: 36vw; left: 8vw; bottom: -14vh; opacity: 0.74;
+  width: 36vw; height: 36vw; left: 8vw; bottom: -14vh; opacity: var(--ambient-orb-opacity-3);
   background: radial-gradient(circle at 50% 50%, rgba(108,152,206,0.68), transparent 70%);
   animation: orbDrift3 54s ease-in-out infinite alternate;
 }
 .ambient .comet {
   position: absolute; left: -16%; width: 230px; height: 2.5px; border-radius: 2px;
-  background: linear-gradient(90deg, transparent, rgba(40,120,230,0.8));
+  background: linear-gradient(90deg, transparent, var(--ambient-comet-line));
   opacity: 0;
 }
 .ambient .comet::after {
   content: ""; position: absolute; right: -1px; top: -2.5px; width: 7px; height: 7px;
-  border-radius: 50%; background: rgba(40,120,230,1); box-shadow: 0 0 16px 4px rgba(40,120,230,0.7);
+  border-radius: 50%; background: var(--ambient-comet-dot); box-shadow: 0 0 16px 4px var(--ambient-comet-glow);
 }
 /* a few comets sweeping the page at staggered rows / angles / timings */
 .ambient .comet-1 { top: 6%;  animation: cometA 13s linear infinite; }
@@ -104,10 +257,10 @@ main, footer { position: relative; z-index: 1; }
 /* Where backdrop-filter is unsupported, make the glass surfaces near-opaque
    so they don't turn see-through. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  header:not(.post-header) { background: rgba(255,255,255,0.96); border: 1px solid var(--color-border); }
+  header:not(.post-header) { background: var(--header-scrim); border: 1px solid var(--color-border); }
   .newsletter { background: var(--color-bg-soft); }
   .comments { background: var(--color-bg-soft); }
-  .facet-chip { background: #fff; }
+  .facet-chip { background: var(--surface-solid); }
 }
 
 /* Typography */
@@ -191,6 +344,35 @@ nav a {
   letter-spacing: 0.02em;
 }
 nav a:hover { color: var(--color-text); text-decoration: none; }
+
+/* Theme toggle — small round icon-button living at the end of the header
+   nav. Shows a moon (⇒ tap to go dark) in light mode and a sun (⇒ tap to
+   go light) once dark is active, whichever selector put it there. */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  margin-left: 0.25rem;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-light);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.theme-toggle:hover { background: var(--control-hover-bg); color: var(--color-text); }
+.theme-toggle-icon { display: block; }
+.theme-toggle-icon--sun { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle-icon--sun { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle-icon--moon { display: none; }
+}
+:root[data-theme="dark"] .theme-toggle-icon--sun { display: block; }
+:root[data-theme="dark"] .theme-toggle-icon--moon { display: none; }
 
 /* Shared kicker (category label) */
 .kicker {
@@ -364,7 +546,7 @@ a.kicker:hover {
   border-radius: 14px;
   padding: 1.4rem 1.25rem;
   text-align: center;
-  background: #fff;
+  background: var(--surface-solid);
 }
 .author-card-avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; }
 .author-card-name { font-weight: 700; margin: 0.7rem 0 0.3rem; letter-spacing: -0.01em; }
@@ -380,9 +562,9 @@ a.kicker:hover {
    backdrop-filter, which would go muddy); the cards are translucent + beveled. */
 .comments {
   max-width: 44rem; margin: 3.5rem auto 0; padding: 1.75rem 1.75rem 2rem;
-  background: linear-gradient(160deg, rgba(255,255,255,0.6), rgba(244,248,253,0.48));
+  background: var(--glass-panel-bg);
   -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-  border: 1px solid rgba(255,255,255,0.65); border-radius: 18px;
+  border: 1px solid var(--glass-panel-border); border-radius: 18px;
   box-shadow: 0 18px 44px -24px rgba(17,17,17,0.26), var(--glass-rim);
 }
 .comments h2 { font-size: 1.3rem; letter-spacing: -0.02em; margin-bottom: 1.1rem; }
@@ -391,28 +573,28 @@ a.kicker:hover {
 .comment {
   display: grid; grid-template-columns: auto 1fr; gap: 0.85rem; align-items: start;
   padding: 0.95rem 1.05rem;
-  background: rgba(255,255,255,0.5);
-  border: 1px solid rgba(255,255,255,0.6); border-radius: 12px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 1px 3px -1px rgba(17,17,17,0.06);
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-fill-border); border-radius: 12px;
+  box-shadow: inset 0 1px 0 var(--glass-inset-strong), 0 1px 3px -1px rgba(17,17,17,0.06);
 }
 .comment-avatar {
   width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
-  font-weight: 700; font-size: 0.9rem; color: #fff; user-select: none;
+  font-weight: 700; font-size: 0.9rem; color: var(--on-accent); user-select: none;
   background: linear-gradient(150deg, #3b7fdd, #0a4a9a);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 2px 6px -2px rgba(10,74,154,0.55);
+  box-shadow: inset 0 1px 0 var(--glass-inset-soft), 0 2px 6px -2px rgba(10,74,154,0.55);
 }
 .comment-meta { font-size: 0.8rem; color: var(--color-text-light); margin-bottom: 0.2rem; }
 .comment-meta strong { color: var(--color-text); font-weight: 600; }
 .comment-body { margin: 0; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; }
-.comment-removed { display: block; background: rgba(255,255,255,0.32); }
+.comment-removed { display: block; background: var(--glass-removed-bg); }
 .comment-removed .comment-body { color: var(--color-text-light); font-style: italic; }
 .comment-empty { color: var(--color-text-light); padding: 0.4rem 0.2rem; }
 
 /* the form — a raised translucent card on the section pane (no second blur) */
 .comment-form {
   display: flex; flex-direction: column; gap: 0.8rem;
-  background: rgba(255,255,255,0.55);
-  border: 1px solid rgba(255,255,255,0.7); border-radius: 14px;
+  background: var(--glass-form-bg);
+  border: 1px solid var(--glass-form-border); border-radius: 14px;
   box-shadow: var(--glass-rim), 0 8px 20px -14px rgba(17,17,17,0.2);
   padding: 1.5rem;
 }
@@ -420,12 +602,12 @@ a.kicker:hover {
 /* recessed, tactile inputs */
 .comment-form input, .comment-form textarea {
   font: inherit; width: 100%; color: var(--color-text);
-  background: rgba(255,255,255,0.72);
+  background: var(--glass-input-bg);
   border: 1px solid rgba(17,17,17,0.12); border-radius: 10px; padding: 0.7rem 0.8rem;
   box-shadow: inset 0 1px 2px rgba(17,17,17,0.07);
   transition: border-color 0.15s, box-shadow 0.15s;
 }
-.comment-form input::placeholder, .comment-form textarea::placeholder { color: #9a9a9a; }
+.comment-form input::placeholder, .comment-form textarea::placeholder { color: var(--placeholder-color); }
 .comment-form input:focus, .comment-form textarea:focus {
   outline: none; border-color: var(--color-accent);
   box-shadow: inset 0 1px 2px rgba(17,17,17,0.07), 0 0 0 3px rgba(10,74,154,0.16);
@@ -433,13 +615,13 @@ a.kicker:hover {
 .comment-form textarea { resize: vertical; min-height: 6rem; }
 /* raised, beveled glass button */
 .comment-submit {
-  align-self: flex-start; font: inherit; font-weight: 600; color: #fff; cursor: pointer;
+  align-self: flex-start; font: inherit; font-weight: 600; color: var(--on-accent); cursor: pointer;
   padding: 0.65rem 1.5rem; border-radius: var(--r-pill); border: 1px solid rgba(8,54,110,0.9);
   background: linear-gradient(180deg, #2f73d4, #0a4a9a);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 6px 16px -8px rgba(10,74,154,0.7);
+  box-shadow: inset 0 1px 0 var(--glass-submit-inset), 0 6px 16px -8px rgba(10,74,154,0.7);
   transition: transform 0.12s, box-shadow 0.12s, filter 0.12s;
 }
-.comment-submit:hover { filter: brightness(1.06); transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 10px 24px -8px rgba(10,74,154,0.7); }
+.comment-submit:hover { filter: brightness(1.06); transform: translateY(-1px); box-shadow: inset 0 1px 0 var(--glass-submit-inset-hover), 0 10px 24px -8px rgba(10,74,154,0.7); }
 .comment-submit:active { transform: translateY(0); box-shadow: inset 0 2px 5px rgba(0,0,0,0.22); }
 .comment-submit:disabled { opacity: 0.55; cursor: default; transform: none; box-shadow: var(--glass-rim); }
 .comment-msg { font-size: 0.85rem; color: var(--color-text-light); margin: 0; min-height: 1em; }
@@ -611,7 +793,7 @@ a.kicker:hover {
   border: 1px solid var(--color-border);
   border-radius: 999px;
   color: var(--color-text);
-  background: rgba(255,255,255,0.5);
+  background: var(--glass-fill);
   -webkit-backdrop-filter: blur(8px) saturate(1.3);
   backdrop-filter: blur(8px) saturate(1.3);
   box-shadow: var(--glass-rim);
@@ -671,10 +853,10 @@ a.kicker:hover {
 
 /* Newsletter */
 .newsletter {
-  background: linear-gradient(160deg, rgba(255,255,255,0.62), rgba(244,248,253,0.5));
+  background: var(--glass-panel-bg-alt);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
-  border: 1px solid rgba(255,255,255,0.65);
+  border: 1px solid var(--glass-panel-border);
   border-radius: 14px;
   box-shadow: 0 14px 38px -22px rgba(17,17,17,0.22), var(--glass-rim);
   padding: 2rem;
@@ -696,15 +878,21 @@ a.kicker:hover {
 .newsletter-form input {
   flex: 1;
   padding: 0.75rem;
+  /* explicit surface + text (matching .comment-form input) so the field
+     never falls back to light UA system colors in dark mode */
+  background: var(--glass-input-bg);
+  color: var(--color-text);
   border: 1px solid var(--color-border);
   border-radius: 4px;
   font-family: var(--font);
   font-size: 0.95rem;
 }
+.newsletter-form input::placeholder { color: var(--placeholder-color); }
 .newsletter-form button {
   padding: 0.75rem 1.5rem;
-  background: var(--color-accent);
-  color: white;
+  /* solid-CTA pairing, not the link accent — see --cta-* tokens */
+  background: var(--cta-bg);
+  color: var(--cta-text);
   border: none;
   border-radius: 4px;
   font-family: var(--font);
@@ -713,7 +901,7 @@ a.kicker:hover {
   cursor: pointer;
   white-space: nowrap;
 }
-.newsletter-form button:hover { background: #08366e; }
+.newsletter-form button:hover { background: var(--cta-bg-hover); }
 
 /* Footer */
 footer {
@@ -770,8 +958,8 @@ input:focus-visible {
     header:not(.post-header).lensing,
     .newsletter.lensing,
     .comments {
-      -webkit-backdrop-filter: blur(20px) saturate(1.8) brightness(1.06);
-      backdrop-filter: blur(20px) saturate(1.8) brightness(1.06);
+      -webkit-backdrop-filter: var(--glass-blur-static);
+      backdrop-filter: var(--glass-blur-static);
     }
   }
 }
