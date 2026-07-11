@@ -128,3 +128,16 @@ export async function runScheduledSend(
 
   return { status: 'sent', results }
 }
+
+// ---- reactions abuse-throttle purge ----
+// `reaction_events.day` is a plain YYYY-MM-DD marker (no PII — day_hash is opaque and
+// never reversed); the sweep just drops rows from any day other than today's UTC date,
+// so the throttle table never grows unbounded and never outlives the day it throttled.
+export async function purgeReactionEvents(
+  env: Env,
+  nowMs: number = Date.now(),
+): Promise<{ purged: number }> {
+  const today = new Date(nowMs).toISOString().slice(0, 10)
+  const res = await env.DB.prepare(`DELETE FROM reaction_events WHERE day <> ?`).bind(today).run()
+  return { purged: res.meta.changes ?? 0 }
+}

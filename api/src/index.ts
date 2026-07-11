@@ -1,8 +1,9 @@
 import { getAccessEmail } from './access'
 import { verifyTurnstile } from './turnstile'
-import { runScheduledSend, defaultScheduledDeps, type ScheduledDeps } from './scheduled'
+import { runScheduledSend, purgeReactionEvents, defaultScheduledDeps, type ScheduledDeps } from './scheduled'
 import { handleAdmin } from './admin'
 import { handleComments, runCommentModeration } from './comments'
+import { handleReactions } from './reactions'
 
 export interface Env {
   DB: D1Database
@@ -16,6 +17,10 @@ export interface Env {
   // Comments: AI binding for the moderation sweep; secret for signing verify sessions.
   AI?: Ai
   COMMENT_SECRET?: string
+  // Reactions: salts the zero-PII day+IP abuse-throttle hash (src/reactions.ts). Wrangler
+  // secret — see .dev.vars.example. If unset, POST /reactions fails loud (503 + console.warn);
+  // GET /reactions still works (reads never need the salt).
+  REACTION_SALT?: string
 }
 
 export interface Deps {
@@ -45,7 +50,10 @@ export function createWorker(
     async scheduled(controller: ScheduledController, env: Env, _ctx: ExecutionContext): Promise<void> {
       const result = await runScheduledSend(controller.scheduledTime, env, scheduledDeps)
       const mod = await runCommentModeration(env)
-      console.log(`[scheduled] cron=${controller.cron} send=${JSON.stringify(result)} moderation=${JSON.stringify(mod)}`)
+      const reactionsPurge = await purgeReactionEvents(env, controller.scheduledTime)
+      console.log(
+        `[scheduled] cron=${controller.cron} send=${JSON.stringify(result)} moderation=${JSON.stringify(mod)} reactions_purge=${JSON.stringify(reactionsPurge)}`,
+      )
     },
     async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
       const { pathname, searchParams } = new URL(request.url)
@@ -99,6 +107,10 @@ export function createWorker(
 
       if (pathname === '/comments' || pathname === '/comments/verify') {
         return handleComments(request, env, deps, scheduledDeps.sendBatch)
+      }
+
+      if (pathname === '/reactions') {
+        return handleReactions(request, env)
       }
 
       return json({ error: 'not_found' }, 404)
