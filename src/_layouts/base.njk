@@ -1,0 +1,67 @@
+{%- set fullTitle = (site.name + " - " + site.tagline) if seoType == "home" else (title + " - " + site.name) -%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ fullTitle | safe }}</title>
+    <meta name="description" content="{{ description | safe }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+{%- include "head-seo.njk" %}
+{%- include "jsonld.njk" %}
+    {%- if newsletter %}
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    {%- endif %}
+    <link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="/feed.xml">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
+<body>
+    <!-- Edge-lensing Liquid Glass filter (Chromium-only; referenced by
+         backdrop-filter: url(#edge-lensing) on .lensing surfaces). -->
+    <svg width="0" height="0" aria-hidden="true" focusable="false"
+         style="position:absolute; pointer-events:none;">
+        <filter id="edge-lensing" x="-20%" y="-20%" width="140%" height="140%"
+                color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012"
+                          numOctaves="1" seed="11" result="noise"/>
+            <feGaussianBlur in="noise" stdDeviation="2" result="softNoise"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="frosted"/>
+            <feDisplacementMap in="frosted" in2="softNoise" scale="14"
+                               xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </svg>
+    {%- if ambient %}
+    <!-- Ambient drifting backdrop (homepage): soft colour clouds + an occasional comet,
+         behind all content on a fixed layer. Decorative; freezes for reduced-motion. -->
+    <div class="ambient" aria-hidden="true">
+        <span class="orb orb-1"></span>
+        <span class="orb orb-2"></span>
+        <span class="orb orb-3"></span>
+        <span class="comet comet-1"></span>
+        <span class="comet comet-2"></span>
+        <span class="comet comet-3"></span>
+    </div>
+    {%- endif %}
+{% include "header.njk" %}
+
+    <main class="{{ mainClass }}">
+{{ content | safe }}
+    {%- if newsletter %}
+{% include "newsletter.njk" %}
+    {%- endif %}
+    </main>
+
+{% include "footer.njk" %}
+    {%- if newsletter %}
+{% include "newsletter-script.njk" %}
+    {%- endif %}
+    {%- if hasComments %}
+    <script src="/assets/js/comments.js" defer></script>
+    {%- endif %}
+</body>
+</html>

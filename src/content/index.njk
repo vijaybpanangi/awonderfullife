@@ -1,0 +1,28 @@
+---
+permalink: index.html
+layout: base.njk
+seoType: home
+title: "A Wonderful Life"
+description: "A blog by Vijay Panangipally exploring technology, data, and the human experience."
+mainClass: "container container--wide"
+newsletter: true
+ambient: true
+---
+{%- import "card-grid.njk" as cardGrid -%}
+        <section class="featured">
+            <a class="kicker" href="/categories/{{ collections.posts[0].data.category }}">{{ collections.posts[0].data.category | categoryName(site.categories) }}</a>
+            <a class="featured-link" href="/posts/{{ collections.posts[0].fileSlug }}">
+                <img src="/assets/images/posts/{{ collections.posts[0].fileSlug }}.jpg" alt="">
+                <h2 class="post-title">{{ collections.posts[0].data.title | safe }}</h2>
+            </a>
+            <p class="post-excerpt">{{ collections.posts[0].data.excerpt | safe }}</p>
+            <p class="post-date">{{ collections.posts[0].data.date | bylineDate }} · {{ collections.posts[0].data.minRead or (collections.posts[0].templateContent | readingTime) }} MIN READ</p>
+        </section>
+
+        <ul class="card-grid card-grid--3">
+        {%- for post in collections.posts %}
+        {%- if not loop.first %}
+{{ cardGrid.card(post, true, site.categories) }}
+        {%- endif %}
+        {%- endfor %}
+        </ul>

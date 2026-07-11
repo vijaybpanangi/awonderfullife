@@ -1,0 +1,28 @@
+{#- Expects `current` ("all" or a category slug) and `periodPosts` (the post
+   list whose years populate the period chips) set by the calling template. -#}
+        <h2 class="browse-title">Browse the archive</h2>
+        <p class="browse-subtitle">Filter by category and period.</p>
+        <div class="facets">
+            <nav class="facet" aria-label="Filter by category">
+                <span class="facet-label">Category</span>
+                {%- if current == "all" %}
+                <span class="facet-chip is-current">All<span class="facet-chip-count">{{ collections.posts | length }}</span></span>
+                {%- else %}
+                <a class="facet-chip" href="/archive">All<span class="facet-chip-count">{{ collections.posts | length }}</span></a>
+                {%- endif %}
+                {%- for c in site.categories %}
+                {%- set count = (collections.posts | byCategory(c.slug)) | length %}
+                {%- if c.slug == current %}
+                <a class="facet-chip is-current" href="/categories/{{ c.slug }}">{{ c.name }}<span class="facet-chip-count">{{ count }}</span></a>
+                {%- else %}
+                <a class="facet-chip" href="/categories/{{ c.slug }}">{{ c.name }}<span class="facet-chip-count">{{ count }}</span></a>
+                {%- endif %}
+                {%- endfor %}
+            </nav>
+            <nav class="facet" aria-label="Jump to period">
+                <span class="facet-label">Period</span>
+                {%- for group in periodPosts | byYear %}
+                <a class="facet-chip" href="#year{{ group.year }}">{{ group.year }}</a>
+                {%- endfor %}
+            </nav>
+        </div>

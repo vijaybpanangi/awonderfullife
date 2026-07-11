@@ -1,0 +1,17 @@
+{#- schema.org JSON-LD @graph. Recomputes canonicalUrl independently of
+   head-seo.njk so this include has no dependency on sibling include order. -#}
+{%- set canonicalUrl = page.url | cleanUrl | absoluteUrl(site.url) -%}
+{%- if seoType == "post" -%}
+{%- set ldCtx = {
+    kind: "post",
+    url: canonicalUrl,
+    headline: title,
+    description: description,
+    image: (site.url + "/assets/images/posts/" + page.fileSlug + ".jpg"),
+    date: date,
+    articleSection: (category | categoryName(site.categories))
+} -%}
+{%- else -%}
+{%- set ldCtx = { kind: seoType, url: canonicalUrl, title: fullTitle, description: description } -%}
+{%- endif %}
+{{ jsonLdGraph(site, ldCtx) | safe }}

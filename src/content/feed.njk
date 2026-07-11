@@ -1,0 +1,25 @@
+---
+permalink: feed.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>{{ site.name | xmlEscape | safe }}</title>
+<link>{{ site.url }}/</link>
+<atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml"/>
+<description>{{ (site.tagline + ". Essays by " + site.author + ".") | xmlEscape | safe }}</description>
+<language>en-ca</language>
+<lastBuildDate>{{ collections.posts[0].data.date | rfc822Date }}</lastBuildDate>
+{% for post in collections.posts %}
+{% set permalinkUrl = post.data.guid or (site.url + "/posts/" + post.fileSlug) %}
+<item>
+<title>{{ (post.data.listTitle or post.data.title) | xmlEscape | safe }}</title>
+<link>{{ permalinkUrl }}</link>
+<guid isPermaLink="true">{{ permalinkUrl }}</guid>
+<pubDate>{{ post.data.date | rfc822Date }}</pubDate>
+<description>{{ post.data.description | xmlEscape | safe }}</description>
+</item>
+{% endfor %}
+</channel>
+</rss>

@@ -1,0 +1,17 @@
+{% set nav = collections.posts | postNeighbors(page.fileSlug) %}
+{% if nav.older or nav.newer %}
+        <nav class="post-nav" aria-label="More posts">
+{% if nav.older %}
+  <a class="post-nav-link post-nav-prev" href="/posts/{{ nav.older.fileSlug }}">
+    <span class="post-nav-label">← Older</span>
+    <span class="post-nav-title">{{ (nav.older.data.listTitle or nav.older.data.title) | safe }}</span>
+  </a>
+{% endif %}
+{% if nav.newer %}
+  <a class="post-nav-link post-nav-next" href="/posts/{{ nav.newer.fileSlug }}">
+    <span class="post-nav-label">Newer →</span>
+    <span class="post-nav-title">{{ (nav.newer.data.listTitle or nav.newer.data.title) | safe }}</span>
+  </a>
+{% endif %}
+</nav>
+{% endif %}

@@ -1,0 +1,27 @@
+---js
+{
+  layout: "base.njk",
+  pagination: {
+    data: "site.categories",
+    size: 1,
+    alias: "cat",
+  },
+  permalink: (data) => `categories/${data.cat.slug}.html`,
+  seoType: "category",
+  mainClass: "container container--wide",
+  eleventyComputed: {
+    title: (data) => data.cat.name,
+    description: (data) => `Posts categorized as ${data.cat.name} on A Wonderful Life by Vijay Panangipally.`,
+  },
+}
+---
+{%- import "card-grid.njk" as cardGrid -%}
+{%- set current = cat.slug -%}
+{%- set periodPosts = collections.posts | byCategory(cat.slug) -%}
+{% include "facets.njk" %}
+
+        <ul class="card-grid">
+        {%- for post in periodPosts %}
+{{ cardGrid.card(post, false, site.categories) }}
+        {%- endfor %}
+        </ul>

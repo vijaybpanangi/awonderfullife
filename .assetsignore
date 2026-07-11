@@ -37,3 +37,18 @@ api
 api/**
 node_modules
 node_modules/**
+
+# Eleventy build pipeline (feat/eleventy-migration) — interim safety while the
+# legacy root HTML is still what's actually deployed. Build tooling and its
+# generated output must never be publicly served alongside the live site.
+package.json
+package-lock.json
+eleventy.config.js
+eleventy
+eleventy/**
+src
+src/**
+scripts
+scripts/**
+_site
+_site/**
