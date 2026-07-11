@@ -6,10 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ fullTitle | safe }}</title>
     <meta name="description" content="{{ description | safe }}">
+    <!-- Pre-paint theme: reads a stored preference before first paint so the
+         page never flashes the wrong theme on load or navigation. Must run
+         synchronously (no defer/async), before the stylesheet link. No
+         stored preference leaves data-theme unset, so prefers-color-scheme
+         decides (see the dark token block in style.css). -->
+    <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.dataset.theme = t;
+        }
+      } catch (e) { /* storage unavailable; prefers-color-scheme still decides */ }
+    })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="/assets/js/theme.js" defer></script>
 {%- include "head-seo.njk" %}
 {%- include "jsonld.njk" %}
     {%- if newsletter %}

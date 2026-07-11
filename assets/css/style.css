@@ -49,6 +49,112 @@
   --glass-input-bg: rgba(255,255,255,0.72);           /* .comment-form input/textarea background */
   --glass-submit-inset: rgba(255,255,255,0.5);        /* .comment-submit resting gloss highlight */
   --glass-submit-inset-hover: rgba(255,255,255,0.55); /* .comment-submit hover gloss highlight */
+
+  /* Dark-mode groundwork continued: ambient/body-glow values tokenized so
+     the dark block below can retune them; light-mode values unchanged. */
+  --control-hover-bg: rgba(17,17,17,0.06);  /* header icon-button hover (theme toggle) */
+  --body-glow: rgba(10,74,154,0.06);
+  --ambient-orb-opacity-1: 0.8;
+  --ambient-orb-opacity-2: 0.74;
+  --ambient-orb-opacity-3: 0.74;
+  --ambient-comet-line: rgba(40,120,230,0.8);
+  --ambient-comet-dot: rgba(40,120,230,1);
+  --ambient-comet-glow: rgba(40,120,230,0.7);
+}
+
+/* Dark theme — calm ink-on-slate editorial night mode: a deep (not pure-black)
+   slate backdrop, soft off-white text, and the Liquid-Glass material re-tuned
+   (less brighten, more saturate) so it reads as frosted glass over dark
+   instead of the washed-out look brightness(1.06) gives on a dark backdrop.
+   Applies when the OS prefers dark and the visitor hasn't explicitly chosen
+   light via the toggle, OR when the toggle has explicitly chosen dark. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #12151b;
+    --color-text: #e8eaed;
+    --color-text-light: #9aa0a6;
+    --color-border: #262b35;
+    --color-bg-soft: #1a1e26;
+    --color-accent: #5b9bd5;
+    --accent-hover: #79b3e8;
+
+    --glass-bg: rgba(22,24,30,0.55);
+    --glass-blur: blur(18px) saturate(1.4) brightness(0.9);
+    --glass-blur-static: blur(20px) saturate(1.4) brightness(0.9);
+    --glass-rim:
+      inset 0 1px 0 rgba(255,255,255,0.14),
+      inset 0 -1px 0 rgba(255,255,255,0.05),
+      inset 0 0 0 1px rgba(255,255,255,0.08);
+
+    --surface-solid: #1c2028;
+    --header-scrim: rgba(18,21,27,0.94);
+    --placeholder-color: #868e99;
+
+    --glass-panel-bg: linear-gradient(160deg, rgba(32,36,45,0.6), rgba(20,23,29,0.48));
+    --glass-panel-bg-alt: linear-gradient(160deg, rgba(34,38,48,0.62), rgba(20,23,29,0.5));
+    --glass-panel-border: rgba(255,255,255,0.1);
+
+    --glass-fill: rgba(255,255,255,0.06);
+    --glass-fill-border: rgba(255,255,255,0.08);
+    --glass-inset-strong: rgba(255,255,255,0.08);
+    --glass-removed-bg: rgba(255,255,255,0.03);
+
+    --glass-form-bg: rgba(255,255,255,0.05);
+    --glass-form-border: rgba(255,255,255,0.1);
+    --glass-input-bg: rgba(0,0,0,0.25);
+
+    --control-hover-bg: rgba(255,255,255,0.08);
+    --body-glow: rgba(91,155,213,0.08);
+    --ambient-orb-opacity-1: 0.4;
+    --ambient-orb-opacity-2: 0.37;
+    --ambient-orb-opacity-3: 0.37;
+    --ambient-comet-line: rgba(120,170,230,0.5);
+    --ambient-comet-dot: rgba(120,170,230,0.85);
+    --ambient-comet-glow: rgba(120,170,230,0.45);
+  }
+}
+:root[data-theme="dark"] {
+  --color-bg: #12151b;
+  --color-text: #e8eaed;
+  --color-text-light: #9aa0a6;
+  --color-border: #262b35;
+  --color-bg-soft: #1a1e26;
+  --color-accent: #5b9bd5;
+  --accent-hover: #79b3e8;
+
+  --glass-bg: rgba(22,24,30,0.55);
+  --glass-blur: blur(18px) saturate(1.4) brightness(0.9);
+  --glass-blur-static: blur(20px) saturate(1.4) brightness(0.9);
+  --glass-rim:
+    inset 0 1px 0 rgba(255,255,255,0.14),
+    inset 0 -1px 0 rgba(255,255,255,0.05),
+    inset 0 0 0 1px rgba(255,255,255,0.08);
+
+  --surface-solid: #1c2028;
+  --header-scrim: rgba(18,21,27,0.94);
+  --placeholder-color: #868e99;
+
+  --glass-panel-bg: linear-gradient(160deg, rgba(32,36,45,0.6), rgba(20,23,29,0.48));
+  --glass-panel-bg-alt: linear-gradient(160deg, rgba(34,38,48,0.62), rgba(20,23,29,0.5));
+  --glass-panel-border: rgba(255,255,255,0.1);
+
+  --glass-fill: rgba(255,255,255,0.06);
+  --glass-fill-border: rgba(255,255,255,0.08);
+  --glass-inset-strong: rgba(255,255,255,0.08);
+  --glass-removed-bg: rgba(255,255,255,0.03);
+
+  --glass-form-bg: rgba(255,255,255,0.05);
+  --glass-form-border: rgba(255,255,255,0.1);
+  --glass-input-bg: rgba(0,0,0,0.25);
+
+  --control-hover-bg: rgba(255,255,255,0.08);
+  --body-glow: rgba(91,155,213,0.08);
+  --ambient-orb-opacity-1: 0.4;
+  --ambient-orb-opacity-2: 0.37;
+  --ambient-orb-opacity-3: 0.37;
+  --ambient-comet-line: rgba(120,170,230,0.5);
+  --ambient-comet-dot: rgba(120,170,230,0.85);
+  --ambient-comet-glow: rgba(120,170,230,0.45);
 }
 
 html { font-size: 16px; line-height: 1.7; }
@@ -59,7 +165,7 @@ body {
   background: var(--color-bg);
   /* whisper of depth at the top so the frosted header has something to refract;
      stays effectively white everywhere else (crispness preserved) */
-  background-image: radial-gradient(60rem 26rem at 50% -10%, rgba(10,74,154,0.06), transparent 62%);
+  background-image: radial-gradient(60rem 26rem at 50% -10%, var(--body-glow), transparent 62%);
   background-attachment: fixed;
   background-repeat: no-repeat;
   -webkit-font-smoothing: antialiased;
@@ -75,28 +181,28 @@ body {
 main, footer { position: relative; z-index: 1; }
 .ambient .orb { position: absolute; border-radius: 50%; filter: blur(60px); will-change: transform; }
 .ambient .orb-1 {
-  width: 44vw; height: 44vw; left: -12vw; top: -10vh; opacity: 0.8;
+  width: 44vw; height: 44vw; left: -12vw; top: -10vh; opacity: var(--ambient-orb-opacity-1);
   background: radial-gradient(circle at 35% 35%, rgba(26,110,224,0.72), transparent 70%);
   animation: orbDrift1 36s ease-in-out infinite alternate;
 }
 .ambient .orb-2 {
-  width: 38vw; height: 38vw; right: -10vw; top: 14vh; opacity: 0.74;
+  width: 38vw; height: 38vw; right: -10vw; top: 14vh; opacity: var(--ambient-orb-opacity-2);
   background: radial-gradient(circle at 50% 50%, rgba(230,122,66,0.68), transparent 70%);
   animation: orbDrift2 46s ease-in-out infinite alternate;
 }
 .ambient .orb-3 {
-  width: 36vw; height: 36vw; left: 8vw; bottom: -14vh; opacity: 0.74;
+  width: 36vw; height: 36vw; left: 8vw; bottom: -14vh; opacity: var(--ambient-orb-opacity-3);
   background: radial-gradient(circle at 50% 50%, rgba(108,152,206,0.68), transparent 70%);
   animation: orbDrift3 54s ease-in-out infinite alternate;
 }
 .ambient .comet {
   position: absolute; left: -16%; width: 230px; height: 2.5px; border-radius: 2px;
-  background: linear-gradient(90deg, transparent, rgba(40,120,230,0.8));
+  background: linear-gradient(90deg, transparent, var(--ambient-comet-line));
   opacity: 0;
 }
 .ambient .comet::after {
   content: ""; position: absolute; right: -1px; top: -2.5px; width: 7px; height: 7px;
-  border-radius: 50%; background: rgba(40,120,230,1); box-shadow: 0 0 16px 4px rgba(40,120,230,0.7);
+  border-radius: 50%; background: var(--ambient-comet-dot); box-shadow: 0 0 16px 4px var(--ambient-comet-glow);
 }
 /* a few comets sweeping the page at staggered rows / angles / timings */
 .ambient .comet-1 { top: 6%;  animation: cometA 13s linear infinite; }
@@ -218,6 +324,35 @@ nav a {
   letter-spacing: 0.02em;
 }
 nav a:hover { color: var(--color-text); text-decoration: none; }
+
+/* Theme toggle — small round icon-button living at the end of the header
+   nav. Shows a moon (⇒ tap to go dark) in light mode and a sun (⇒ tap to
+   go light) once dark is active, whichever selector put it there. */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  margin-left: 0.25rem;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-light);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.theme-toggle:hover { background: var(--control-hover-bg); color: var(--color-text); }
+.theme-toggle-icon { display: block; }
+.theme-toggle-icon--sun { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle-icon--sun { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle-icon--moon { display: none; }
+}
+:root[data-theme="dark"] .theme-toggle-icon--sun { display: block; }
+:root[data-theme="dark"] .theme-toggle-icon--moon { display: none; }
 
 /* Shared kicker (category label) */
 .kicker {
