@@ -79,6 +79,9 @@
     {%- if newsletter %}
 {% include "newsletter-script.njk" %}
     {%- endif %}
+    {%- if hasReactions %}
+    <script src="/assets/js/reactions.js" defer></script>
+    {%- endif %}
     {%- if hasComments %}
     <script src="/assets/js/comments.js" defer></script>
     {%- endif %}
