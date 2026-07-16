@@ -10,6 +10,7 @@ import {
   cleanUrl,
   htmlDecode,
   xmlEscape,
+  imageDims,
   byYear,
   byCategory,
   categoryName,
@@ -52,6 +53,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("cleanUrl", cleanUrl);
   eleventyConfig.addFilter("htmlDecode", htmlDecode);
   eleventyConfig.addFilter("xmlEscape", xmlEscape);
+  eleventyConfig.addFilter("imageDims", imageDims);
   eleventyConfig.addFilter("byYear", byYear);
   eleventyConfig.addFilter("byCategory", byCategory);
   eleventyConfig.addFilter("categoryName", categoryName);

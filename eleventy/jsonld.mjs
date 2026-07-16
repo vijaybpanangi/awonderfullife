@@ -24,6 +24,9 @@ export function sharedNodes(site) {
       email: site.email,
       description: site.personDescription,
       jobTitle: "Writer",
+      // sameAs associates this entity with its profiles across the web, so
+      // search engines can consolidate "Vijay Panangipally" into one identity.
+      ...(site.sameAs && site.sameAs.length ? { sameAs: site.sameAs } : {}),
     },
     {
       "@type": "Blog",
@@ -53,7 +56,7 @@ export function pageNode(site, ctx) {
       description: desc,
       image: ctx.image,
       datePublished: isoDate(ctx.date),
-      dateModified: isoDate(ctx.date),
+      dateModified: isoDate(ctx.updated || ctx.date),
       author: { "@id": `${site.url}/#person` },
       publisher: { "@id": `${site.url}/#person` },
       articleSection: ctx.articleSection,
@@ -88,8 +91,23 @@ export function pageNode(site, ctx) {
   return node;
 }
 
+// Home > Category > Post trail for a post, as its own @graph node. Google reads
+// BreadcrumbList standalone (it need not be nested under the WebPage/BlogPosting).
+export function breadcrumbNode(site, ctx) {
+  return {
+    "@type": "BreadcrumbList",
+    "@id": `${ctx.url}#breadcrumb`,
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${site.url}/` },
+      { "@type": "ListItem", position: 2, name: ctx.articleSection, item: `${site.url}/categories/${ctx.categorySlug}` },
+      { "@type": "ListItem", position: 3, name: ctx.headline, item: ctx.url },
+    ],
+  };
+}
+
 export function buildGraph(site, ctx) {
   const graph = [...sharedNodes(site), pageNode(site, ctx)];
+  if (ctx.kind === "post") graph.push(breadcrumbNode(site, ctx));
   const doc = { "@context": "https://schema.org", "@graph": graph };
   const payload = JSON.stringify(doc, null, 2)
     .split("\n")

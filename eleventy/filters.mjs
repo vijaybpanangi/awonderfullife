@@ -3,6 +3,8 @@
 // as a UTC Date), so every formatter below reads UTC getters. A local-time formatter
 // would render the day before/after depending on the machine's timezone.
 
+import { readFileSync } from "node:fs";
+
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
@@ -93,6 +95,63 @@ export function xmlEscape(str) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#x27;");
+}
+
+// Reads a JPEG's intrinsic pixel dimensions straight from its SOF marker, so
+// `og:image:width`/`height` carry the real size of whichever image a page uses.
+// Our OG images are heterogeneous (post heroes ~1536x1024, the About portrait
+// 595x592, the default 1600x896), so a single hardcoded pair would be wrong for
+// most pages. Dependency-free (no image-processing library), memoized per path,
+// and self-maintaining: a new post's hero is measured automatically at build.
+// Takes a root-relative path (e.g. "/assets/images/posts/slug.jpg"); the source
+// asset lives at that path under the repo root (build cwd). Returns
+// { width, height } or null if the file is missing/unreadable/not a parseable
+// JPEG — callers omit the width/height tags when null (no wrong values emitted).
+const _imageDimsCache = new Map();
+
+function jpegSize(buf) {
+  if (buf.length < 4 || buf[0] !== 0xff || buf[1] !== 0xd8) return null; // not SOI
+  let off = 2;
+  while (off + 1 < buf.length) {
+    if (buf[off] !== 0xff) {
+      off++;
+      continue;
+    }
+    const marker = buf[off + 1];
+    if (marker === 0xff) {
+      off++; // fill byte, keep scanning for the marker
+      continue;
+    }
+    off += 2;
+    // Standalone markers with no length payload: SOI, EOI, RSTn, TEM.
+    if (marker === 0xd8 || marker === 0xd9 || (marker >= 0xd0 && marker <= 0xd7) || marker === 0x01) {
+      continue;
+    }
+    if (off + 2 > buf.length) break;
+    const segLen = buf.readUInt16BE(off);
+    if (segLen < 2) break;
+    // Start-of-Frame markers carry the dimensions: C0-CF except C4 (DHT),
+    // C8 (JPG), CC (DAC). Layout after the length: precision(1), height(2), width(2).
+    if (marker >= 0xc0 && marker <= 0xcf && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc) {
+      if (off + 7 > buf.length) break;
+      return { height: buf.readUInt16BE(off + 3), width: buf.readUInt16BE(off + 5) };
+    }
+    off += segLen;
+  }
+  return null;
+}
+
+export function imageDims(rootRelativePath) {
+  if (!rootRelativePath) return null;
+  if (_imageDimsCache.has(rootRelativePath)) return _imageDimsCache.get(rootRelativePath);
+  let dims = null;
+  try {
+    dims = jpegSize(readFileSync(rootRelativePath.replace(/^\/+/, "")));
+  } catch {
+    dims = null;
+  }
+  _imageDimsCache.set(rootRelativePath, dims);
+  return dims;
 }
 
 // Groups an already date-DESC-sorted post collection into

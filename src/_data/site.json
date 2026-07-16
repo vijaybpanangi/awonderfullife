@@ -7,6 +7,14 @@
   "turnstileSitekey": "0x4AAAAAADlXh3xQof3Z3H_E",
   "description": "A blog by Vijay Panangipally exploring technology, data, and the human experience.",
   "personDescription": "About Vijay Panangipally - data storyteller, world observer, and writer.",
+  "twitterHandle": "@psvijaybhushan",
+  "sameAs": [
+    "https://www.linkedin.com/in/vijaybhushan/",
+    "https://x.com/psvijaybhushan",
+    "https://github.com/vijaybpanangi",
+    "https://trackyourapp.ca",
+    "https://www.instagram.com/spanangipally/"
+  ],
   "categories": [
     { "slug": "reflection", "name": "Reflection" },
     { "slug": "society", "name": "Society" },
