@@ -76,6 +76,7 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
+| `v3.5.0` | 2026-07-16 | [#61](https://github.com/vijaybpanangi/awonderfullife/pull/61) | SEO structured-data + social/OG enrichment (`sameAs`, `BreadcrumbList`, `og:image` dims/alt, Twitter attribution, `updated` field) |
 | `v3.4.0` | 2026-07-11 | [#59](https://github.com/vijaybpanangi/awonderfullife/pull/59) | Zero-PII "appreciate" button on posts (owned reactions API, localStorage, dark-safe) |
 | `v3.3.0` | 2026-07-11 | [#58](https://github.com/vijaybpanangi/awonderfullife/pull/58) | Related-posts "More reading" strip on each post (build-time, same-category + backfill) |
 | `v3.2.0` | 2026-07-11 | [#57](https://github.com/vijaybpanangi/awonderfullife/pull/57) | Static search (Pagefind) on the archive — build-time index, posts-only, light+dark |
