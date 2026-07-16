@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ fullTitle | safe }}</title>
     <meta name="description" content="{{ description | safe }}">
+    <meta name="author" content="{{ site.author }}">
     <!-- Pre-paint theme: reads a stored preference before first paint so the
          page never flashes the wrong theme on load or navigation. Must run
          synchronously (no defer/async), before the stylesheet link. No

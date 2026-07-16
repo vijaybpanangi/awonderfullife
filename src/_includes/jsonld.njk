@@ -9,6 +9,8 @@
     description: description,
     image: (site.url + "/assets/images/posts/" + page.fileSlug + ".jpg"),
     date: date,
+    updated: updated,
+    categorySlug: category,
     articleSection: (category | categoryName(site.categories))
 } -%}
 {%- else -%}
