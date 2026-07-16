@@ -2,7 +2,7 @@
 title: "2024 Election Results: A Call for Change"
 date: 2024-11-06
 category: politics
-description: "The 2024 U.S. elections have led to a notable shift in leadership, with Donald Trump returning to the presidency amid a Republican resurgence in the Senate and"
+description: "My read on the 2024 U.S. election: Trump back in the White House, a Republican Senate, a divided House, and what that shift asks of us."
 excerpt: "An analysis of the 2024 U.S. election outcome and what it signals about the appetite for change — across the political map, the economy, and the social contract that defines a country in flux."
 heroAlt: "Donald Trump gives a thumbs-up at a podium before a flag-waving crowd outside the US Capitol at sunset, surrounded by infographic panels of election and Senate results."
 heroTitled: true

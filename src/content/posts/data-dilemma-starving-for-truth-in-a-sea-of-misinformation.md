@@ -2,7 +2,7 @@
 title: "Data Dilemma: Starving for Truth in a Sea of Misinformation"
 date: 2025-03-04
 category: society
-description: "The author reflects on the disconnect between economic data and lived reality, highlighting how numbers can be manipulated to serve narratives. This misinformat"
+description: "When my grocery bill outran every reassuring headline, I started asking how economic data drifts so far from real life, and who bends the numbers."
 excerpt: "The author reflects on the disconnect between economic data and lived reality, highlighting how numbers can be manipulated to serve narratives. They advocate for active engagement, critical analysis, and diversified information sources — the fight for truth begins with awareness and informed conversation."
 heroAlt: "A lone figure stands before a stormy ocean strewn with floating newspapers and headlines, a distant lighthouse glowing under a dark sky."
 minRead: 9

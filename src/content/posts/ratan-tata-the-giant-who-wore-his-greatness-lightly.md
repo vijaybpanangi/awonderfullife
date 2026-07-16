@@ -2,7 +2,7 @@
 title: "Ratan Tata: The Giant Who Wore His Greatness Lightly"
 date: 2024-10-09
 category: reflection
-description: "Ratan Tata, a visionary leader, passed away, leaving a profound legacy defined by humility, integrity, and commitment to humanity. His leadership was characteri"
+description: "Saying goodbye to Ratan Tata: not just what he built, but how he built it, with the kind of humility and integrity that made greatness feel human."
 excerpt: "A tribute to Ratan Tata — a leader whose scale was matched by his restraint. What his life teaches about ambition that isn't loud, and impact that doesn't announce itself."
 heroAlt: "An elderly man in a dark suit gazes toward a golden sunrise over a hazy city skyline, the Tata emblem glowing faintly in the sky above the trees."
 minRead: 7

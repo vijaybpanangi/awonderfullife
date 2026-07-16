@@ -2,7 +2,7 @@
 title: "Leadership Contrasts in U.S. Election: A Canadian's View on Global Impact"
 date: 2024-09-11
 category: politics
-description: "As a Canadian watching the U.S. presidential debate, I hesitated to form opinions, mindful of our interconnected world. However, the debate's stakes felt larger"
+description: "As a Canadian watching the Trump-Harris debate, I weigh two kinds of leadership, and why the outcome reaches well beyond U.S. borders."
 excerpt: "From north of the border, the 2024 American election looked less like a domestic contest and more like a referendum on the global order. What a Canadian sees that an American can't."
 heroAlt: "Two political figures face off across debate podiums, a red-lit American flag on one side, a glowing blue world map on the other, and a Canadian flag draped below."
 heroTitled: true

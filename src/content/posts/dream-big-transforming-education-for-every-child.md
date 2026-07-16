@@ -2,7 +2,7 @@
 title: "Dream Big: Transforming Education for Every Child"
 date: 2024-10-09
 category: society
-description: "The text emphasizes the importance of accessible education for all children, regardless of their geographical or socio-economic background. It presents various"
+description: "If failure weren't an option, I'd dream of accessible education for every child and a closed digital divide. Here's what that world could look like."
 excerpt: "A case for treating education as the highest-leverage investment any society can make — and a look at what's quietly working in classrooms most policy debates ignore."
 heroAlt: "Infographic poster of smiling children in classrooms ringed by panels on barriers, support, advocacy and a world map, with a Kalam quote at the foot."
 heroTitled: true

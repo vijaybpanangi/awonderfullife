@@ -2,7 +2,7 @@
 title: "Fostering Unity in Canada: Combating Divisive Rhetoric"
 date: 2024-11-07
 category: politics
-description: "Fostering Unity in Canada: Combating Divisive Rhetoric"
+description: "The divisive rhetoric creeping into Canadian politics worries me. A reflection on holding onto unity, kindness, and compassion when the mood sours."
 excerpt: "A reflection on the divisive rhetoric increasingly shaping Canadian discourse, and a call to recommit to the values of unity, plurality, and shared responsibility that built the country in the first place."
 heroAlt: "A diverse crowd of smiling people embrace and hold handmade signs near Parliament Hill in Ottawa, with a Canadian flag waving overhead at sunset."
 minRead: 4

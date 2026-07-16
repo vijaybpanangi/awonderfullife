@@ -2,7 +2,7 @@
 title: "Whispers of Wanderlust: An Eco-Friendly Journey Across Canada"
 date: 2024-03-15
 category: travel
-description: "Whispers of Wanderlust: An Eco-Friendly Journey Across Canada"
+description: "An eco-friendly road trip across Canada in my EV: the quiet hum, the open road, and what travelling gently taught me about this country."
 excerpt: "Notes from a slow, low-impact crossing of Canada — the small choices that add up, the places that reward patience, and what travel asks of us when the planet is the destination too."
 heroAlt: "A lone touring cyclist pedals down an empty highway through misty evergreen forest, with layered mountain peaks fading into golden morning haze."
 heroTitled: true
