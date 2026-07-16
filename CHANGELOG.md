@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v3.5.7 — Track Your App wordmark images + link to its About page (2026-07-16 UTC)
+
+The Track Your App entry in the About page's links footer now uses its real brand wordmark instead of the emoji approximation shipped in v3.5.5: two small transparent PNGs, one with dark text for light backgrounds and one with white text for dark, swapped automatically by theme (the same `prefers-color-scheme` + `data-theme` cascade the rest of the site uses). The link also points to Track Your App's own About page now (`trackyourapp.ca/about`) rather than its homepage.
+
 ## v3.5.6 — About links centred across the column (2026-07-16 UTC)
 
 A small layout fix. The "elsewhere on the web" links footer on the About page was left-aligned, which read like an afterthought tucked into the corner. It now distributes the five links evenly across the full width of the content column (`justify-content: space-evenly`), balanced at both ends so the row stays centred rather than pinned to the edges, and it still wraps and centres cleanly on narrow screens. CSS only.
