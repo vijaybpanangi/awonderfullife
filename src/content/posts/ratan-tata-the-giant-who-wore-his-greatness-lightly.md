@@ -1,9 +1,9 @@
 ---
-title: "Ratan Tata: The Giant Who Wore His Greatness Lightly"
+title: "Ratan Tata: The Leadership Legacy of a Giant Who Wore His Greatness Lightly"
 date: 2024-10-09
 category: reflection
 description: "Saying goodbye to Ratan Tata: not just what he built, but how he built it, with the kind of humility and integrity that made greatness feel human."
-excerpt: "A tribute to Ratan Tata — a leader whose scale was matched by his restraint. What his life teaches about ambition that isn't loud, and impact that doesn't announce itself."
+excerpt: "The day Ratan Tata died, I didn't think first about what he built, but about how he built it. A small tribute to a leader whose humility was as large as his ambition, and what his life taught me about greatness that never needed to announce itself."
 heroAlt: "An elderly man in a dark suit gazes toward a golden sunrise over a hazy city skyline, the Tata emblem glowing faintly in the sky above the trees."
 minRead: 7
 guid: "https://awonderfullife.ca/posts/ratan-tata-the-giant-who-wore-his-greatness-lightly.html"

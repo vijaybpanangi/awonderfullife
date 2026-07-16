@@ -1,9 +1,9 @@
 ---
-title: "2024 Election Results: A Call for Change"
+title: "2024 U.S. Election Results: What the Vote Was Really Asking For"
 date: 2024-11-06
 category: politics
 description: "My read on the 2024 U.S. election: Trump back in the White House, a Republican Senate, a divided House, and what that shift asks of us."
-excerpt: "An analysis of the 2024 U.S. election outcome and what it signals about the appetite for change — across the political map, the economy, and the social contract that defines a country in flux."
+excerpt: "The 2024 U.S. results landed with no ambiguity: Trump back in the White House, a red Senate, a House still in the air. Here's how I read what the country was actually asking for."
 heroAlt: "Donald Trump gives a thumbs-up at a podium before a flag-waving crowd outside the US Capitol at sunset, surrounded by infographic panels of election and Senate results."
 heroTitled: true
 minRead: 7

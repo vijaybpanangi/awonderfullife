@@ -1,9 +1,9 @@
 ---
-title: "How Apple’s AI Enhances Everyday Life: A Review"
+title: "How Apple's AI Enhances Everyday Life: An Apple Intelligence Review"
 date: 2024-10-29
 category: technology
 description: "My hands-on take on Apple Intelligence in iOS 18.1, and whether AI built for everyday users, not coders, actually makes daily life easier."
-excerpt: "How Apple's privacy-first approach to on-device AI changes what everyday users can expect — from smarter notifications to richer writing tools — without the data-extraction trade-offs of competing platforms."
+excerpt: "Apple finally brought AI to the rest of us, the people who aren't coders, in iOS 18.1. After living with Apple Intelligence for a while, here's what genuinely helps day to day, and where the privacy-first approach pays off."
 heroAlt: "An annotated infographic with a hand holding a phone showing the Apple Intelligence screen, surrounded by panels on Siri, photos, notifications, writing tools, and privacy."
 heroTitled: true
 minRead: 7

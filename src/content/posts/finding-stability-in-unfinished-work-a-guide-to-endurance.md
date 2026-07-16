@@ -1,9 +1,9 @@
 ---
-title: "Finding Stability in Unfinished Work: A Guide to Endurance"
+title: "Finding Stability in Unfinished Work: How I Learned to Endure Uncertainty"
 date: 2026-02-18
 category: reflection
 description: "How I learned to find steadiness in work that's never quite finished, and to sit with uncertainty instead of waiting for it to resolve."
-excerpt: 'The author reflects on the concept of "working through it," which signifies ongoing personal growth amidst uncertainty. Through patience and resilience, they have learned that stability lies not in finishing tasks, but in maintaining the strength to keep progressing while confronting the unfinished.'
+excerpt: "I've learned to answer 'how's it going?' with composure, even when the honest answer is that everything feels unfinished. This is about finding steadiness not in finishing things, but in the strength to keep going while they're still undone."
 heroAlt: "A lone backpacker crosses an old stone arch bridge at dawn, wooden scaffolding still propped against one end, mist rising over the calm river below."
 minRead: 3
 guid: "https://awonderfullife.ca/posts/finding-stability-in-unfinished-work-a-guide-to-endurance.html"

@@ -1,9 +1,9 @@
 ---
-title: "How Integrity and Empathy Define Us"
+title: "How Integrity and Empathy Define Us: The Small Choices That Build Character"
 date: 2024-10-09
 category: reflection
 description: "Every choice, small or large, quietly reveals who we are. Why I keep coming back to integrity and empathy as the ground I try to stand on."
-excerpt: "On the quiet decisions that build character — and why the smallest acts of empathy compound into the kind of integrity that holds when everything else gives way."
+excerpt: "Every day I stand at small crossroads: what to say, whom to trust, how to show up. I keep coming back to integrity and empathy as the ground I try to stand on, because they're what hold when everything else gives way."
 heroAlt: "A man with a backpack sits on a hilltop at golden sunrise, gazing over a wildflower meadow toward a winding path, distant lake, and mist-softened mountains."
 heroTitled: true
 minRead: 7

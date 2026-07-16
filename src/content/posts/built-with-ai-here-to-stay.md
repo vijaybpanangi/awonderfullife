@@ -1,9 +1,9 @@
 ---
-title: "Built With AI, Here to Stay"
+title: "Built With AI, Here to Stay: Why AI-Assisted Software Deserves a Fair Look"
 date: 2026-07-10
 category: technology
 description: "I built Track Your App with AI's help, production incident and all. Here's why software deserves to be judged on what it does, not how it was made."
-excerpt: 'Building Track Your App with AI assistance meant real architecture calls, a real production incident, and a genuine ethical stand on privacy, none of it visible from outside. Here is what happened when something went wrong, and why the label "AI-assisted" says less than people think it does.'
+excerpt: "I built Track Your App with AI's help: real architecture calls, a real production incident, a real stand on privacy, none of it visible from the outside. Here's what happened when something broke, and why 'AI-assisted' tells you less than you'd think."
 heroAlt: "A cluttered desk of scattered notes and spreadsheet sketches under a lamp dissolves into a glowing tiled pathway leading to a bright red maple leaf, with a starry night sky, trees, and a lake visible through a large window."
 dek: "What building Track Your App taught me about software, responsibility, and the wrong way to judge AI-assisted work."
 minRead: 9
