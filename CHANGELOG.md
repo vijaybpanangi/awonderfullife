@@ -4,6 +4,10 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v3.5.6 — About links centred across the column (2026-07-16 UTC)
+
+A small layout fix. The "elsewhere on the web" links footer on the About page was left-aligned, which read like an afterthought tucked into the corner. It now distributes the five links evenly across the full width of the content column (`justify-content: space-evenly`), balanced at both ends so the row stays centred rather than pinned to the edges, and it still wraps and centres cleanly on narrow screens. CSS only.
+
 ## v3.5.5 — About page rewritten in first person, with profile links (2026-07-16 UTC)
 
 The About page was rewritten in Vijay's own voice. The previous copy, though already first-person, leaned on heavy bold emphasis and em dashes (both against the site's own editorial rules) and a slightly performative register. The new version keeps the substance, business intelligence by day, data meeting feeling, technology and travel and the world, politics by necessity, the black iced coffee, and the open invitation to write, but says it plainly and warmly, drops every bit of bold, and removes the em dashes. The meta description is first-person now too. The page also surfaces, for the first time, the profile links that already lived in its `sameAs` structured data but were invisible to readers: a quiet footer of true-colour brand icons (LinkedIn, X, GitHub, Instagram) plus Track Your App's own maple-leaf-and-flag wordmark. X and GitHub are near-black and flip to white in dark mode so they stay legible; the wordmark's text follows the theme while its emoji keep their colour.
