@@ -808,6 +808,41 @@ a.kicker:hover {
   object-fit: cover;
   margin-bottom: 1.5rem;
 }
+/* "Elsewhere on the web" links footer on the About page. Brand icons carry
+   their true colours; X and GitHub are near-black and flip to white in dark
+   mode so they stay visible. Track Your App uses its own maple-leaf-and-flag
+   wordmark, whose text follows the theme while the emoji stay full colour. */
+.about-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+.about-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+.about-links a:hover span { text-decoration: underline; }
+.about-links svg { width: 22px; height: 22px; flex: none; }
+.about-links .ic-linkedin { fill: #0a66c2; }
+.about-links .ic-x,
+.about-links .ic-github { fill: #181717; }
+:root[data-theme="dark"] .about-links .ic-x,
+:root[data-theme="dark"] .about-links .ic-github { fill: #ffffff; }
+.about-links .tya { font-weight: 600; gap: 0.35rem; }
+.about-links .tya .leaf,
+.about-links .tya .flag { font-size: 1.15rem; line-height: 1; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .about-links .ic-x,
+  :root:not([data-theme="light"]) .about-links .ic-github { fill: #ffffff; }
+}
 .about-header h1 {
   font-size: 2rem;
 }
