@@ -76,6 +76,7 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
+| `v3.5.7` | 2026-07-16 | [#68](https://github.com/vijaybpanangi/awonderfullife/pull/68) | Track Your App wordmark images (light/dark, theme-swapped) + link to its About page |
 | `v3.5.6` | 2026-07-16 | [#67](https://github.com/vijaybpanangi/awonderfullife/pull/67) | About links footer centred and spread evenly across the content column |
 | `v3.5.5` | 2026-07-16 | [#66](https://github.com/vijaybpanangi/awonderfullife/pull/66) | About page rewritten in first person + true-colour profile-link footer (LinkedIn, X, GitHub, Instagram, Track Your App) |
 | `v3.5.4` | 2026-07-16 | [#65](https://github.com/vijaybpanangi/awonderfullife/pull/65) | New post: "The Wait Was Worth It" (iOS 27 Siri AI); series' first post with inline photoreal figures |
