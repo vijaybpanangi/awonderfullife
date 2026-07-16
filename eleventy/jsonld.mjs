@@ -20,7 +20,7 @@ export function sharedNodes(site) {
       "@id": `${site.url}/#person`,
       name: site.author,
       url: `${site.url}/`,
-      image: `${site.url}/assets/images/vijay.jpg`,
+      image: `${site.url}/assets/images/vijay-v2.jpg`,
       email: site.email,
       description: site.personDescription,
       jobTitle: "Writer",
