@@ -837,12 +837,16 @@ a.kicker:hover {
 .about-links .ic-github { fill: #181717; }
 :root[data-theme="dark"] .about-links .ic-x,
 :root[data-theme="dark"] .about-links .ic-github { fill: #ffffff; }
-.about-links .tya { font-weight: 600; gap: 0.35rem; }
-.about-links .tya .leaf,
-.about-links .tya .flag { font-size: 1.15rem; line-height: 1; }
+.about-links .tya { gap: 0; }
+.about-links .tya-img { height: 24px; width: auto; display: block; }
+.about-links .tya-img-dark { display: none; }
+:root[data-theme="dark"] .about-links .tya-img-light { display: none; }
+:root[data-theme="dark"] .about-links .tya-img-dark { display: block; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .about-links .ic-x,
   :root:not([data-theme="light"]) .about-links .ic-github { fill: #ffffff; }
+  :root:not([data-theme="light"]) .about-links .tya-img-light { display: none; }
+  :root:not([data-theme="light"]) .about-links .tya-img-dark { display: block; }
 }
 .about-header h1 {
   font-size: 2rem;
