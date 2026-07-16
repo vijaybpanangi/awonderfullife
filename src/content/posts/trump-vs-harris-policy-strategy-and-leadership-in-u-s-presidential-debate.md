@@ -1,9 +1,9 @@
 ---
-title: "Trump vs. Harris: Policy, Strategy, and Leadership in U.S. Presidential Debate"
+title: "Trump vs. Harris: Policy, Strategy, and Leadership in the U.S. Presidential Debate"
 date: 2024-09-11
 category: politics
 description: "My breakdown of the Trump-Harris presidential debate: two clashing visions, the policy behind the soundbites, and what each revealed about leading."
-excerpt: "Beyond the soundbites — a close read of what each candidate actually proposed, where their strategies diverged, and what their debate performances reveal about how each would lead."
+excerpt: "I watched the Trump-Harris debate less for the zingers than for the substance. Here's my close read of what each actually proposed, where their strategies split, and what their performances told me about how each would lead."
 heroAlt: "Two candidates at separate podiums gesture toward one another mid-argument, lit against a navy stage backdrop scattered with large white stars."
 minRead: 9
 guid: "https://awonderfullife.ca/posts/trump-vs-harris-policy-strategy-and-leadership-in-u-s-presidential-debate.html"

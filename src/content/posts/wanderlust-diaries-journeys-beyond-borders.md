@@ -1,9 +1,9 @@
 ---
-title: "Wanderlust Diaries: Journeys Beyond Borders"
+title: "Wanderlust Diaries: Travel Stories From Beyond Borders"
 date: 2024-03-14
 category: travel
 description: "Flipping back through my travel diaries: the vistas, the cultures, and the small moments across borders that quietly reshaped how I see the world."
-excerpt: "An opening entry from a longer travel journal — what borders mean when you've crossed enough of them, and the kinds of stories that only show up after the photographs stop."
+excerpt: "I keep a travel journal, and flipping back through it I realized the best entries aren't about the sights. This first one is about what borders come to mean once you've crossed enough of them, and the stories that surface after the photos stop."
 heroAlt: "A weathered vintage suitcase covered in travel stickers sits on an empty railway platform between two trains as the sun sets at the end of the tracks."
 heroTitled: true
 minRead: 2

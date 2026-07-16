@@ -1,9 +1,9 @@
 ---
-title: "Confronting Inequality: The American and Canadian Experience"
+title: "Confronting Inequality: The Shared Failures of the U.S. and Canada"
 date: 2024-11-18
 category: politics
 description: "Beneath the prosperity of the U.S. and Canada run deep, shared histories of inequality and colonial injustice. Here's how I read that legacy today."
-excerpt: "The histories of the United States and Canada reveal ambitions of prosperity shadowed by deep-rooted inequalities, systemic injustices, and legacies of colonialism. Both nations must acknowledge their failings and engage in rectifying injustices for a fairer future."
+excerpt: "The U.S. and Canada like to tell proud stories about themselves. Underneath the prosperity, though, I see the same inherited inequalities and colonial debts, and I don't think either country moves forward without naming them first."
 heroAlt: "American and Canadian flags frame a sunset river; protesters hold equality signs on the left, an Indigenous elder sits by a cooking pot on the right."
 minRead: 4
 guid: "https://awonderfullife.ca/posts/the-united-states-and-canada-uneasy-neighbors-shared-failures.html"

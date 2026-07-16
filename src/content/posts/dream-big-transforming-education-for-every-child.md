@@ -1,9 +1,9 @@
 ---
-title: "Dream Big: Transforming Education for Every Child"
+title: "Dream Big: Making Quality Education Accessible for Every Child"
 date: 2024-10-09
 category: society
 description: "If failure weren't an option, I'd dream of accessible education for every child and a closed digital divide. Here's what that world could look like."
-excerpt: "A case for treating education as the highest-leverage investment any society can make — and a look at what's quietly working in classrooms most policy debates ignore."
+excerpt: "If failure weren't an option, I'd dream of one thing: every child, everywhere, with real access to education. Here's why I think it's the highest-return investment we can make, and what's quietly working already."
 heroAlt: "Infographic poster of smiling children in classrooms ringed by panels on barriers, support, advocacy and a world map, with a Kalam quote at the foot."
 heroTitled: true
 minRead: 7

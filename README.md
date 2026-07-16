@@ -76,6 +76,7 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
+| `v3.5.3` | 2026-07-16 | [#64](https://github.com/vijaybpanangi/awonderfullife/pull/64) | Humanized all 17 homepage excerpts (first-person) + balanced title SEO optimization |
 | `v3.5.2` | 2026-07-16 | [#63](https://github.com/vijaybpanangi/awonderfullife/pull/63) | Fix: cache-bust the About portrait (rename to `vijay-v2.jpg`) so the immutable cache serves the new image |
 | `v3.5.1` | 2026-07-16 | [#62](https://github.com/vijaybpanangi/awonderfullife/pull/62) | First-person meta descriptions for all 17 posts + new 800×800 About portrait |
 | `v3.5.0` | 2026-07-16 | [#61](https://github.com/vijaybpanangi/awonderfullife/pull/61) | SEO structured-data + social/OG enrichment (`sameAs`, `BreadcrumbList`, `og:image` dims/alt, Twitter attribution, `updated` field) |

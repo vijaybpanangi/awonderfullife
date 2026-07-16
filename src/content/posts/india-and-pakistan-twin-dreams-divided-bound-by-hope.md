@@ -1,9 +1,9 @@
 ---
-title: "India and Pakistan: Twin Dreams Divided, Bound by Hope"
+title: "India and Pakistan: The 1947 Partition, and Twin Dreams Still Bound by Hope"
 date: 2024-11-18
 category: society
 description: "Reflecting on the 1947 partition of India and Pakistan, the 15 million it uprooted, and the shared hopes that still bind two nations born apart."
-excerpt: "In August 1947, the British Empire partitioned South Asia into India and Pakistan, resulting in the displacement of 15 million people. Seventy-six years later, both nations grapple with founding dreams and present realities — and the future demands cooperation and reform."
+excerpt: "In 1947 the British drew a line through South Asia, and 15 million people lost their homes to it. Seventy-six years on, I keep thinking about the dreams both nations were born with, and how much of the future still rides on hope."
 heroAlt: "Two children clasp hands across a dirt path at sunset, flanked by the Indian and Pakistani flags, monuments, doves, and wall murals of aspirations."
 minRead: 5
 guid: "https://awonderfullife.ca/posts/india-and-pakistan-twin-dreams-divided-bound-by-hope.html"

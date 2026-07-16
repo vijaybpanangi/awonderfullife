@@ -1,9 +1,9 @@
 ---
-title: "Fostering Unity in Canada: Combating Divisive Rhetoric"
+title: "Fostering Unity in Canada: Pushing Back on Divisive Political Rhetoric"
 date: 2024-11-07
 category: politics
 description: "The divisive rhetoric creeping into Canadian politics worries me. A reflection on holding onto unity, kindness, and compassion when the mood sours."
-excerpt: "A reflection on the divisive rhetoric increasingly shaping Canadian discourse, and a call to recommit to the values of unity, plurality, and shared responsibility that built the country in the first place."
+excerpt: "Canada has always felt to me like a place of welcome. Lately the political noise has an edge I can't ignore, so this is me thinking out loud about how we hold onto unity, plurality, and plain kindness before the mood hardens."
 heroAlt: "A diverse crowd of smiling people embrace and hold handmade signs near Parliament Hill in Ottawa, with a Canadian flag waving overhead at sunset."
 minRead: 4
 guid: "https://awonderfullife.ca/posts/fostering-unity-in-canada-combating-divisive-rhetoric.html"
