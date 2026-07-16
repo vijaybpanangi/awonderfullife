@@ -2,7 +2,7 @@
 title: "Siri's Major AI Overhaul: Features of iOS 18.5 You Need to Know"
 date: 2025-03-03
 category: technology
-description: "Apple is set to upgrade Siri significantly with the introduction of Apple Intelligence in the upcoming iOS 18.5. This new AI-powered system aims to enhance Siri"
+description: "My take on the Apple Intelligence upgrade coming to Siri in iOS 18.5, and what a smarter, more capable assistant could really mean day to day."
 excerpt: "Apple is set to upgrade Siri significantly with the introduction of Apple Intelligence. Key improvements include better contextual understanding, more natural conversations, tighter integration with Apple apps, and personalized suggestions — finally positioning Siri as a competitive AI assistant."
 heroAlt: "A hand holds a smartphone displaying a glowing voice orb, ringed by floating cards listing assistant capabilities like multitasking, suggestions, and on-device privacy."
 heroTitled: true

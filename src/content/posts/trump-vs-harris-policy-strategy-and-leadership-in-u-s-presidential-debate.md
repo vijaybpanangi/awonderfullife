@@ -2,7 +2,7 @@
 title: "Trump vs. Harris: Policy, Strategy, and Leadership in U.S. Presidential Debate"
 date: 2024-09-11
 category: politics
-description: "The recent U.S. presidential debate between Donald Trump and Kamala Harris was a high-stakes collision of two distinct political visions, showcasing unique stre"
+description: "My breakdown of the Trump-Harris presidential debate: two clashing visions, the policy behind the soundbites, and what each revealed about leading."
 excerpt: "Beyond the soundbites — a close read of what each candidate actually proposed, where their strategies diverged, and what their debate performances reveal about how each would lead."
 heroAlt: "Two candidates at separate podiums gesture toward one another mid-argument, lit against a navy stage backdrop scattered with large white stars."
 minRead: 9

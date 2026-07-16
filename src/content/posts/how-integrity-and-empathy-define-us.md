@@ -2,7 +2,7 @@
 title: "How Integrity and Empathy Define Us"
 date: 2024-10-09
 category: reflection
-description: "The content explores essential life principles that guide decision-making and personal growth. The author emphasizes integrity as the foundation for self-respec"
+description: "Every choice, small or large, quietly reveals who we are. Why I keep coming back to integrity and empathy as the ground I try to stand on."
 excerpt: "On the quiet decisions that build character — and why the smallest acts of empathy compound into the kind of integrity that holds when everything else gives way."
 heroAlt: "A man with a backpack sits on a hilltop at golden sunrise, gazing over a wildflower meadow toward a winding path, distant lake, and mist-softened mountains."
 heroTitled: true

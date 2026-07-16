@@ -2,7 +2,7 @@
 title: "Wanderlust Diaries: Journeys Beyond Borders"
 date: 2024-03-14
 category: travel
-description: "The Wanderlust Diaries are a collection of travel adventures capturing the essence of global exploration. Each entry chronicles breathtaking vistas, vibrant cul"
+description: "Flipping back through my travel diaries: the vistas, the cultures, and the small moments across borders that quietly reshaped how I see the world."
 excerpt: "An opening entry from a longer travel journal — what borders mean when you've crossed enough of them, and the kinds of stories that only show up after the photographs stop."
 heroAlt: "A weathered vintage suitcase covered in travel stickers sits on an empty railway platform between two trains as the sun sets at the end of the tracks."
 heroTitled: true

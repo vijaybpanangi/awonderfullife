@@ -2,7 +2,7 @@
 title: "How Apple’s AI Enhances Everyday Life: A Review"
 date: 2024-10-29
 category: technology
-description: "Apple Intelligence, introduced in iOS 18.1, marks a significant step in making AI accessible for everyday users. This update enhances Siri with new features suc"
+description: "My hands-on take on Apple Intelligence in iOS 18.1, and whether AI built for everyday users, not coders, actually makes daily life easier."
 excerpt: "How Apple's privacy-first approach to on-device AI changes what everyday users can expect — from smarter notifications to richer writing tools — without the data-extraction trade-offs of competing platforms."
 heroAlt: "An annotated infographic with a hand holding a phone showing the Apple Intelligence screen, surrounded by panels on Siri, photos, notifications, writing tools, and privacy."
 heroTitled: true

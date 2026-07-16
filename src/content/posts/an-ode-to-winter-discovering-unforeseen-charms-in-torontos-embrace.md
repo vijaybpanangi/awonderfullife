@@ -2,7 +2,7 @@
 title: "An Ode to Winter: Discovering Unforeseen Charms in Toronto's Embrace"
 date: 2024-03-14
 category: travel
-description: "The past winter in Toronto was a unique experience, beyond just weather. It brought a gentle warmth, replacing harsh cold with delicate beauty. The season's emo"
+description: "The winter Toronto just had was gentler than any I remember. An ode to a season that traded its usual harshness for a rare, quiet beauty."
 excerpt: "A love letter to a season most people endure rather than enjoy — and to a city that, once you stop fighting the cold, hands back something quiet, generous, and unmistakably its own."
 heroAlt: "A red streetcar travels a snowy Toronto street at dusk, the CN Tower against a glowing orange sky, warm-lit shopfronts and lamplit bare trees lining the tracks."
 heroTitled: true

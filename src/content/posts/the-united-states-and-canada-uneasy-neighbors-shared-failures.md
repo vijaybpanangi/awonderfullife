@@ -2,7 +2,7 @@
 title: "Confronting Inequality: The American and Canadian Experience"
 date: 2024-11-18
 category: politics
-description: "The histories of the United States and Canada reveal ambitions of prosperity shadowed by deep-rooted inequalities, systemic injustices, and legacies of colonial"
+description: "Beneath the prosperity of the U.S. and Canada run deep, shared histories of inequality and colonial injustice. Here's how I read that legacy today."
 excerpt: "The histories of the United States and Canada reveal ambitions of prosperity shadowed by deep-rooted inequalities, systemic injustices, and legacies of colonialism. Both nations must acknowledge their failings and engage in rectifying injustices for a fairer future."
 heroAlt: "American and Canadian flags frame a sunset river; protesters hold equality signs on the left, an Indigenous elder sits by a cooking pot on the right."
 minRead: 4
