@@ -76,6 +76,7 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
+| `v3.5.5` | 2026-07-16 | [#66](https://github.com/vijaybpanangi/awonderfullife/pull/66) | About page rewritten in first person + true-colour profile-link footer (LinkedIn, X, GitHub, Instagram, Track Your App) |
 | `v3.5.4` | 2026-07-16 | [#65](https://github.com/vijaybpanangi/awonderfullife/pull/65) | New post: "The Wait Was Worth It" (iOS 27 Siri AI); series' first post with inline photoreal figures |
 | `v3.5.3` | 2026-07-16 | [#64](https://github.com/vijaybpanangi/awonderfullife/pull/64) | Humanized all 17 homepage excerpts (first-person) + balanced title SEO optimization |
 | `v3.5.2` | 2026-07-16 | [#63](https://github.com/vijaybpanangi/awonderfullife/pull/63) | Fix: cache-bust the About portrait (rename to `vijay-v2.jpg`) so the immutable cache serves the new image |
