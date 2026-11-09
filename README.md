@@ -79,6 +79,8 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
+| `v3.7.0` | 2026-11-09 | [#69](https://github.com/vijaybpanangi/awonderfullife/pull/69) | Project wiki in `docs/wiki/` (42 pages), docs corrected, package version synced, releases tagged automatically |
+| `v3.6.0` | 2026-07-21 | direct to `main` | Namaz app support page (`/namaz/`) and privacy policy (`/namaz/privacy/`) |
 | `v3.5.7` | 2026-07-16 | [#68](https://github.com/vijaybpanangi/awonderfullife/pull/68) | Track Your App wordmark images (light/dark, theme-swapped) + link to its About page |
 | `v3.5.6` | 2026-07-16 | [#67](https://github.com/vijaybpanangi/awonderfullife/pull/67) | About links footer centred and spread evenly across the content column |
 | `v3.5.5` | 2026-07-16 | [#66](https://github.com/vijaybpanangi/awonderfullife/pull/66) | About page rewritten in first person + true-colour profile-link footer (LinkedIn, X, GitHub, Instagram, Track Your App) |
