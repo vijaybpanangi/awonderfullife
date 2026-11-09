@@ -6,7 +6,7 @@
 
 Personal essay blog of **Vijay Panangipally** — a data-driven storyteller, observer of the world, and writer based in Southern Ontario. The blog sits at the crossroads of analytics and the human experience: it writes about technology and AI, the politics shaping the U.S. and Canada, life in Toronto and journeys further afield, reflection on integrity and endurance, and the people whose quiet greatness is worth remembering.
 
-Sixteen posts as of this writing, across five categories:
+Eighteen posts as of this writing (2026-11-09), across five categories:
 
 - **Reflection** — endurance, integrity, lives well lived
 - **Society** — data, truth, education, partition and unity
@@ -35,6 +35,8 @@ Deployment is on **Cloudflare Workers with Static Assets**. The Worker configura
 /assets/images/                Author portrait + hero images for each post
 /wrangler.jsonc                Cloudflare Worker configuration (assets.directory: ./_site)
 /docs/superpowers/             Specs and implementation plans
+/docs/wiki/                    The project wiki (published to the GitHub Wiki by .github/workflows/wiki-sync.yml)
+/api/                          The second Worker (api.awonderfullife.ca): newsletter, comments, reactions, admin compose UI
 ```
 
 ## Working with the site
@@ -57,7 +59,7 @@ Push to `main`. Cloudflare's Workers Build runs `npm ci && npm run build` and de
 A new post is **one file**: `src/content/posts/<slug>.md`. The homepage card/featured opener, the archive row, the category page, prev/next nav, `feed.xml`, `sitemap.xml`, and the SEO head/JSON-LD are all generated from its front matter and the posts collection — nothing else to hand-edit.
 
 1. Create `src/content/posts/<slug>.md` with front matter (`title`, `date`, `category`, `description`, `excerpt`, `heroAlt`, optionally `minRead`/`dek`/`heroTitled`/`listTitle`; omit `guid` — it's only set on legacy-migrated posts to freeze their original canonical URL) and the Markdown body. See `CLAUDE.md` for the full field reference.
-2. Generate a hero illustration via `docs/superpowers/tools/gen-hero.sh <slug> "<subject prompt>" <seed>` (credentials at `$HOME/.cloudflare_ai_token` and `$HOME/.cloudflare_ai_account`, never committed). Add a manifest row in `docs/superpowers/specs/2026-06-11-image-manifest.md` with the seed, prompt, and alt text. Target file size ≤200KB; the generated illustrations average ~95KB.
+2. Generate a hero illustration via `docs/superpowers/tools/gen-hero.sh <slug> "<subject prompt>" <seed>` (credentials at `$HOME/.cloudflare_ai_token` and `$HOME/.cloudflare_ai_account`, never committed). Add a manifest row in `docs/superpowers/specs/2026-06-11-image-manifest.md` with the seed, prompt, and alt text. Target file size ≤200KB; the generated illustrations average ~95KB. Also add a 640px-wide thumbnail at `assets/images/posts/thumbs/<slug>.jpg` (used by the homepage card `srcset`).
 3. `npm run build`. Done.
 
 ## Project documentation
@@ -66,7 +68,8 @@ A new post is **one file**: `src/content/posts/<slug>.md`. The homepage card/fea
 - **`docs/superpowers/specs/`** — design specs for non-trivial changes.
 - **`docs/superpowers/plans/`** — implementation plans matched to specs.
 - **`CHANGELOG.md`** — curated trail of notable changes (design, infrastructure, documentation).
-- **`ROADMAP.md`** — future updates and deferred items (email migration, canonical-URL redirect, drop `.html` from internal links, india-pakistan hero regen).
+- **`ROADMAP.md`** — future updates and deferred items (DMARC tightening, newsletter polish, Search Console verification, client-side tools).
+- **`docs/wiki/`** — the long-form project wiki, published to the repository's GitHub Wiki on every merge to `main`.
 
 Anything more substantial than a copy edit goes through a brainstorm → spec → plan → execute workflow; see `docs/superpowers/README.md` for that convention.
 
@@ -76,6 +79,8 @@ One row per release — every release is a semver git tag on its merge commit. F
 
 | Version | When (UTC) | PR | Summary |
 |---|---|---|---|
+| `v3.7.0` | 2026-11-09 | [#69](https://github.com/vijaybpanangi/awonderfullife/pull/69) | Project wiki in `docs/wiki/` (42 pages), docs corrected, package version synced, releases tagged automatically |
+| `v3.6.0` | 2026-07-21 | direct to `main` | Namaz app support page (`/namaz/`) and privacy policy (`/namaz/privacy/`) |
 | `v3.5.7` | 2026-07-16 | [#68](https://github.com/vijaybpanangi/awonderfullife/pull/68) | Track Your App wordmark images (light/dark, theme-swapped) + link to its About page |
 | `v3.5.6` | 2026-07-16 | [#67](https://github.com/vijaybpanangi/awonderfullife/pull/67) | About links footer centred and spread evenly across the content column |
 | `v3.5.5` | 2026-07-16 | [#66](https://github.com/vijaybpanangi/awonderfullife/pull/66) | About page rewritten in first person + true-colour profile-link footer (LinkedIn, X, GitHub, Instagram, Track Your App) |

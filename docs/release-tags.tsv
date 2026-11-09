@@ -1,0 +1,4 @@
+# Release tags: one line per release, "tag<TAB>commit". The release-tag workflow
+# creates any tag listed here that does not exist yet. Releases from v3.7.0 on are
+# tagged automatically from the top heading of CHANGELOG.md.
+v3.6.0	d005a0c817874dc81953d4df104177671fa8fb0c

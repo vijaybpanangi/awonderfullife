@@ -1,6 +1,6 @@
 {
   "name": "awonderfullife",
-  "version": "3.0.0",
+  "version": "3.7.0",
   "private": true,
   "type": "module",
   "description": "A Wonderful Life - personal essay blog, built with Eleventy, deployed on Cloudflare Workers Static Assets",

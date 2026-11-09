@@ -1,0 +1,1 @@
+Pages are published from `docs/wiki/` in the repository by the `wiki-sync` workflow. Edit them there, not in the browser. A Wonderful Life is the personal essay blog of Vijay Panangipally; its words and images are his, all rights reserved.
