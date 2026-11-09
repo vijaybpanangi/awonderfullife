@@ -59,7 +59,7 @@ Push to `main`. Cloudflare's Workers Build runs `npm ci && npm run build` and de
 A new post is **one file**: `src/content/posts/<slug>.md`. The homepage card/featured opener, the archive row, the category page, prev/next nav, `feed.xml`, `sitemap.xml`, and the SEO head/JSON-LD are all generated from its front matter and the posts collection — nothing else to hand-edit.
 
 1. Create `src/content/posts/<slug>.md` with front matter (`title`, `date`, `category`, `description`, `excerpt`, `heroAlt`, optionally `minRead`/`dek`/`heroTitled`/`listTitle`; omit `guid` — it's only set on legacy-migrated posts to freeze their original canonical URL) and the Markdown body. See `CLAUDE.md` for the full field reference.
-2. Generate a hero illustration via `docs/superpowers/tools/gen-hero.sh <slug> "<subject prompt>" <seed>` (credentials at `$HOME/.cloudflare_ai_token` and `$HOME/.cloudflare_ai_account`, never committed). Add a manifest row in `docs/superpowers/specs/2026-06-11-image-manifest.md` with the seed, prompt, and alt text. Target file size ≤200KB; the generated illustrations average ~95KB.
+2. Generate a hero illustration via `docs/superpowers/tools/gen-hero.sh <slug> "<subject prompt>" <seed>` (credentials at `$HOME/.cloudflare_ai_token` and `$HOME/.cloudflare_ai_account`, never committed). Add a manifest row in `docs/superpowers/specs/2026-06-11-image-manifest.md` with the seed, prompt, and alt text. Target file size ≤200KB; the generated illustrations average ~95KB. Also add a 640px-wide thumbnail at `assets/images/posts/thumbs/<slug>.jpg` (used by the homepage card `srcset`).
 3. `npm run build`. Done.
 
 ## Project documentation
