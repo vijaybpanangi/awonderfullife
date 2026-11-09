@@ -6,7 +6,7 @@
 
 Personal essay blog of **Vijay Panangipally** — a data-driven storyteller, observer of the world, and writer based in Southern Ontario. The blog sits at the crossroads of analytics and the human experience: it writes about technology and AI, the politics shaping the U.S. and Canada, life in Toronto and journeys further afield, reflection on integrity and endurance, and the people whose quiet greatness is worth remembering.
 
-Sixteen posts as of this writing, across five categories:
+Eighteen posts as of this writing (2026-11-09), across five categories:
 
 - **Reflection** — endurance, integrity, lives well lived
 - **Society** — data, truth, education, partition and unity
@@ -35,6 +35,8 @@ Deployment is on **Cloudflare Workers with Static Assets**. The Worker configura
 /assets/images/                Author portrait + hero images for each post
 /wrangler.jsonc                Cloudflare Worker configuration (assets.directory: ./_site)
 /docs/superpowers/             Specs and implementation plans
+/docs/wiki/                    The project wiki (published to the GitHub Wiki by .github/workflows/wiki-sync.yml)
+/api/                          The second Worker (api.awonderfullife.ca): newsletter, comments, reactions, admin compose UI
 ```
 
 ## Working with the site
@@ -66,7 +68,8 @@ A new post is **one file**: `src/content/posts/<slug>.md`. The homepage card/fea
 - **`docs/superpowers/specs/`** — design specs for non-trivial changes.
 - **`docs/superpowers/plans/`** — implementation plans matched to specs.
 - **`CHANGELOG.md`** — curated trail of notable changes (design, infrastructure, documentation).
-- **`ROADMAP.md`** — future updates and deferred items (email migration, canonical-URL redirect, drop `.html` from internal links, india-pakistan hero regen).
+- **`ROADMAP.md`** — future updates and deferred items (DMARC tightening, newsletter polish, Search Console verification, client-side tools).
+- **`docs/wiki/`** — the long-form project wiki, published to the repository's GitHub Wiki on every merge to `main`.
 
 Anything more substantial than a copy edit goes through a brainstorm → spec → plan → execute workflow; see `docs/superpowers/README.md` for that convention.
 

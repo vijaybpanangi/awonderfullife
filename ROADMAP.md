@@ -8,8 +8,8 @@ Future updates and deferred items for awonderfullife.ca. Items here have no fixe
 
 The technical SEO foundation shipped on 2026-06-15 (see `CHANGELOG.md`): absolute canonicals, Open Graph + Twitter cards, JSON-LD (`WebSite` / `Person` / `Blog` / per-post `BlogPosting`), a brand-default OG image, `sitemap.xml`, and `robots.txt`. Left for later:
 
-- **`sameAs` on the `Person` node.** Omitted deliberately because there are no real social or author profiles to point at yet (no placeholders). Add LinkedIn / X / Mastodon / Substack etc. once they exist.
-- **`BreadcrumbList` schema.** Posts and category pages could carry a breadcrumb (Home > Category > Post) for richer results. Low effort, deferred.
+- ✅ **`sameAs` on the `Person` node (DONE, v3.5.0).** The `Person` now lists LinkedIn, X, GitHub, Track Your App and Instagram from `src/_data/site.json`.
+- ✅ **`BreadcrumbList` schema (DONE for posts, v3.5.0).** Every post carries Home > Category > Post. Category pages still have none, if that is ever wanted.
 - **Cloudflare managed `robots.txt`.** awonderfullife.ca is a Cloudflare zone; if AI Crawl Control / managed robots is enabled, the live `robots.txt` may be prepended with a managed block ahead of the committed file (as observed on ezziclarity). Our `Allow: /` and the `Sitemap:` line still serve, so search indexing is unaffected. To serve exactly the repo file, toggle the managed feature off in the dashboard.
 - ✅ **`.html`-suffix canonicals (DONE, v3.0.0).** Resolved as part of the Eleventy re-platform: `head-seo.njk`'s canonical and `sitemap.njk`'s `<loc>` entries both already build the suffixless form (`cleanUrl` filter / root-relative template paths), matching every generated `href` site-wide.
 - **Off-site, manual (needs Vijay):** verify the domain in **Google Search Console** and **Bing Webmaster Tools**, then submit `https://awonderfullife.ca/sitemap.xml` in both.
@@ -54,11 +54,11 @@ A Cloudflare Redirect Rule ("Redirect from WWW to root") now 301-redirects `www.
 
 The re-platform isn't just a like-for-like swap — it's the foundation the next few PRs build on. Templates are now data-driven (a `posts` collection, shared includes, generated nav) instead of copy-pasted HTML, which makes site-wide features tractable that would have meant touching all 17 posts by hand before:
 
-- **Dark mode** — a CSS custom-property theme toggle, applied once in `base.njk` instead of duplicated across every page.
-- **Search** — Pagefind (static full-text index) over the generated `_site/`.
-- **Related posts** — computed from the `posts` collection (category/tag proximity) and rendered via a shared include, the same way prev/next nav already works.
+- ✅ **Dark mode (DONE, v3.1.0)** — a CSS custom-property theme toggle, applied once in `base.njk` instead of duplicated across every page.
+- ✅ **Search (DONE, v3.2.0)** — Pagefind (static full-text index) over the generated `_site/`.
+- ✅ **Related posts (DONE, v3.3.0)** — computed from the `posts` collection (category/tag proximity) and rendered via a shared include, the same way prev/next nav already works.
 
-Each ships as its own follow-up PR; none is in scope for the re-platform itself.
+Each shipped as its own follow-up PR (v3.1.0 to v3.3.0, 2026-07-11).
 
 ---
 
