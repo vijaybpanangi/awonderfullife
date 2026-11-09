@@ -1,0 +1,74 @@
+name: release-tag
+# Keeps release tags up to date (annotated tags, like the earlier v* tags).
+# - On a merge to main that changes CHANGELOG.md: reads the version from its
+#   first "## vX.Y.Z" heading, tags that commit vX.Y.Z unless the tag exists,
+#   and creates a GitHub Release with that section of the changelog as notes.
+# - Every run also creates any tag listed in docs/release-tags.tsv that does
+#   not exist yet (run it by hand from the Actions tab after editing that file).
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'CHANGELOG.md'
+      - 'docs/release-tags.tsv'
+  workflow_dispatch:
+concurrency:
+  group: release-tag
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Identify as the Actions bot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Tag the release at the top of CHANGELOG.md
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          heading=$(grep -m1 -E '^## v[0-9]+\.[0-9]+\.[0-9]+' CHANGELOG.md)
+          version=$(printf '%s' "$heading" | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+          if [ -z "$version" ]; then
+            echo "::error::No '## vX.Y.Z' heading found in CHANGELOG.md."
+            exit 1
+          fi
+          if git rev-parse -q --verify "refs/tags/${version}" >/dev/null; then
+            echo "${version} already exists."
+            exit 0
+          fi
+          title=$(printf '%s' "$heading" | sed -E 's/^## //')
+          awk 'f && /^## v[0-9]/ { exit } f { print } /^## v[0-9]/ && !f { f = 1 }' CHANGELOG.md > notes.md
+          git tag -a "${version}" -m "${title}" "${GITHUB_SHA}"
+          git push --quiet origin "refs/tags/${version}"
+          gh release create "${version}" --title "${title}" --notes-file notes.md --verify-tag
+          echo "Created ${version} at ${GITHUB_SHA::7}."
+      - name: Create any missing tags from docs/release-tags.tsv
+        run: |
+          [ -f docs/release-tags.tsv ] || exit 0
+          created=0
+          while IFS=$'\t' read -r tag commit; do
+            case "$tag" in ''|'#'*) continue ;; esac
+            if git rev-parse -q --verify "refs/tags/${tag}" >/dev/null; then continue; fi
+            if ! git cat-file -e "${commit}^{commit}" 2>/dev/null; then
+              echo "::warning::${tag}: commit ${commit} is not in this repository; skipped."
+              continue
+            fi
+            title=$(grep -m1 -E "^## ${tag}[^0-9]" CHANGELOG.md | sed -E 's/^## //')
+            git tag -a "${tag}" -m "${title:-$tag}" "${commit}"
+            # GitHub refuses the built-in token a tag on a commit whose workflow files
+            # differ from today's; push those once by hand (see docs/wiki/Runbooks.md).
+            if git push --quiet origin "refs/tags/${tag}" 2>push.err; then
+              created=$((created + 1))
+            else
+              echo "::warning::${tag} was refused: $(tail -n1 push.err)"
+              git tag -d "${tag}" >/dev/null
+            fi
+          done < docs/release-tags.tsv
+          echo "Created ${created} tag(s)."

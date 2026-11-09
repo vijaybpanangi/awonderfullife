@@ -9,7 +9,7 @@ Every release and merged change to awonderfullife.ca, newest first: the 57 tagge
 > - 70 rows: 57 tagged releases and 13 untagged changes, from the first commit (2026-05-25) to 2026-07-21.
 > - Three majors: `v1.0.0` editorial launch, `v2.0.0` Quiet Magazine redesign, `v3.0.0` Eleventy re-platform.
 > - The site has always deployed through its Workers Build on push to `main`; the API was deployed by hand until its own Workers Build arrived on 2026-06-20.
-> - The last change, the Namaz pages, is live but has no CHANGELOG entry or tag yet.
+> - The Namaz pages became `v3.6.0` and this wiki `v3.7.0` on 2026-11-09; tags are now created automatically on merge.
 
 **Jump to:** [July 2026](#july-2026) · [June 2026](#june-2026) · [May 2026](#may-2026) · [Sources and gaps](#sources-and-gaps)
 
@@ -61,11 +61,17 @@ xychart-beta
 
 ## Releases
 
+### November 2026
+
+| Version | Date (UTC) | PR | For readers | Technical | Deployed by |
+|---|---|---|---|---|---|
+| **v3.7.0** | 2026-11-09 | the wiki pull request | Nothing changes on the site | This 42-page wiki in `docs/wiki/`, the `wiki-sync` and `release-tag` workflows, `CLAUDE.md`, `README.md` and `ROADMAP.md` corrected, `package.json` version 3.0.0 to 3.7.0 | No site change; GitHub Actions publishes the wiki and tags the release |
+
 ### July 2026
 
 | Version | Date (UTC) | PR | For readers | Technical | Deployed by |
 |---|---|---|---|---|---|
-| **untagged** | 2026-07-21 | direct to `main` | New Namaz support page at `/namaz/` and privacy policy at `/namaz/privacy/` for the iOS app | `src/content/namaz.md`, `namaz-privacy.md` on `base.njk`; two direct commits `a092c88`, `d005a0c`; no CHANGELOG entry or tag yet | Site build (Eleventy) |
+| **v3.6.0** | 2026-07-21 | direct to `main` | New Namaz support page at `/namaz/` and privacy policy at `/namaz/privacy/` for the iOS app | `src/content/namaz.md`, `namaz-privacy.md` on `base.njk`; two direct commits `a092c88`, `d005a0c`; CHANGELOG entry and tag added 2026-11-09 | Site build (Eleventy) |
 | **`v3.5.7`** | 2026-07-16 | [#68](https://github.com/vijaybpanangi/awonderfullife/pull/68) | Track Your App link on About uses its real wordmark, swapped for light and dark, and points to its About page | `assets/images/tya-light.png`, `tya-dark.png`, theme cascade in CSS | Site build (Eleventy) |
 | **`v3.5.6`** | 2026-07-16 | [#67](https://github.com/vijaybpanangi/awonderfullife/pull/67) | About profile links spread evenly and centred | CSS `justify-content: space-evenly` | Site build (Eleventy) |
 | **`v3.5.5`** | 2026-07-16 | [#66](https://github.com/vijaybpanangi/awonderfullife/pull/66) | About page rewritten in plain first person; profile links (LinkedIn, X, GitHub, Instagram, Track Your App) shown | `about.njk`, brand icons, dark-mode fills | Site build (Eleventy) |
@@ -152,7 +158,7 @@ xychart-beta
 - **Sources:** `git log` and `git tag` (57 tags), `CHANGELOG.md`, and the README release table. They agree on every tag and PR number.
 - **Dates:** v3.0.0 to v3.4.0 are tagged on commits dated 2026-07-10 local time; the CHANGELOG gives 2026-07-11 UTC, used here.
 - **PR #16** (the edge-lensing prototype) is mentioned in the v2.7.0 notes but was not merged; v2.7.0 (#18) shipped the feature.
-- **Not recorded:** the 2026-07-21 Namaz commits have no CHANGELOG entry, README row or tag. If they become `v3.5.8` (a patch, content), add all three.
+- **Recorded late:** the 2026-07-21 Namaz commits got their CHANGELOG entry and the tag `v3.6.0` (a minor release: two new pages) on 2026-11-09.
 - **Deploy evidence:** Workers Builds logs live in the Cloudflare dashboard, not in the repository; "Deployed by" reflects the documented deploy model at each date.
 
 ## Related pages

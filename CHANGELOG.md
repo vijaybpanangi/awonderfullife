@@ -4,6 +4,16 @@ Notable changes to the website, deployment configuration, and project documentat
 
 Every release is versioned with a semver git tag (`MAJOR.MINOR.PATCH`) on its merge commit — **major** = redesign or identity/structural shift, **minor** = new feature or notable enhancement, **patch** = fix, content, or docs. Each entry is stamped with its release time (UTC, from the merge commit) and listed newest-first. See [GitHub Releases](https://github.com/vijaybpanangi/awonderfullife/releases) and `git tag` for the full list.
 
+## v3.7.0: The project wiki, docs brought up to date, releases tagged automatically (2026-11-09 UTC)
+
+The project now has a complete wiki: 42 pages in `docs/wiki/` covering the blog, its readers, every feature, the architecture, the build pipeline, the data model, the newsletter, comments and reactions, the API, Cloudflare, deployment, a full release history, runbooks and house style, with 57 diagrams and screenshots of the live site. The 13 pages of the old wiki keep their names, so existing links still work. The new `wiki-sync` workflow publishes `docs/wiki/` to the GitHub wiki on every merge that changes it.
+
+`CLAUDE.md`, `README.md` and `ROADMAP.md` were checked against the code and corrected (post counts, the comments and reactions system, the Namaz pages, the 640 px thumbnail step, roadmap items already shipped). The `package.json` version, which had stayed at 3.0.0, now matches the release number. A new `release-tag` workflow tags each release from the top heading of this file when it reaches `main`, and creates its GitHub Release, so tags can no longer fall behind.
+
+## v3.6.0: Namaz app support and privacy pages (2026-07-21 UTC)
+
+Two new pages for the Namaz iOS app: a landing and support page at `/namaz/` and a privacy policy at `/namaz/privacy/`. Both URLs are registered with Apple, so they must not move. Added to this log on 2026-11-09, when the release was tagged.
+
 ## v3.5.7 — Track Your App wordmark images + link to its About page (2026-07-16 UTC)
 
 The Track Your App entry in the About page's links footer now uses its real brand wordmark instead of the emoji approximation shipped in v3.5.5: two small transparent PNGs, one with dark text for light backgrounds and one with white text for dark, swapped automatically by theme (the same `prefers-color-scheme` + `data-theme` cascade the rest of the site uses). The link also points to Track Your App's own About page now (`trackyourapp.ca/about`) rather than its homepage.

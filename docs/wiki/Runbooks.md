@@ -113,6 +113,17 @@ docs/superpowers/tools/cf-analytics.sh --days 30
 
 Needs a read-only analytics token in `CLOUDFLARE_ANALYTICS_TOKEN` or `~/.cloudflare_analytics_token`.
 
+## Push a release tag the workflow cannot create
+
+GitHub refuses the Actions token a tag on a commit whose workflow files differ from today's, and `release-tag` then warns ("was refused") and moves on. Create that tag once from your own git login:
+
+```bash
+git fetch origin --tags
+git tag -a vX.Y.Z -m "vX.Y.Z: title from CHANGELOG.md" <commit from docs/release-tags.tsv>
+git push origin vX.Y.Z
+```
+*Expected:* `* [new tag]` for that tag only. Tags never change the live site.
+
 ## Related pages
 - [Monitoring and incidents](Monitoring-and-Incidents): signs that a runbook is needed.
 - [Deployment and release](Deployment): the normal release path.

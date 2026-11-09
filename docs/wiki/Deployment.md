@@ -52,7 +52,7 @@ classDef store fill:#FFFFFF,stroke:#221F1E,stroke-width:2px,color:#221F1E
 2. Add a `CHANGELOG.md` entry at the top, headed with the version, a title and the UTC merge time, in the same format as the entries already there.
 3. Add a row to the README "Release history" table: version, time, PR link, summary.
 4. Open a pull request and merge it.
-5. Tag the merge commit: `git tag -a vX.Y.Z -m "vX.Y.Z: summary" && git push origin vX.Y.Z`.
+5. The `release-tag` workflow tags the merge commit with the version at the top of `CHANGELOG.md` and creates its GitHub Release. Nothing to do by hand.
 6. Watch the build in the Cloudflare dashboard and check the live site.
 
 ## Versioning rules
@@ -63,7 +63,7 @@ classDef store fill:#FFFFFF,stroke:#221F1E,stroke-width:2px,color:#221F1E
 | **Minor** | new feature or notable enhancement | v3.1.0 dark mode; v3.4.0 appreciate |
 | **Patch** | fix, content, docs | v3.5.2 portrait cache fix; v3.5.4 new post |
 
-Tags were back-filled to v1.0.0 on 2026-06-15 (v2.4.1). Latest tag: `v3.5.7` (2026-07-16).
+Tags were back-filled to v1.0.0 on 2026-06-15 (v2.4.1). Since v3.7.0 (2026-11-09) the `release-tag` workflow creates each tag and GitHub Release on merge, and creates any tag listed in `docs/release-tags.tsv` that is missing (v3.6.0 was added that way).
 
 ## Deploy history in short
 
